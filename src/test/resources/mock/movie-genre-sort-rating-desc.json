@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1102,
+    "nameRussian": "Зеленая миля",
+    "nameNative": "The Green Mile",
+    "yearOfRelease": 1999,
+    "rating": 8.9,
+    "price": 134.67,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1._SY209_CR0,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1111,
+    "nameRussian": "Унесённые призраками",
+    "nameNative": "Sen to Chihiro no kamikakushi",
+    "yearOfRelease": 2001,
+    "rating": 8.6,
+    "price": 145.9,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BOGJjNzZmMmUtMjljNC00ZjU5LWJiODQtZmEzZTU0MjBlNzgxL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1._SY209_CR0,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1110,
+    "nameRussian": "Звёздные войны: Эпизод 5 – Империя наносит ответный удар",
+    "nameNative": "Star Wars: Episode V - The Empire Strikes Back",
+    "yearOfRelease": 1980,
+    "rating": 8.2,
+    "price": 198.98,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BYmViY2M2MTYtY2MzOS00YjQ1LWIzYmEtOTBiNjhlMGM0NjZjXkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1._SX140_CR0,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1114,
+    "nameRussian": "Ходячий замок",
+    "nameNative": "Hauru no ugoku shiro",
+    "yearOfRelease": 2004,
+    "rating": 8.2,
+    "price": 130.5,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BZTRhY2QwM2UtNWRlNy00ZWQwLTg3MjktZThmNjQ3NTdjN2IxXkEyXkFqcGdeQXVyMzg2MzE2OTE@._V1._SY209_CR5,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1118,
+    "nameRussian": "Как приручить дракона",
+    "nameNative": "How to Train Your Dragon",
+    "yearOfRelease": 2010,
+    "rating": 8.2,
+    "price": 182.0,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BMjA5NDQyMjc2NF5BMl5BanBnXkFtZTcwMjg5ODcyMw@@._V1._SY209_CR0,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1109,
+    "nameRussian": "Звёздные войны: Эпизод 4 – Новая надежда",
+    "nameNative": "Star Wars",
+    "yearOfRelease": 1977,
+    "rating": 8.1,
+    "price": 198.98,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BYTUwNTdiMzMtNThmNS00ODUzLThlMDMtMTM5Y2JkNWJjOGQ2XkEyXkFqcGdeQXVyNzQ1ODk3MTQ@._V1._SX140_CR0,0,140,209_.jpg"
+    ]
+  }
+]
