@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,25 +18,31 @@ public class MovieDaoITest {
 
     @Test
     void shouldReturnListOfMovies() {
-        List<Movie> movies = movieDao.findAll();
+        Iterable<Movie> movies = movieDao.findAll();
 
         assertNotNull(movies);
-        assertEquals(25, movies.size());
+
+        long numberMovies = StreamSupport.stream(movies.spliterator(), false).count();
+        assertEquals(25, numberMovies);
     }
 
     @Test
     void shouldReturnThreeRandomMovies() {
-        List<Movie> movies = movieDao.findThreeRandom();
+        Iterable<Movie> movies = movieDao.findRandom();
 
         assertNotNull(movies);
-        assertEquals(3, movies.size());
+
+        long numberMovies = StreamSupport.stream(movies.spliterator(), false).count();
+        assertEquals(3, numberMovies);
     }
 
     @Test
     void shouldReturnMoviesByGenre() {
-        List<Movie> movies = movieDao.findByGenreId(2);
+        Iterable<Movie> movies = movieDao.findByGenreId(2);
 
         assertNotNull(movies);
-        assertEquals(7, movies.size());
+
+        long numberMovies = StreamSupport.stream(movies.spliterator(), false).count();
+        assertEquals(7, numberMovies);
     }
 }

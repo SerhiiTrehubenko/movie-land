@@ -1,12 +1,10 @@
 package com.tsa.movieland.service;
 
+import com.tsa.movieland.domain.SortDirection;
 import com.tsa.movieland.entity.Movie;
 
-import java.util.List;
-
 public interface MovieService {
-    List<Movie> findAll();
-    List<Movie> findAll(String rating, String price);
-    List<Movie> findThreeRandom();
-    List<Movie> findByGenre(int genreId, String rating, String price);
+    Iterable<Movie> findAll(SortDirection sortDirection);
+    Iterable<Movie> findThreeRandom();
+    Iterable<Movie> findByGenre(int genreId, SortDirection sortDirection);
 }

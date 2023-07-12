@@ -1,14 +1,11 @@
 package com.tsa.movieland.controller;
 
-
 import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.service.GenreService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,7 +19,7 @@ public class GenreController {
     }
 
     @GetMapping("/genre")
-    public List<Genre> findAll() {
+    public Iterable<Genre> findAll() {
         return genreService.findAll();
     }
 }

@@ -3,32 +3,31 @@ package com.tsa.movieland.cache;
 import com.tsa.movieland.dao.GenreDao;
 import com.tsa.movieland.entity.Genre;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.StreamSupport;
+
 @Slf4j
-public class GenreCache extends TimerTask {
-
+@RequiredArgsConstructor
+public class GenreCache {
     private final GenreDao genreDao;
-    private static List<String> GENRES;
+    private Iterable<String> genres;
 
-    public GenreCache(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
-
-    @Override
+    @Scheduled(fixedRateString = "${genre.cache.cycle.hours}", timeUnit = TimeUnit.HOURS)
     public void run() {
-        List<Genre> genres = genreDao.findAll();
-        List<String> genresString = genres.stream()
-                        .map(Genre::name).toList();
-        GENRES = Collections.synchronizedList(genresString);
-        log.info("Cache of Genres has been refreshed at time:[%s]".formatted(LocalDateTime.now()));
+        Iterable<Genre> genres = genreDao.findAll();
+        List<String> genresString = StreamSupport.stream(genres.spliterator(), false)
+                .map(Genre::name).toList();
+        this.genres = Collections.synchronizedList(genresString);
+        log.info("Cache of Genres has been refreshed");
     }
 
-    public static List<String> getGENRES() {
-        return GENRES;
+    public Iterable<String> getGenres() {
+        return genres;
     }
 }

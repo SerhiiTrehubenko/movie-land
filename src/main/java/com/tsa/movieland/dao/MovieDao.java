@@ -2,12 +2,14 @@ package com.tsa.movieland.dao;
 
 import com.tsa.movieland.entity.Movie;
 
-import java.util.List;
-
 public interface MovieDao {
-    List<Movie> findAll();
+    Iterable<Movie> findAll();
+    Iterable<Movie> findAllSortPrice(String direction);
+    Iterable<Movie> findAllSortRating(String direction);
 
-    List<Movie> findThreeRandom();
+    Iterable<Movie> findRandom();
+    Iterable<Movie> findByGenreId(int genreId);
 
-    List<Movie> findByGenreId(int genreId);
+    Iterable<Movie> findByGenreIdSortPrice(int genreId, String direction);
+    Iterable<Movie> findByGenreIdSortRating(int genreId, String direction);
 }

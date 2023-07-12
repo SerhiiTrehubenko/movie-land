@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Timer;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class CacheGenreTest {
@@ -17,19 +17,13 @@ public class CacheGenreTest {
     GenreDao genreDao;
 
     @Test
-    void shouldExecuteTaskEveryFiveSeconds() throws InterruptedException {
-
+    void shouldFillCacheWithGenresNames() {
         GenreCache genreCacheSut = new GenreCache(genreDao);
+        genreCacheSut.run();
+        Iterable<String> genres = genreCacheSut.getGenres();
 
-        Timer timer = new Timer("Timer");
-        long delay = 5000L;
-
-        timer.schedule(genreCacheSut,1, delay);
-
-        List<String> genres = GenreCache.getGENRES();
-
-        Thread.sleep(11000);
-
-        assertEquals(15, genres.size());
+        assertNotNull(genres);
+        long genreNamesNumber = StreamSupport.stream(genres.spliterator(), false).count();
+        assertEquals(15, genreNamesNumber);
     }
 }

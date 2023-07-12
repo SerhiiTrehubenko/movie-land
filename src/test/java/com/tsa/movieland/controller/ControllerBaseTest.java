@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @SpringBootTest
@@ -19,7 +20,7 @@ public abstract class ControllerBaseTest {
     String getContent(String filePath) {
         try (InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath)) {
             Objects.requireNonNull(file);
-            return  new String(file.readAllBytes());
+            return  new String(file.readAllBytes(), StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException("File with path: [%s] was not found".formatted(filePath),e);
         }

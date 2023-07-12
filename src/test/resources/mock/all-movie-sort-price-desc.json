@@ -99,17 +99,6 @@
     ]
   },
   {
-    "id": 1104,
-    "nameRussian": "Список Шиндлера",
-    "nameNative": "Schindler's List",
-    "yearOfRelease": 1993,
-    "rating": 8.7,
-    "price": 150.5,
-    "picturePath": [
-      " https://images-na.ssl-images-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1._SX140_CR0,0,140,209_.jpg"
-    ]
-  },
-  {
     "id": 1119,
     "nameRussian": "Молчание ягнят",
     "nameNative": "The Silence of the Lambs",
@@ -118,6 +107,17 @@
     "price": 150.5,
     "picturePath": [
       " https://images-na.ssl-images-amazon.com/images/M/MV5BNjNhZTk0ZmEtNjJhMi00YzFlLWE1MmEtYzM1M2ZmMGMwMTU4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1._SY209_CR1,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1104,
+    "nameRussian": "Список Шиндлера",
+    "nameNative": "Schindler's List",
+    "yearOfRelease": 1993,
+    "rating": 8.7,
+    "price": 150.5,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1._SX140_CR0,0,140,209_.jpg"
     ]
   },
   {
@@ -202,10 +202,9 @@
     "nameRussian": "Побег из Шоушенка",
     "nameNative": "The Shawshank Redemption",
     "yearOfRelease": 1994,
-    "rating": 5.0,
+    "rating": 8.9,
     "price": 123.45,
     "picturePath": [
-      " https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg",
       " https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg"
     ]
   },
@@ -221,17 +220,6 @@
     ]
   },
   {
-    "id": 1105,
-    "nameRussian": "1+1",
-    "nameNative": "Intouchables",
-    "yearOfRelease": 2011,
-    "rating": 8.3,
-    "price": 120.0,
-    "picturePath": [
-      " https://images-na.ssl-images-amazon.com/images/M/MV5BMTYxNDA3MDQwNl5BMl5BanBnXkFtZTcwNTU4Mzc1Nw@@._V1._SY209_CR0,0,140,209_.jpg"
-    ]
-  },
-  {
     "id": 1122,
     "nameRussian": "Укрощение строптивого",
     "nameNative": "Il bisbetico domato",
@@ -240,6 +228,17 @@
     "price": 120.0,
     "picturePath": [
       " https://images-na.ssl-images-amazon.com/images/M/MV5BMTc5NTM5OTY0Nl5BMl5BanBnXkFtZTcwNjg1MjcyMQ@@._V1._SY209_CR3,0,140,209_.jpg"
+    ]
+  },
+  {
+    "id": 1105,
+    "nameRussian": "1+1",
+    "nameNative": "Intouchables",
+    "yearOfRelease": 2011,
+    "rating": 8.3,
+    "price": 120.0,
+    "picturePath": [
+      " https://images-na.ssl-images-amazon.com/images/M/MV5BMTYxNDA3MDQwNl5BMl5BanBnXkFtZTcwNTU4Mzc1Nw@@._V1._SY209_CR0,0,140,209_.jpg"
     ]
   },
   {

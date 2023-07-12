@@ -1,7 +1,3 @@
-db-user: 'postgres'
-db-password: 'password'
-db-url: 'jdbc:postgresql://192.168.0.169:5432/movie_land'
-
 spring:
   flyway:
     enabled: true
@@ -9,11 +5,10 @@ spring:
     baseline-on-migrate: true
 
   datasource:
-    username: ${db-user}
-    password: ${db-password}
-    url: ${db-url}
+    username: postgres
+    password: password
+    url: jdbc:postgresql://192.168.0.169:5432/movie_land
     driver-class-name: org.postgresql.Driver
 
-logging:
-  level:
-    root: info
+genre.cache.cycle.hours: 4
+movie.number.random: 3

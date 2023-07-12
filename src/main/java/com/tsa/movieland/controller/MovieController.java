@@ -1,38 +1,38 @@
 package com.tsa.movieland.controller;
 
+import com.tsa.movieland.domain.SortDirection;
 import com.tsa.movieland.entity.Movie;
 import com.tsa.movieland.service.MovieService;
+import com.tsa.movieland.service.SortDirectionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/movie", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 public class MovieController {
 
-
     private final MovieService movieService;
-
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
-    }
+    private final SortDirectionService sortDirectionService;
 
     @GetMapping()
-    public List<Movie> findAll(@RequestParam(value = "rating", required = false) String rating,
-                               @RequestParam(value = "price", required = false) String price) {
-        return movieService.findAll(rating, price);
+    public Iterable<Movie> findAll(@RequestParam(required = false) Map<String, String> params) {
+        SortDirection sortDirection = sortDirectionService.getSortDirection(params);
+        return movieService.findAll(sortDirection);
     }
 
     @GetMapping("/random")
-    public List<Movie> threeRandom() {
+    public Iterable<Movie> threeRandom() {
         return movieService.findThreeRandom();
     }
 
     @GetMapping("/genre/{genreId}")
-    public List<Movie> findByGenreSortByRating(@PathVariable("genreId") int genreId,
-                                               @RequestParam(value = "rating", required = false) String rating,
-                                               @RequestParam(value = "price", required = false) String price) {
-        return movieService.findByGenre(genreId, rating, price);
+    public Iterable<Movie> findByGenreSortByRating(@PathVariable("genreId") int genreId,
+                                                   @RequestParam(required = false) Map<String, String> params) {
+        SortDirection sortDirection = sortDirectionService.getSortDirection(params);
+        return movieService.findByGenre(genreId, sortDirection);
     }
 }

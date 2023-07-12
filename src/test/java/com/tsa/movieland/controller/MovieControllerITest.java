@@ -9,24 +9,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 public class MovieControllerITest extends ControllerBaseTest {
-    private final String allMovie = "/api/v1/movie";
-    private final String byGenre = "/api/v1/movie/genre/3";
-
-    private final String allMovieSortPriceAsc = allMovie + "?price=asc";
-    private final String allMovieSortPriceDesc = allMovie + "?price=desc";
-
-    private final String allMovieSortRatingAsc = allMovie + "?rating=asc";
-    private final String allMovieSortRatingDesc = allMovie + "?rating=desc";
-
-    private final String movieByGenreSortRatingAsc = byGenre + "?rating=asc";
-    private final String movieByGenreSortRatingDesc = byGenre + "?rating=desc";
-    private final String movieByGenreSortPriceAsc = byGenre + "?price=asc";
-    private final String movieByGenreSortPriceDesc = byGenre + "?price=desc";
 
     @Test
     public void shouldReturnAllMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .get(allMovie)
+                .get("/api/v1/movie")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movies.json"), true));
@@ -35,7 +22,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnMoviesByGenre() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(byGenre)
+                        .get("/api/v1/movie/genre/3")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movies-by-genre.json"), true));
@@ -44,7 +31,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByPriceAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(allMovieSortPriceAsc)
+                        .get("/api/v1/movie")
+                        .param("price", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movie-sort-price-asc.json"), true));
@@ -53,7 +41,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByPriceDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(allMovieSortPriceDesc)
+                        .get("/api/v1/movie")
+                        .param("price", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movie-sort-price-desc.json"), true));
@@ -62,7 +51,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByRatingAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(allMovieSortRatingAsc)
+                        .get("/api/v1/movie")
+                        .param("rating", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movie-sort-rating-asc.json"), true));
@@ -71,7 +61,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByRatingDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(allMovieSortRatingDesc)
+                        .get("/api/v1/movie")
+                        .param("rating", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movie-sort-rating-desc.json"), true));
@@ -80,7 +71,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByRatingAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(movieByGenreSortRatingAsc)
+                        .get("/api/v1/movie/genre/3")
+                        .param("rating", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-genre-sort-rating-asc.json"), true));
@@ -89,7 +81,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByRatingDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(movieByGenreSortRatingDesc)
+                        .get("/api/v1/movie/genre/3")
+                        .param("rating", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-genre-sort-rating-desc.json"), true));
@@ -98,7 +91,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByPriceAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(movieByGenreSortPriceAsc)
+                        .get("/api/v1/movie/genre/3")
+                        .param("price", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-genre-sort-price-asc.json"), true));
@@ -107,7 +101,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByPriceDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get(movieByGenreSortPriceDesc)
+                        .get("/api/v1/movie/genre/3")
+                        .param("price", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-genre-sort-price-desc.json"), true));

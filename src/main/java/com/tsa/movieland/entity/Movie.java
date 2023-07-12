@@ -1,7 +1,9 @@
 package com.tsa.movieland.entity;
 
-import java.util.List;
+import lombok.Builder;
 
+import java.util.List;
+@Builder
 public record Movie(int id,
                     String nameRussian,
                     String nameNative,

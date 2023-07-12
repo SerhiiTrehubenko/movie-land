@@ -5,22 +5,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class DefaultGenreDaoITest {
+public class JdbcGenreDaoITest {
     @Autowired
     private GenreDao genreDao;
 
     @Test
     void ShouldReturnListOfGenres() {
 
-        List<Genre> genres = genreDao.findAll();
+        Iterable<Genre> genres = genreDao.findAll();
 
         assertNotNull(genres);
-        assertEquals(15, genres.size());
+
+        long genreNumber = StreamSupport.stream(genres.spliterator(), false).count();
+        assertEquals(15, genreNumber);
     }
 }
