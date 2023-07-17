@@ -13,8 +13,8 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/movie")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .get("/api/v1/movie")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movies.json"), true));
     }

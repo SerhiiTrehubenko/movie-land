@@ -1,13 +1,13 @@
-package com.tsa.movieland.dao.mapper;
+package com.tsa.movieland.dao.jdbc.mapper;
 
+import com.tsa.movieland.domain.JdbcMapper;
 import com.tsa.movieland.entity.Genre;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Component
+@JdbcMapper
 public class GenreMapper implements RowMapper<Genre> {
     @Override
     public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {

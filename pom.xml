@@ -51,6 +51,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-spring</artifactId>
+            <version>1.32.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

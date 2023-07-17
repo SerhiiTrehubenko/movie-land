@@ -1,18 +1,18 @@
-package com.tsa.movieland.dao.mapper;
+package com.tsa.movieland.dao.jdbc.mapper;
 
+import com.tsa.movieland.domain.JdbcMapper;
 import com.tsa.movieland.entity.Movie;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-@Component
+@JdbcMapper
 public class MovieMapper implements RowMapper<Movie> {
     @Override
     public Movie mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Object posters = rs.getArray("posters").getArray();
+        Object posters = rs.getArray("movie_posters").getArray();
         return Movie.builder()
                 .id(rs.getInt("movie_id"))
                 .nameRussian(rs.getString("movie_rus_name"))

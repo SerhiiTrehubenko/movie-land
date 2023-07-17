@@ -1,0 +1,64 @@
+{
+  "GENRES": [
+    {
+      "genre_id": 8,
+      "genre_name": "фантастика"
+    },
+    {
+      "genre_id": 9,
+      "genre_name": "боевик"
+    },
+    {
+      "genre_id": 10,
+      "genre_name": "триллер"
+    },
+    {
+      "genre_id": 11,
+      "genre_name": "приключения"
+    },
+    {
+      "genre_id": 12,
+      "genre_name": "аниме"
+    },
+    {
+      "genre_id": 13,
+      "genre_name": "мультфильм"
+    },
+    {
+      "genre_id": 14,
+      "genre_name": "семейный"
+    },
+    {
+      "genre_id": 15,
+      "genre_name": "вестерн"
+    },
+    {
+      "genre_id": 1,
+      "genre_name": "драма"
+    },
+    {
+      "genre_id": 2,
+      "genre_name": "криминал"
+    },
+    {
+      "genre_id": 3,
+      "genre_name": "фэнтези"
+    },
+    {
+      "genre_id": 4,
+      "genre_name": "детектив"
+    },
+    {
+      "genre_id": 5,
+      "genre_name": "мелодрама"
+    },
+    {
+      "genre_id": 6,
+      "genre_name": "биография"
+    },
+    {
+      "genre_id": 7,
+      "genre_name": "комедия"
+    }
+  ]
+}

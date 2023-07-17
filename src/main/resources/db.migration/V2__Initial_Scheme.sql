@@ -7,7 +7,7 @@ CREATE SEQUENCE IF NOT EXISTS movies_id
     NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS movies (
-    movie_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('movies_id') CHECK (movie_id BETWEEN 1101 AND 1000000),
+    movie_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('movies_id'),
     movie_rus_name VARCHAR(200) NOT NULL,
     movie_native_name VARCHAR(200) NOT NULL,
     movie_release_year SMALLINT NOT NULL,
@@ -29,7 +29,7 @@ CREATE SEQUENCE IF NOT EXISTS roles_id
     NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS roles (
-    role_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('roles_id') CHECK (role_id BETWEEN 1001 AND 1100),
+    role_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('roles_id'),
     role_name VARCHAR(50) NOT NULL UNIQUE
 );
 
@@ -44,7 +44,7 @@ CREATE SEQUENCE IF NOT EXISTS users_id
     NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('users_id') CHECK (user_id >= 1000001),
+    user_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('users_id'),
     user_firstname VARCHAR(100) NOT NULL,
     user_lastname VARCHAR(100) NOT NULL,
     user_nickname VARCHAR(100) NOT NULL UNIQUE,
@@ -86,7 +86,7 @@ CREATE SEQUENCE IF NOT EXISTS countries_id
     NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS countries (
-    country_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('countries_id') CHECK (country_id BETWEEN 501 AND 1000),
+    country_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('countries_id'),
     country_name VARCHAR(100) NOT NULL UNIQUE
 );
 
@@ -102,7 +102,7 @@ CREATE SEQUENCE IF NOT EXISTS genres_id
     NO CYCLE;
 
 CREATE TABLE IF NOT EXISTS genres (
-    genre_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('genres_id') CHECK (genre_id BETWEEN 1 AND 500),
+    genre_id INTEGER PRIMARY KEY NOT NULL UNIQUE DEFAULT nextval('genres_id'),
     genre_name VARCHAR(100) NOT NULL UNIQUE
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS movie_reviews
     review_record_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS movie_ratings
+CREATE TABLE IF NOT EXISTS movies_ratings
 (
     movie_id INTEGER NOT NULL,
     CONSTRAINT fk_movie
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS posters
     poster_record_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS movie_countries
+CREATE TABLE IF NOT EXISTS movies_countries
 (
     movie_id INTEGER NOT NULL,
     CONSTRAINT fk_movie
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS movie_countries
             REFERENCES countries (country_id)
 );
 
-CREATE TABLE IF NOT EXISTS movie_genres
+CREATE TABLE IF NOT EXISTS movies_genres
 (
     movie_id INTEGER NOT NULL,
     CONSTRAINT fk_movie
@@ -171,12 +171,12 @@ CREATE TABLE IF NOT EXISTS movie_genres
             REFERENCES genres (genre_id)
 );
 
-CREATE VIEW movies_expand AS
+CREATE VIEW movies_with_posters AS
 SELECT m.movie_id, movie_rus_name, movie_native_name,
        movie_release_year, AVG(r.movie_raring)::numeric(4,2) AS movie_rating,
-       movie_price, ARRAY_AGG(po.poster_link) AS posters
+       movie_price, ARRAY_AGG(po.poster_link) AS movie_posters
 FROM movies m
-         JOIN movie_ratings r
+         JOIN movies_ratings r
               ON m.movie_id = r.movie_id
          JOIN posters po
               ON m.movie_id = po.movie_id

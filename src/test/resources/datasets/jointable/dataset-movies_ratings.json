@@ -1,0 +1,154 @@
+{
+ "MOVIES_RATINGS": [
+  {
+    "movie_id": 1101,
+    "user_id": 1000001,
+    "movie_raring": 8.90,
+    "rating_record_time": "2023-07-16 17:57:48.751046"
+  },
+  {
+    "movie_id": 1102,
+    "user_id": 1000001,
+    "movie_raring": 8.90,
+    "rating_record_time": "2023-07-16 17:57:48.798978"
+  },
+  {
+    "movie_id": 1103,
+    "user_id": 1000001,
+    "movie_raring": 8.60,
+    "rating_record_time": "2023-07-16 17:57:48.832157"
+  },
+  {
+    "movie_id": 1104,
+    "user_id": 1000001,
+    "movie_raring": 8.70,
+    "rating_record_time": "2023-07-16 17:57:48.864056"
+  },
+  {
+    "movie_id": 1105,
+    "user_id": 1000001,
+    "movie_raring": 8.30,
+    "rating_record_time": "2023-07-16 17:57:48.907732"
+  },
+  {
+    "movie_id": 1106,
+    "user_id": 1000001,
+    "movie_raring": 8.60,
+    "rating_record_time": "2023-07-16 17:57:48.971516"
+  },
+  {
+    "movie_id": 1107,
+    "user_id": 1000001,
+    "movie_raring": 8.20,
+    "rating_record_time": "2023-07-16 17:57:49.014119"
+  },
+  {
+    "movie_id": 1108,
+    "user_id": 1000001,
+    "movie_raring": 8.40,
+    "rating_record_time": "2023-07-16 17:57:49.063883"
+  },
+  {
+    "movie_id": 1109,
+    "user_id": 1000001,
+    "movie_raring": 8.10,
+    "rating_record_time": "2023-07-16 17:57:49.109048"
+  },
+  {
+    "movie_id": 1110,
+    "user_id": 1000001,
+    "movie_raring": 8.20,
+    "rating_record_time": "2023-07-16 17:57:49.152493"
+  },
+  {
+    "movie_id": 1111,
+    "user_id": 1000001,
+    "movie_raring": 8.60,
+    "rating_record_time": "2023-07-16 17:57:49.207060"
+  },
+  {
+    "movie_id": 1112,
+    "user_id": 1000001,
+    "movie_raring": 7.90,
+    "rating_record_time": "2023-07-16 17:57:49.239137"
+  },
+  {
+    "movie_id": 1113,
+    "user_id": 1000001,
+    "movie_raring": 8.70,
+    "rating_record_time": "2023-07-16 17:57:49.264413"
+  },
+  {
+    "movie_id": 1114,
+    "user_id": 1000001,
+    "movie_raring": 8.20,
+    "rating_record_time": "2023-07-16 17:57:49.309390"
+  },
+  {
+    "movie_id": 1115,
+    "user_id": 1000001,
+    "movie_raring": 8.60,
+    "rating_record_time": "2023-07-16 17:57:49.348614"
+  },
+  {
+    "movie_id": 1116,
+    "user_id": 1000001,
+    "movie_raring": 8.50,
+    "rating_record_time": "2023-07-16 17:57:49.387164"
+  },
+  {
+    "movie_id": 1117,
+    "user_id": 1000001,
+    "movie_raring": 8.50,
+    "rating_record_time": "2023-07-16 17:57:49.443752"
+  },
+  {
+    "movie_id": 1118,
+    "user_id": 1000001,
+    "movie_raring": 8.20,
+    "rating_record_time": "2023-07-16 17:57:49.493525"
+  },
+  {
+    "movie_id": 1119,
+    "user_id": 1000001,
+    "movie_raring": 8.30,
+    "rating_record_time": "2023-07-16 17:57:49.535587"
+  },
+  {
+    "movie_id": 1120,
+    "user_id": 1000001,
+    "movie_raring": 8.10,
+    "rating_record_time": "2023-07-16 17:57:49.566813"
+  },
+  {
+    "movie_id": 1121,
+    "user_id": 1000001,
+    "movie_raring": 8.50,
+    "rating_record_time": "2023-07-16 17:57:49.622558"
+  },
+  {
+    "movie_id": 1122,
+    "user_id": 1000001,
+    "movie_raring": 7.70,
+    "rating_record_time": "2023-07-16 17:57:49.650295"
+  },
+  {
+    "movie_id": 1123,
+    "user_id": 1000001,
+    "movie_raring": 7.60,
+    "rating_record_time": "2023-07-16 17:57:49.685011"
+  },
+  {
+    "movie_id": 1124,
+    "user_id": 1000001,
+    "movie_raring": 8.50,
+    "rating_record_time": "2023-07-16 17:57:49.734726"
+  },
+  {
+    "movie_id": 1125,
+    "user_id": 1000001,
+    "movie_raring": 8.00,
+    "rating_record_time": "2023-07-16 17:57:49.789392"
+  }
+]
+}

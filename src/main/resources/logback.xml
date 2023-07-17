@@ -27,6 +27,7 @@
     <root level="INFO" >
         <appender-ref ref="console" />
     </root>
+
     <logger name="com.tsa" level="DEBUG">
         <appender-ref ref="RollingFile" />
     </logger>

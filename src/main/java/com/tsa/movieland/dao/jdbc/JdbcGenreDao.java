@@ -1,6 +1,7 @@
-package com.tsa.movieland.dao;
+package com.tsa.movieland.dao.jdbc;
 
-import com.tsa.movieland.dao.mapper.GenreMapper;
+import com.tsa.movieland.dao.GenreDao;
+import com.tsa.movieland.dao.jdbc.mapper.GenreMapper;
 import com.tsa.movieland.entity.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,7 +15,7 @@ public class JdbcGenreDao implements GenreDao {
 
     @Override
     public Iterable<Genre> findAll() {
-        String queryFindAll = "SELECT genre_id, genre_name FROM genres";
+        String queryFindAll = "SELECT genre_id, genre_name FROM genres ORDER BY genre_id;";
         return jdbcTemplate.query(queryFindAll, genreMapper);
     }
 }

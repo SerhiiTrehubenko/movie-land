@@ -1,0 +1,92 @@
+{
+  "USERS": [
+    {
+      "user_id": 1000001,
+      "user_firstname": "ADMIN",
+      "user_lastname": "ADMIN",
+      "user_nickname": "ADMIN",
+      "user_email": "admin@admin.com",
+      "user_record_time": "2023-07-16 17:57:48.519538"
+    },
+    {
+      "user_id": 1000002,
+      "user_firstname": "Рональд",
+      "user_lastname": "Рейнольдс",
+      "user_nickname": "paco",
+      "user_email": "ronald.reynolds66@example.com",
+      "user_record_time": "2023-07-16 17:57:48.532459"
+    },
+    {
+      "user_id": 1000003,
+      "user_firstname": "Дарлин",
+      "user_lastname": "Эдвардс",
+      "user_nickname": "bricks",
+      "user_email": "darlene.edwards15@example.com",
+      "user_record_time": "2023-07-16 17:57:48.539339"
+    },
+    {
+      "user_id": 1000004,
+      "user_firstname": "Габриэль",
+      "user_lastname": "Джексон",
+      "user_nickname": "hjkl",
+      "user_email": "gabriel.jackson91@example.com",
+      "user_record_time": "2023-07-16 17:57:48.546640"
+    },
+    {
+      "user_id": 1000005,
+      "user_firstname": "Дэрил",
+      "user_lastname": "Брайант",
+      "user_nickname": "exodus",
+      "user_email": "daryl.bryant94@example.com",
+      "user_record_time": "2023-07-16 17:57:48.553649"
+    },
+    {
+      "user_id": 1000006,
+      "user_firstname": "Нил",
+      "user_lastname": "Паркер",
+      "user_nickname": "878787",
+      "user_email": "neil.parker43@example.com",
+      "user_record_time": "2023-07-16 17:57:48.560118"
+    },
+    {
+      "user_id": 1000007,
+      "user_firstname": "Трэвис",
+      "user_lastname": "Райт",
+      "user_nickname": "smart",
+      "user_email": "travis.wright36@example.com",
+      "user_record_time": "2023-07-16 17:57:48.567101"
+    },
+    {
+      "user_id": 1000008,
+      "user_firstname": "Амелия",
+      "user_lastname": "Кэннеди",
+      "user_nickname": "beaker",
+      "user_email": "amelia.kennedy58@example.com",
+      "user_record_time": "2023-07-16 17:57:48.573262"
+    },
+    {
+      "user_id": 1000009,
+      "user_firstname": "Айда",
+      "user_lastname": "Дэвис",
+      "user_nickname": "pepsi1",
+      "user_email": "ida.davis80@example.com",
+      "user_record_time": "2023-07-16 17:57:48.578987"
+    },
+    {
+      "user_id": 1000010,
+      "user_firstname": "Джесси",
+      "user_lastname": "Паттерсон",
+      "user_nickname": "tommy",
+      "user_email": "jessie.patterson68@example.com",
+      "user_record_time": "2023-07-16 17:57:48.584889"
+    },
+    {
+      "user_id": 1000011,
+      "user_firstname": "Деннис",
+      "user_lastname": "Крейг",
+      "user_nickname": "coldbeer",
+      "user_email": "dennis.craig82@example.com",
+      "user_record_time": "2023-07-16 17:57:48.590848"
+    }
+  ]
+}

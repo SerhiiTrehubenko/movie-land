@@ -1,10 +1,12 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.domain.SortDirection;
+import com.tsa.movieland.domain.MovieRequest;
 import com.tsa.movieland.entity.Movie;
 
 public interface MovieService {
-    Iterable<Movie> findAll(SortDirection sortDirection);
-    Iterable<Movie> findThreeRandom();
-    Iterable<Movie> findByGenre(int genreId, SortDirection sortDirection);
+    Iterable<Movie> findRandom();
+
+    Iterable<Movie> findAllSorted(MovieRequest movieRequest);
+
+    Iterable<Movie> findByGenreSorted(int genreId, MovieRequest movieRequest);
 }

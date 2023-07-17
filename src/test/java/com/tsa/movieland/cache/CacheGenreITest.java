@@ -1,6 +1,6 @@
 package com.tsa.movieland.cache;
 
-import com.tsa.movieland.dao.GenreDao;
+import com.tsa.movieland.entity.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,16 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class CacheGenreTest {
+public class CacheGenreITest {
 
     @Autowired
-    GenreDao genreDao;
+    private GenreCache genreCache;
 
     @Test
     void shouldFillCacheWithGenresNames() {
-        GenreCache genreCacheSut = new GenreCache(genreDao);
-        genreCacheSut.run();
-        Iterable<String> genres = genreCacheSut.getGenres();
+        Iterable<Genre> genres = genreCache.getGenres();
 
         assertNotNull(genres);
         long genreNamesNumber = StreamSupport.stream(genres.spliterator(), false).count();
