@@ -1,9 +1,7 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.MovieDao;
-import com.tsa.movieland.domain.MovieRequest;
-import com.tsa.movieland.domain.SortDirection;
-import com.tsa.movieland.domain.SortField;
+import com.tsa.movieland.util.*;
 import com.tsa.movieland.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,24 +12,24 @@ public class DefaultMovieService implements MovieService {
     private final MovieDao movieDao;
 
     @Override
-    public Iterable<Movie> findAllSorted(MovieRequest movieRequest) {
-        if (notEmptyEmptyMovieRequest(movieRequest)) {
-            return movieDao.findAllSorted(field(movieRequest), direction(movieRequest));
+    public Iterable<Movie> findAllSorted(MovieRequest defaultMovieRequest) {
+        if (notEmptyEmptyMovieRequest(defaultMovieRequest)) {
+            return movieDao.findAllSorted(field(defaultMovieRequest), direction(defaultMovieRequest));
         }
         return movieDao.findAll();
     }
 
-    private boolean notEmptyEmptyMovieRequest(MovieRequest movieRequest) {
-        return !MovieRequest.EmptyMovieRequest.class.isAssignableFrom(movieRequest.getClass());
+    private boolean notEmptyEmptyMovieRequest(MovieRequest defaultMovieRequest) {
+        return !EmptyMovieRequest.class.isAssignableFrom(defaultMovieRequest.getClass());
     }
 
-    private String field(MovieRequest movieRequest) {
-        SortField sortField = movieRequest.getSortField();
+    private String field(MovieRequest defaultMovieRequest) {
+        SortField sortField = defaultMovieRequest.getSortField();
         return sortField.getColumnName();
     }
 
-    private String direction(MovieRequest movieRequest) {
-        SortDirection sortDirection = movieRequest.getSortDirection();
+    private String direction(MovieRequest defaultMovieRequest) {
+        SortDirection sortDirection = defaultMovieRequest.getSortDirection();
         return sortDirection.toString();
     }
 
@@ -41,9 +39,9 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public Iterable<Movie> findByGenreSorted(int genreId, MovieRequest movieRequest) {
-        if (notEmptyEmptyMovieRequest(movieRequest)) {
-            return movieDao.findByGenreIdSorted(genreId, field(movieRequest), direction(movieRequest));
+    public Iterable<Movie> findByGenreSorted(int genreId, MovieRequest defaultMovieRequest) {
+        if (notEmptyEmptyMovieRequest(defaultMovieRequest)) {
+            return movieDao.findByGenreIdSorted(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
         }
         return movieDao.findByGenreId(genreId);
     }

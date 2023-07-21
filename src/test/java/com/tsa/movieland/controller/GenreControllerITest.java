@@ -12,12 +12,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GenreControllerITest extends ControllerBaseTest {
 
     @Test
-    // @DBRider initialize DB after <GenreCache.class> fetch Data From DB as result empty list of GENRES
+    // @DBRider initialize DB after <CachedGenreDao.class> fetch Data From DB as result empty list of GENRES
     // When using <JdbcGenreDao.class directly> all works fine
+    // I tried BeanPostProcessor and EventListener approaches, but they do not work too;
+    // I tried to use @ExtendWith(DBUnitExtension.class) and it failed ether;
     @Disabled
     public void shouldReturnAllGenres() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/genre")
+                        .get("/genre")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-genres.json")));

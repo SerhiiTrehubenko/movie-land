@@ -1,6 +1,6 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.cache.GenreCache;
+import com.tsa.movieland.dao.GenreDao;
 import com.tsa.movieland.entity.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DefaultGenreService implements GenreService {
-    private final GenreCache genreCache;
+    private final GenreDao cachedGenreDao;
 
     @Override
     public Iterable<Genre> findAll() {
-        return genreCache.getGenres();
+        return cachedGenreDao.findAll();
     }
 }

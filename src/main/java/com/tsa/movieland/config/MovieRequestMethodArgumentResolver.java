@@ -1,8 +1,6 @@
 package com.tsa.movieland.config;
 
-import com.tsa.movieland.domain.MovieRequest;
-import com.tsa.movieland.domain.SortDirection;
-import com.tsa.movieland.domain.SortField;
+import com.tsa.movieland.util.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -27,26 +25,26 @@ public class MovieRequestMethodArgumentResolver implements HandlerMethodArgument
         if (Objects.nonNull(parameters) && !parameters.isEmpty()) {
             return getMovieRequest(parameters);
         }
-        return new MovieRequest.EmptyMovieRequest();
+        return new EmptyMovieRequest();
     }
 
     private MovieRequest getMovieRequest(Map<String, String[]> parameters) {
         return parameters.entrySet().stream()
                 .map(this::extractMovieRequest)
-                .findFirst().orElse(new MovieRequest.EmptyMovieRequest());
+                .findFirst().orElse(new EmptyMovieRequest());
     }
 
     private MovieRequest extractMovieRequest(Map.Entry<String, String[]> entry) {
         String field = entry.getKey();
-        String direcion = entry.getValue()[0];
+        String direction = entry.getValue()[0];
         try {
-            return MovieRequest.builder()
+            return DefaultMovieRequest.builder()
                     .sortField(SortField.valueOf(field.toUpperCase()))
-                    .sortDirection(SortDirection.valueOf(direcion.toUpperCase()))
+                    .sortDirection(SortDirection.valueOf(direction.toUpperCase()))
                     .build();
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Provided Request Parameters should has format Field:{price/rating}" +
-                    " you provided Field: [%s], Direction:{asc/desc} you provided Direction: [%s]".formatted(field, direcion), e);
+                    " you provided Field: [%s], Direction:{asc/desc} you provided Direction: [%s]".formatted(field, direction), e);
         }
     }
 }

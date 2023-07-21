@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 )
 public class JdbcGenreDaoITest {
     @Autowired
-    private GenreDao genreDao;
+    private GenreDao jdbcGenreDao;
 
     @Test
     void ShouldReturnListOfGenres() {
 
-        Iterable<Genre> genres = genreDao.findAll();
+        Iterable<Genre> genres = jdbcGenreDao.findAll();
 
         assertNotNull(genres);
 

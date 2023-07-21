@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CacheGenreITest {
 
     @Autowired
-    private GenreCache genreCache;
+    private CachedGenreDao cachedGenreDao;
 
     @Test
     void shouldFillCacheWithGenresNames() {
-        Iterable<Genre> genres = genreCache.getGenres();
+        Iterable<Genre> genres = cachedGenreDao.findAll();
 
         assertNotNull(genres);
         long genreNamesNumber = StreamSupport.stream(genres.spliterator(), false).count();

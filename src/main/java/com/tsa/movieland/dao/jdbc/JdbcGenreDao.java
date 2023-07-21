@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class JdbcGenreDao implements GenreDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final GenreMapper genreMapper;
 
     @Override
     public Iterable<Genre> findAll() {
         String queryFindAll = "SELECT genre_id, genre_name FROM genres ORDER BY genre_id;";
-        return jdbcTemplate.query(queryFindAll, genreMapper);
+        return namedParameterJdbcTemplate.query(queryFindAll, genreMapper);
     }
 }

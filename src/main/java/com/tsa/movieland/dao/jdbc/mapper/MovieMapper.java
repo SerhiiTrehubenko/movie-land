@@ -1,6 +1,6 @@
 package com.tsa.movieland.dao.jdbc.mapper;
 
-import com.tsa.movieland.domain.JdbcMapper;
+import com.tsa.movieland.context.JdbcMapper;
 import com.tsa.movieland.entity.Movie;
 import org.springframework.jdbc.core.RowMapper;
 

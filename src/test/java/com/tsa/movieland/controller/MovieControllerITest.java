@@ -13,7 +13,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie")
+                        .get("/movie")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movies.json"), true));
@@ -22,7 +22,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnMoviesByGenre() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie/genre/3")
+                        .get("/movie/genre/3")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movies-by-genre.json"), true));
@@ -31,7 +31,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByPriceAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie")
+                        .get("/movie")
                         .param("price", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -41,7 +41,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByPriceDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie")
+                        .get("/movie")
                         .param("price", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -51,7 +51,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByRatingAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie")
+                        .get("/movie")
                         .param("rating", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesSortByRatingDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie")
+                        .get("/movie")
                         .param("rating", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -71,7 +71,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByRatingAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie/genre/3")
+                        .get("/movie/genre/3")
                         .param("rating", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -81,7 +81,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByRatingDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie/genre/3")
+                        .get("/movie/genre/3")
                         .param("rating", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -91,7 +91,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByPriceAsc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie/genre/3")
+                        .get("/movie/genre/3")
                         .param("price", "asc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     @Test
     public void shouldReturnAllMoviesByGenreSortByPriceDesc() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/movie/genre/3")
+                        .get("/movie/genre/3")
                         .param("price", "desc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

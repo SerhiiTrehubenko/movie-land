@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /api/v1
+
 spring:
   flyway:
     enabled: true
@@ -5,9 +9,9 @@ spring:
     baseline-on-migrate: true
 
   datasource:
-    username: postgres
-    password: password
-    url: jdbc:postgresql://192.168.0.169:5432/movie_land
+    username: ${USER_NAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}/movie_land
     driver-class-name: org.postgresql.Driver
 
 genre:

@@ -1,6 +1,6 @@
-package com.tsa.movieland.domain;
+package com.tsa.movieland.context;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Repository
-public @interface RepositoryService {
+@Component
+public @interface JdbcMapper {
 }
