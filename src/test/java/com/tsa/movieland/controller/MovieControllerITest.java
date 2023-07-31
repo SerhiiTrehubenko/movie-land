@@ -3,6 +3,7 @@ package com.tsa.movieland.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,6 +18,15 @@ public class MovieControllerITest extends ControllerBaseTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/all-movies.json"), true));
+    }
+
+    @Test
+    void shouldReturnRandomNumberMovies() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/movie/random")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(3));
     }
 
     @Test

@@ -5,9 +5,9 @@ spring:
     baseline-on-migrate: true
 
   datasource:
-    username: postgres
-    password: password
-    url: jdbc:postgresql://localhost:5432/movie_land_dev
+    username: ${USER_NAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL_DEV}/movie_land_dev
     driver-class-name: org.postgresql.Driver
 
 genre:

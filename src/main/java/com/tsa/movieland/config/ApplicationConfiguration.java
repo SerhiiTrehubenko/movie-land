@@ -1,5 +1,6 @@
 package com.tsa.movieland.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,10 +13,13 @@ import java.util.List;
 
 @Configuration
 @EnableScheduling
+@RequiredArgsConstructor
 public class ApplicationConfiguration implements WebMvcConfigurer {
 
+    private final DataSource dataSource;
+
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
