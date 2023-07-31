@@ -1,10 +1,12 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.MovieDao;
-import com.tsa.movieland.util.*;
+import com.tsa.movieland.common.*;
 import com.tsa.movieland.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -12,15 +14,15 @@ public class DefaultMovieService implements MovieService {
     private final MovieDao movieDao;
 
     @Override
-    public Iterable<Movie> findAllSorted(MovieRequest defaultMovieRequest) {
+    public Iterable<Movie> findAll(MovieRequest defaultMovieRequest) {
         if (notEmptyEmptyMovieRequest(defaultMovieRequest)) {
-            return movieDao.findAllSorted(field(defaultMovieRequest), direction(defaultMovieRequest));
+            return movieDao.findAll(field(defaultMovieRequest), direction(defaultMovieRequest));
         }
         return movieDao.findAll();
     }
 
-    private boolean notEmptyEmptyMovieRequest(MovieRequest defaultMovieRequest) {
-        return !EmptyMovieRequest.class.isAssignableFrom(defaultMovieRequest.getClass());
+    private boolean notEmptyEmptyMovieRequest(MovieRequest movieRequest) {
+        return Objects.nonNull(movieRequest.getSortField()) && Objects.nonNull(movieRequest.getSortDirection()) ;
     }
 
     private String field(MovieRequest defaultMovieRequest) {
@@ -39,9 +41,9 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public Iterable<Movie> findByGenreSorted(int genreId, MovieRequest defaultMovieRequest) {
+    public Iterable<Movie> findByGenre(int genreId, MovieRequest defaultMovieRequest) {
         if (notEmptyEmptyMovieRequest(defaultMovieRequest)) {
-            return movieDao.findByGenreIdSorted(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
+            return movieDao.findByGenreId(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
         }
         return movieDao.findByGenreId(genreId);
     }

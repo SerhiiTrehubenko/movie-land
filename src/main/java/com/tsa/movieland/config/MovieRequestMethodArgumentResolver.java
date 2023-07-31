@@ -1,6 +1,6 @@
 package com.tsa.movieland.config;
 
-import com.tsa.movieland.util.*;
+import com.tsa.movieland.common.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -21,24 +21,25 @@ public class MovieRequestMethodArgumentResolver implements HandlerMethodArgument
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        Objects.requireNonNull(request);
         Map<String, String[]> parameters = request.getParameterMap();
         if (Objects.nonNull(parameters) && !parameters.isEmpty()) {
             return getMovieRequest(parameters);
         }
-        return new EmptyMovieRequest();
+        return getEmptyMovieRequest();
     }
 
     private MovieRequest getMovieRequest(Map<String, String[]> parameters) {
         return parameters.entrySet().stream()
                 .map(this::extractMovieRequest)
-                .findFirst().orElse(new EmptyMovieRequest());
+                .findFirst().orElse(getEmptyMovieRequest());
     }
 
     private MovieRequest extractMovieRequest(Map.Entry<String, String[]> entry) {
         String field = entry.getKey();
         String direction = entry.getValue()[0];
         try {
-            return DefaultMovieRequest.builder()
+            return MovieRequest.builder()
                     .sortField(SortField.valueOf(field.toUpperCase()))
                     .sortDirection(SortDirection.valueOf(direction.toUpperCase()))
                     .build();
@@ -46,5 +47,9 @@ public class MovieRequestMethodArgumentResolver implements HandlerMethodArgument
             throw new IllegalArgumentException("Provided Request Parameters should has format Field:{price/rating}" +
                     " you provided Field: [%s], Direction:{asc/desc} you provided Direction: [%s]".formatted(field, direction), e);
         }
+    }
+
+    private MovieRequest getEmptyMovieRequest() {
+        return MovieRequest.EMPTY_MOVIE_REQUEST;
     }
 }

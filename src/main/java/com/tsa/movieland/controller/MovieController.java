@@ -1,8 +1,8 @@
 package com.tsa.movieland.controller;
 
+import com.tsa.movieland.common.MovieRequest;
 import com.tsa.movieland.entity.Movie;
 import com.tsa.movieland.service.MovieService;
-import com.tsa.movieland.util.MovieRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +15,18 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping()
-    public Iterable<Movie> findAll(MovieRequest defaultMovieRequest) {
-        return movieService.findAllSorted(defaultMovieRequest);
+    public Iterable<Movie> findAll(MovieRequest movieRequest) {
+        return movieService.findAll(movieRequest);
     }
 
     @GetMapping("/random")
-    public Iterable<Movie> threeRandom() {
+    public Iterable<Movie> random() {
         return movieService.findRandom();
     }
 
     @GetMapping("/genre/{genreId}")
     public Iterable<Movie> findByGenreSorted(@PathVariable("genreId") int genreId,
-                                             MovieRequest defaultMovieRequest) {
-        return movieService.findByGenreSorted(genreId, defaultMovieRequest);
+                                             MovieRequest movieRequest) {
+        return movieService.findByGenre(genreId, movieRequest);
     }
 }

@@ -1,4 +1,4 @@
-package com.tsa.movieland.util;
+package com.tsa.movieland.common;
 
 public enum SortField {
     RATING("movie_rating"),

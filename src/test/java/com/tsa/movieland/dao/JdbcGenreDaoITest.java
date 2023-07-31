@@ -2,6 +2,7 @@ package com.tsa.movieland.dao;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import com.tsa.movieland.dao.jdbc.JdbcGenreDao;
 import com.tsa.movieland.entity.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 )
 public class JdbcGenreDaoITest {
     @Autowired
-    private GenreDao jdbcGenreDao;
+    private JdbcGenreDao genreDao;
 
     @Test
     void ShouldReturnListOfGenres() {
 
-        Iterable<Genre> genres = jdbcGenreDao.findAll();
+        Iterable<Genre> genres = genreDao.findAll();
 
         assertNotNull(genres);
 

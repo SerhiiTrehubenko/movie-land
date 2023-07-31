@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class DefaultGenreService implements GenreService {
-    private final GenreDao cachedGenreDao;
+    private final GenreDao genreDao;
 
     @Override
     public Iterable<Genre> findAll() {
-        return cachedGenreDao.findAll();
+        return genreDao.findAll();
     }
 }

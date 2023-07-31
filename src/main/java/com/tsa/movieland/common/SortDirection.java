@@ -1,4 +1,4 @@
-package com.tsa.movieland.util;
+package com.tsa.movieland.common;
 
 public enum SortDirection {
     ASC, DESC
