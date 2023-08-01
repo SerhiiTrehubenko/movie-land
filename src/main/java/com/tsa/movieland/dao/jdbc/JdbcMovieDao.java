@@ -1,13 +1,16 @@
 package com.tsa.movieland.dao.jdbc;
 
 import com.tsa.movieland.dao.MovieDao;
-import com.tsa.movieland.dao.jdbc.mapper.MovieMapper;
+import com.tsa.movieland.dao.jdbc.mapper.*;
+import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class JdbcMovieDao implements MovieDao {
     private Integer randomNumber;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final MovieMapper mapper;
+    private final MovieByIdMapper descPosterMapper;
 
     @Override
     public Iterable<Movie> findAll() {
@@ -59,5 +63,18 @@ public class JdbcMovieDao implements MovieDao {
         String query = BY_GENRE + " ORDER BY %s %s;".formatted(column, direction);
         var parameters = new MapSqlParameterSource("genreId", genreId);
         return namedParameterJdbcTemplate.query(query, parameters, mapper);
+    }
+
+    @Override
+    public MovieByIdDto findById(int movieId) {
+        String movieWithDescriptionPoster = "SELECT movie_id, movie_rus_name, movie_native_name, " +
+                "movie_release_year, movie_description, movie_rating, movie_price, movie_posters FROM movies_with_description_posters " +
+                "WHERE movie_id = :movieId";
+
+        return namedParameterJdbcTemplate
+                .queryForObject(movieWithDescriptionPoster,
+                        Map.of("movieId", movieId),
+                        descPosterMapper
+                );
     }
 }

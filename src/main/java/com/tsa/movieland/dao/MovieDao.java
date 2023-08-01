@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Movie;
 
 public interface MovieDao {
@@ -12,4 +13,6 @@ public interface MovieDao {
     Iterable<Movie> findByGenreId(int genreId);
 
     Iterable<Movie> findByGenreId(int genreId, String column, String direction);
+
+    MovieByIdDto findById(int movieId);
 }

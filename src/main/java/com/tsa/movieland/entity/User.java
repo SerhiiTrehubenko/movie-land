@@ -7,7 +7,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-public class Genre {
-    private final int id;
-    private final String name;
+public class User {
+    private int id;
+    private String nickname;
 }

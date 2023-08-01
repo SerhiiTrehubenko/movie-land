@@ -20,9 +20,12 @@ import java.util.Objects;
         "datasets/users/dataset-users.json",
         "datasets/genres/dataset-genres.json",
         "datasets/movies/dataset-movies.json",
+        "datasets/countries/dataset-countries.json",
         "datasets/jointable/dataset-movies_genres.json",
         "datasets/jointable/dataset-movies_ratings.json",
-        "datasets/posters/dataset-posters.json",
+        "datasets/jointable/dataset-movies_countries.json",
+        "datasets/jointable/dataset-movie_reviews.json",
+        "datasets/posters/dataset-posters.json"
 },
         cleanAfter = true, cleanBefore = true,
         skipCleaningFor = "flyway_schema_history"

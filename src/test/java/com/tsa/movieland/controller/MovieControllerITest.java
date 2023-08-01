@@ -117,4 +117,13 @@ public class MovieControllerITest extends ControllerBaseTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-genre-sort-price-desc.json"), true));
     }
+
+    @Test
+    void shouldReturnMovieById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/movie/1112")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(getContent("mock/movie-by-id.json"), true));
+    }
 }

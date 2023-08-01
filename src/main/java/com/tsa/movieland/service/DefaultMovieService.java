@@ -2,6 +2,7 @@ package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.common.*;
+import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,10 @@ public class DefaultMovieService implements MovieService {
             return movieDao.findByGenreId(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
         }
         return movieDao.findByGenreId(genreId);
+    }
+
+    @Override
+    public MovieByIdDto getById(int movieId) {
+        return movieDao.findById(movieId);
     }
 }

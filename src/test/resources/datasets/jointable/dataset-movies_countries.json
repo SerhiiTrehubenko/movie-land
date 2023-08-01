@@ -1,0 +1,144 @@
+{
+  "MOVIES_COUNTRIES": [
+    {
+      "movie_id": 1101,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1102,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1103,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1104,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1105,
+      "country_id": 502
+    },
+    {
+      "movie_id": 1106,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1106,
+      "country_id": 503
+    },
+    {
+      "movie_id": 1107,
+      "country_id": 504
+    },
+    {
+      "movie_id": 1108,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1108,
+      "country_id": 505
+    },
+    {
+      "movie_id": 1109,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1110,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1111,
+      "country_id": 506
+    },
+    {
+      "movie_id": 1112,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1113,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1114,
+      "country_id": 506
+    },
+    {
+      "movie_id": 1115,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1115,
+      "country_id": 503
+    },
+    {
+      "movie_id": 1116,
+      "country_id": 503
+    },
+    {
+      "movie_id": 1116,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1117,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1117,
+      "country_id": 503
+    },
+    {
+      "movie_id": 1118,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1119,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1120,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1120,
+      "country_id": 505
+    },
+    {
+      "movie_id": 1121,
+      "country_id": 504
+    },
+    {
+      "movie_id": 1121,
+      "country_id": 507
+    },
+    {
+      "movie_id": 1121,
+      "country_id": 505
+    },
+    {
+      "movie_id": 1121,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1122,
+      "country_id": 504
+    },
+    {
+      "movie_id": 1123,
+      "country_id": 504
+    },
+    {
+      "movie_id": 1124,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1125,
+      "country_id": 501
+    },
+    {
+      "movie_id": 1125,
+      "country_id": 503
+    }
+  ]
+}

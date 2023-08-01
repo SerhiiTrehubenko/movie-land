@@ -31,4 +31,9 @@ public class CachedGenreDao implements GenreDao {
     public Iterable<Genre> findAll() {
         return new ArrayList<>(genres);
     }
+
+    @Override
+    public Iterable<Genre> findByMovieId(int movieId) {
+        return genreDao.findByMovieId(movieId);
+    }
 }

@@ -1,33 +1,16 @@
 package com.tsa.movieland.dao;
 
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.spring.api.DBRider;
-import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.dto.MovieByIdDto;
+import com.tsa.movieland.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@DBRider
-@ActiveProfiles("test")
-@DataSet(value = {
-        "datasets/users/dataset-users.json",
-        "datasets/genres/dataset-genres.json",
-        "datasets/movies/dataset-movies.json",
-        "datasets/jointable/dataset-movies_genres.json",
-        "datasets/jointable/dataset-movies_ratings.json",
-        "datasets/posters/dataset-posters.json",
-},
-        cleanAfter = true, cleanBefore = true,
-        skipCleaningFor = "flyway_schema_history"
-)
-public class MovieDaoITest {
+public class MovieDaoITest extends DaoBaseTest {
 
     @Autowired
     MovieDao movieDao;
@@ -61,4 +44,29 @@ public class MovieDaoITest {
         long numberMovies = StreamSupport.stream(movies.spliterator(), false).count();
         assertEquals(7, numberMovies);
     }
+
+    @Test
+    void shouldReturnMovieByIdWithCountriesGenresReviews() {
+        String description = "В разгар гражданской войны таинственный стрелок скитается по просторам Дикого Запада. " +
+                "У него нет ни дома, ни друзей, ни компаньонов, пока он не встречает двоих незнакомцев, таких же " +
+                "безжалостных и циничных. По воле судьбы трое мужчин вынуждены объединить свои усилия в поисках " +
+                "украденного золота. Но совместная работа — не самое подходящее занятие для таких отъявленных бандитов, " +
+                "как они. Компаньоны вскоре понимают, что в их дерзком и опасном путешествии по разоренной войной стране " +
+                "самое важное — никому не доверять и держать пистолет наготове, если хочешь остаться в живых.";
+        String picturePath = " https://images-na.ssl-images-amazon.com/images/M/MV5BOTQ5NDI3MTI4MF5BMl5BanBnXkFtZTgwNDQ4ODE5MDE@._V1._SX140_CR0,0,140,209_.jpg";
+
+        MovieByIdDto movie = movieDao.findById(1121);
+
+        assertNotNull(movie);
+        assertEquals(1121, movie.getId());
+        assertEquals("Хороший, плохой, злой", movie.getNameRussian());
+        assertEquals("Il buono, il brutto, il cattivo", movie.getNameNative());
+        assertEquals("Il buono, il brutto, il cattivo", movie.getNameNative());
+        assertEquals(description, movie.getDescription());
+        assertEquals(8.5, movie.getRating());
+        assertEquals(130.0, movie.getPrice());
+        assertEquals(picturePath, movie.getPicturePath().get(0));
+
+    }
 }
+

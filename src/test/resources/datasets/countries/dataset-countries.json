@@ -1,0 +1,32 @@
+{
+  "COUNTRIES": [
+    {
+      "country_id": 501,
+      "country_name": "США"
+    },
+    {
+      "country_id": 502,
+      "country_name": "Франция"
+    },
+    {
+      "country_id": 503,
+      "country_name": "Великобритания"
+    },
+    {
+      "country_id": 504,
+      "country_name": "Италия"
+    },
+    {
+      "country_id": 505,
+      "country_name": "Германия"
+    },
+    {
+      "country_id": 506,
+      "country_name": "Япония"
+    },
+    {
+      "country_id": 507,
+      "country_name": "Испания"
+    }
+  ]
+}
