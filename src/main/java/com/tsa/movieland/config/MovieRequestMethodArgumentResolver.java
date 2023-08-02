@@ -1,6 +1,7 @@
 package com.tsa.movieland.config;
 
 import com.tsa.movieland.common.*;
+import com.tsa.movieland.currency.CurrencyType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
@@ -13,6 +14,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MovieRequestMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final static String PRICE_PARAMETER_NAME = "price";
+    private final static String RATING_PARAMETER_NAME = "rating";
+    private final static String CURRENCY_PARAMETER_NAME = "currency";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -30,6 +35,10 @@ public class MovieRequestMethodArgumentResolver implements HandlerMethodArgument
         return getEmptyMovieRequest();
     }
 
+    private MovieRequest getEmptyMovieRequest() {
+        return MovieRequest.EMPTY_MOVIE_REQUEST;
+    }
+
     private MovieRequest getMovieRequest(Map<String, String[]> parameters) {
         return parameters.entrySet().stream()
                 .map(this::extractMovieRequest)
@@ -37,20 +46,44 @@ public class MovieRequestMethodArgumentResolver implements HandlerMethodArgument
     }
 
     private MovieRequest extractMovieRequest(Map.Entry<String, String[]> entry) {
-        String field = entry.getKey();
-        String direction = entry.getValue()[0];
-        try {
-            return MovieRequest.builder()
-                    .sortField(SortField.valueOf(field.toUpperCase()))
-                    .sortDirection(SortDirection.valueOf(direction.toUpperCase()))
-                    .build();
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Provided Request Parameters should has format Field:{price/rating}" +
-                    " you provided Field: [%s], Direction:{asc/desc} you provided Direction: [%s]".formatted(field, direction), e);
+        String parameter = entry.getKey();
+        checkParameterName(parameter);
+        String value = entry.getValue()[0];
+
+        if (Objects.equals(parameter, CURRENCY_PARAMETER_NAME)) {
+            return createMovieRequestCurrency(value);
+        } else {
+            return createMovieRequestSortRatingPrice(parameter, value);
         }
     }
 
-    private MovieRequest getEmptyMovieRequest() {
-        return MovieRequest.EMPTY_MOVIE_REQUEST;
+    private void checkParameterName(String parameter) {
+        if (!Objects.equals(RATING_PARAMETER_NAME, parameter) &&
+                !Objects.equals(PRICE_PARAMETER_NAME, parameter) &&
+                !Objects.equals(CURRENCY_PARAMETER_NAME, parameter)) {
+            throw new IllegalArgumentException("Was provided illegal parameter: [%s]".formatted(parameter));
+        }
+    }
+
+    private MovieRequest createMovieRequestCurrency(String value) {
+        try {
+            return MovieRequest.builder()
+                    .currencyType(CurrencyType.valueOf(value.toUpperCase()))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Provided Request Parameters should be: {?currency=[usd / eur]}", e);
+        }
+    }
+
+    private MovieRequest createMovieRequestSortRatingPrice(String parameter, String value) {
+        try {
+            return MovieRequest.builder()
+                    .sortField(SortField.valueOf(parameter.toUpperCase()))
+                    .sortDirection(SortDirection.valueOf(value.toUpperCase()))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Provided Request Parameters should has format Field:{price/rating}" +
+                    " you provided Field: [%s], Direction:{asc/desc} you provided Direction: [%s]".formatted(parameter, value), e);
+        }
     }
 }

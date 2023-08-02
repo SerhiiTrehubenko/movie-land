@@ -17,3 +17,7 @@ genre:
 number:
   movies:
     random: 3
+
+currency:
+  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+  refresh-cron: 0 30 15 * * MON-SUN

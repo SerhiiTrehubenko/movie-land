@@ -38,8 +38,9 @@ public class MovieController {
     }
 
     @GetMapping("/{movieId}")
-    public MovieByIdDto getById(@PathVariable int movieId) {
-        final MovieByIdDto movieByIdDto = movieService.getById(movieId);
+    public MovieByIdDto getById(@PathVariable int movieId,
+                                MovieRequest movieRequest) {
+        final MovieByIdDto movieByIdDto = movieService.getById(movieId, movieRequest);
         movieByIdDto.setCountries(countryService.findBiMovieId(movieId));
         movieByIdDto.setGenres(genreService.findByMovieId(movieId));
         movieByIdDto.setReviews(reviewService.findBiMovieId(movieId));

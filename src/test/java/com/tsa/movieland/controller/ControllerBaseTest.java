@@ -39,9 +39,9 @@ public abstract class ControllerBaseTest {
     protected String getContent(String filePath) {
         try (InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath)) {
             Objects.requireNonNull(file);
-            return  new String(file.readAllBytes(), StandardCharsets.UTF_8);
+            return new String(file.readAllBytes(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new RuntimeException("File with path: [%s] was not found".formatted(filePath),e);
+            throw new RuntimeException("File with path: [%s] was not found".formatted(filePath), e);
         }
     }
 

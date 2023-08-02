@@ -11,5 +11,5 @@ public interface MovieService {
 
     Iterable<Movie> findByGenre(int genreId, MovieRequest defaultMovieRequest);
 
-    MovieByIdDto getById(int movieId);
+    MovieByIdDto getById(int movieId, MovieRequest movieRequest);
 }

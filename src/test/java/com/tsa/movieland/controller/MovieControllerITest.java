@@ -119,11 +119,31 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldReturnMovieById() throws Exception {
+    void shouldReturnMovieByIdPriceUAH() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1112")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(getContent("mock/movie-by-id.json"), true));
+    }
+
+    @Test
+    void shouldReturnMovieByIdPriceUSD() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/movie/1112")
+                        .param("currency", "usd")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(getContent("mock/movie-by-id-usd.json"), true));
+    }
+
+    @Test
+    void shouldReturnMovieByIdPriceEUR() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/movie/1112")
+                        .param("currency", "eur")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(getContent("mock/movie-by-id-eur.json"), true));
     }
 }
