@@ -14,7 +14,7 @@ public class JdbcCountryDaoITest extends DaoBaseTest {
     CountryDao countryDao;
 
     @Test
-    void souldReturnCountriesByMovieId() {
+    void shouldReturnCountriesByMovieId() {
         List<Country> countries = (List<Country>) countryDao.findByMovieId(1121);
         assertEquals(4, countries.size());
         assertEquals(501, countries.get(0).getId());

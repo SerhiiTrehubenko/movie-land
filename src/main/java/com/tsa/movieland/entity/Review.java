@@ -1,5 +1,6 @@
 package com.tsa.movieland.entity;
 
+import com.tsa.movieland.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,6 +9,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Review {
-    private User user;
+    private UserDto user;
     private String text;
 }

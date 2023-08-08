@@ -41,9 +41,9 @@ public class MovieController {
     public MovieByIdDto getById(@PathVariable int movieId,
                                 MovieRequest movieRequest) {
         final MovieByIdDto movieByIdDto = movieService.getById(movieId, movieRequest);
-        movieByIdDto.setCountries(countryService.findBiMovieId(movieId));
+        movieByIdDto.setCountries(countryService.findByMovieId(movieId));
         movieByIdDto.setGenres(genreService.findByMovieId(movieId));
-        movieByIdDto.setReviews(reviewService.findBiMovieId(movieId));
+        movieByIdDto.setReviews(reviewService.findByMovieId(movieId));
 
         return movieByIdDto;
     }

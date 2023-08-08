@@ -12,7 +12,7 @@ public class DefaultCountryService implements CountryService {
     private final CountryDao countryDao;
 
     @Override
-    public Iterable<Country> findBiMovieId(int movieId) {
+    public Iterable<Country> findByMovieId(int movieId) {
         return countryDao.findByMovieId(movieId);
     }
 }

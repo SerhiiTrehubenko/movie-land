@@ -19,5 +19,14 @@ number:
     random: 3
 
 currency:
-  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+  url: currency/exchange.json
   refresh-cron: 0 30 15 * * MON-SUN
+
+encoder:
+  strength: 11
+
+token:
+  time:
+    unit: HOURS
+  expiration:
+    period: 2

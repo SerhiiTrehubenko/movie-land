@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao;
 
 import com.tsa.movieland.entity.Review;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,9 +21,9 @@ public class JdbcReviewDaoITest extends DaoBaseTest {
         assertEquals("Для воскресного вечернего просмотра подходит по всем критериям.",
                 reviews.get(0).getText());
 
-        User user = reviews.get(0).getUser();
-        assertNotNull(user);
-        assertEquals(1000005, user.getId());
-        assertEquals("exodus", user.getNickname());
+        UserDto userDto = reviews.get(0).getUser();
+        assertNotNull(userDto);
+        assertEquals(1000005, userDto.getId());
+        assertEquals("exodus", userDto.getNickname());
     }
 }

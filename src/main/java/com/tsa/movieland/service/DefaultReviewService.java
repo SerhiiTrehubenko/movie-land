@@ -12,7 +12,7 @@ public class DefaultReviewService implements ReviewService {
     private final ReviewDao reviewDao;
 
     @Override
-    public Iterable<Review> findBiMovieId(int movieId) {
+    public Iterable<Review> findByMovieId(int movieId) {
         return reviewDao.findByMovieId(movieId);
     }
 }

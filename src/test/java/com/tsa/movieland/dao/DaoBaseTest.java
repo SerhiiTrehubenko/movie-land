@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles(value = {"test", "no-secure"})
 @DBRider
 @DataSet(value = {
         "datasets/users/dataset-users.json",
@@ -20,7 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
         "datasets/posters/dataset-posters.json"
 },
         cleanAfter = true, cleanBefore = true,
-        skipCleaningFor = "flyway_schema_history"
+        skipCleaningFor = "flyway_schema_history",
+        executeStatementsBefore = {"ALTER SEQUENCE IF EXISTS users_id RESTART WITH 1000015;"}
 )
 public abstract class DaoBaseTest {
 
