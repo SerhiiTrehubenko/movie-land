@@ -2,11 +2,11 @@ package com.tsa.movieland.controller;
 
 import com.tsa.movieland.common.MovieRequest;
 import com.tsa.movieland.dto.MovieByIdDto;
+import com.tsa.movieland.entity.Country;
+import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.entity.Movie;
-import com.tsa.movieland.service.CountryService;
-import com.tsa.movieland.service.GenreService;
-import com.tsa.movieland.service.MovieService;
-import com.tsa.movieland.service.ReviewService;
+import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,7 @@ public class MovieController {
     private final CountryService countryService;
     private final GenreService genreService;
     private final ReviewService reviewService;
+    private final ThreadExecutor executor;
 
     @GetMapping()
     public Iterable<Movie> findAll(MovieRequest movieRequest) {
@@ -40,11 +41,24 @@ public class MovieController {
     @GetMapping("/{movieId}")
     public MovieByIdDto getById(@PathVariable int movieId,
                                 MovieRequest movieRequest) {
-        final MovieByIdDto movieByIdDto = movieService.getById(movieId, movieRequest);
-        movieByIdDto.setCountries(countryService.findByMovieId(movieId));
-        movieByIdDto.setGenres(genreService.findByMovieId(movieId));
-        movieByIdDto.setReviews(reviewService.findByMovieId(movieId));
+        processRequest(movieId, movieRequest);
+        return getMovieByIdDto();
+    }
 
-        return movieByIdDto;
+    private void processRequest(int movieId, MovieRequest movieRequest) {
+        executor.addMethodTwoParam(movieService::getById, movieId, movieRequest);
+        executor.addMethodOneParam(countryService::findByMovieId, movieId);
+        executor.addMethodOneParam(genreService::findByMovieId, movieId);
+        executor.addMethodOneParam(reviewService::findByMovieId, movieId);
+
+    }
+
+    private MovieByIdDto getMovieByIdDto() {
+        final ResultExtractor resultExtractor = executor.executeTasks();
+        final MovieByIdDto result = resultExtractor.getObject(MovieByIdDto.class);
+        result.setCountries(resultExtractor.getList(Country.class));
+        result.setGenres(resultExtractor.getList(Genre.class));
+        result.setReviews(resultExtractor.getList(Review.class));
+        return result;
     }
 }
