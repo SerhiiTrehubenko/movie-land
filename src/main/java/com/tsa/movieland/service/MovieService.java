@@ -1,15 +1,18 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.common.MovieRequest;
+import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.entity.MovieFindAllDto;
 
 public interface MovieService {
-    Iterable<Movie> findRandom();
+    Iterable<MovieFindAllDto> findRandom();
 
-    Iterable<Movie> findAll(MovieRequest defaultMovieRequest);
+    Iterable<MovieFindAllDto> findAll(MovieRequest defaultMovieRequest);
 
-    Iterable<Movie> findByGenre(int genreId, MovieRequest defaultMovieRequest);
+    Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest defaultMovieRequest);
 
     MovieByIdDto getById(int movieId, MovieRequest movieRequest);
+
+    int save(AddUpdateMovieDto movie);
 }

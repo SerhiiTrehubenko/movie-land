@@ -21,7 +21,10 @@ import org.springframework.test.context.ActiveProfiles;
 },
         cleanAfter = true, cleanBefore = true,
         skipCleaningFor = "flyway_schema_history",
-        executeStatementsBefore = {"ALTER SEQUENCE IF EXISTS users_id RESTART WITH 1000015;"}
+        executeStatementsBefore = {
+                "ALTER SEQUENCE IF EXISTS users_id RESTART WITH 1000015;",
+                "ALTER SEQUENCE IF EXISTS movies_id RESTART WITH 1126;"
+        }
 )
 public abstract class DaoBaseTest {
 

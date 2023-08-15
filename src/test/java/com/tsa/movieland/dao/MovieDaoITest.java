@@ -1,10 +1,12 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,10 +16,14 @@ public class MovieDaoITest extends DaoBaseTest {
 
     @Autowired
     MovieDao movieDao;
+    @Autowired
+    CountryDao countryDao;
+    @Autowired
+    GenreDao genreDao;
 
     @Test
     void shouldReturnListOfMovies() {
-        Iterable<Movie> movies = movieDao.findAll();
+        Iterable<MovieFindAllDto> movies = movieDao.findAll();
 
         assertNotNull(movies);
 
@@ -27,7 +33,7 @@ public class MovieDaoITest extends DaoBaseTest {
 
     @Test
     void shouldReturnThreeRandomMovies() {
-        Iterable<Movie> movies = movieDao.findRandom();
+        Iterable<MovieFindAllDto> movies = movieDao.findRandom();
 
         assertNotNull(movies);
 
@@ -37,7 +43,7 @@ public class MovieDaoITest extends DaoBaseTest {
 
     @Test
     void shouldReturnMoviesByGenre() {
-        Iterable<Movie> movies = movieDao.findByGenreId(2);
+        Iterable<MovieFindAllDto> movies = movieDao.findByGenreId(2);
 
         assertNotNull(movies);
 
@@ -66,7 +72,82 @@ public class MovieDaoITest extends DaoBaseTest {
         assertEquals(8.5, movie.getRating());
         assertEquals(130.0, movie.getPrice());
         assertEquals(picturePath, movie.getPicturePath().get(0));
+    }
 
+    @Test
+    void shouldInsertNewMovie() {
+        int nextIdInMoviesTable = 1126;
+        String value = "test";
+        final AddUpdateMovieDto addUpdateMovieDto = AddUpdateMovieDto.builder()
+                .nameRussian(value)
+                .nameNative(value)
+                .yearOfRelease(2023)
+                .description(value)
+                .price(256.78)
+                .countries(List.of(501,502))
+                .genres(List.of(1, 2))
+                .build();
+        final int movieId = movieDao.save(addUpdateMovieDto);
+        assertEquals(nextIdInMoviesTable, movieId);
+
+        final MovieByIdDto movie = movieDao.findById(nextIdInMoviesTable);
+        assertNotNull(movie);
+
+        assertEquals(value, movie.getNameRussian());
+        assertEquals(value, movie.getNameNative());
+        assertEquals(2023, movie.getYearOfRelease());
+        assertEquals(value, movie.getDescription());
+        assertEquals(256.78, movie.getPrice());
+
+        final List<Country> countries = (List<Country>) countryDao.findByMovieId(movieId);
+        assertEquals(501, countries.get(0).getId());
+        assertEquals("США", countries.get(0).getName());
+        assertEquals(502, countries.get(1).getId());
+        assertEquals("Франция", countries.get(1).getName());
+
+        final List<Genre> genres = (List<Genre>) genreDao.findByMovieId(movieId);
+        assertEquals(1, genres.get(0).getId());
+        assertEquals("драма", genres.get(0).getName());
+        assertEquals(2, genres.get(1).getId());
+        assertEquals("криминал", genres.get(1).getName());
+    }
+
+    @Test
+    void shouldUpdateExistedMovie() {
+        String rusNameBeforeUpdate = "Большой куш";
+        String nativeNameBeforeUpdate = "Snatch.";
+        int yearBeforeUpdate = 2000;
+        String descriptionBeforeUpdate = "Четырехпалый Френки должен был переправить краденый алмаз из Англии в США своему боссу Эви. Но вместо этого герой попадает в эпицентр больших неприятностей. Сделав ставку на подпольном боксерском поединке, Френки попадает в круговорот весьма нежелательных событий. Вокруг героя и его груза разворачивается сложная интрига с участием множества колоритных персонажей лондонского дна — русского гангстера, троих незадачливых грабителей, хитрого боксера и угрюмого громилы грозного мафиози. Каждый норовит в одиночку сорвать Большой Куш.";
+        double priceBeforeUpdate = 160.00;
+
+        String valueTest = "test";
+        int idExistMovie = 1116;
+
+        final MovieByIdDto foundMovieBeforeUpdate = movieDao.findById(1116);
+        assertEquals(rusNameBeforeUpdate, foundMovieBeforeUpdate.getNameRussian());
+        assertEquals(nativeNameBeforeUpdate, foundMovieBeforeUpdate.getNameNative());
+        assertEquals(yearBeforeUpdate, foundMovieBeforeUpdate.getYearOfRelease());
+        assertEquals(descriptionBeforeUpdate, foundMovieBeforeUpdate.getDescription());
+        assertEquals(priceBeforeUpdate, foundMovieBeforeUpdate.getPrice());
+
+        final AddUpdateMovieDto movieWithUpdateData = AddUpdateMovieDto.builder()
+                .nameRussian(valueTest)
+                .nameNative(valueTest)
+                .yearOfRelease(2023)
+                .description(valueTest)
+                .price(256.78)
+                .build();
+
+        movieDao.update(idExistMovie, movieWithUpdateData);
+
+        final MovieByIdDto updatedMovie = movieDao.findById(idExistMovie);
+        assertNotNull(updatedMovie);
+
+        assertEquals(valueTest, updatedMovie.getNameRussian());
+        assertEquals(valueTest, updatedMovie.getNameNative());
+        assertEquals(2023, updatedMovie.getYearOfRelease());
+        assertEquals(valueTest, updatedMovie.getDescription());
+        assertEquals(256.78, updatedMovie.getPrice());
     }
 }
 
