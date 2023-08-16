@@ -1,30 +1,28 @@
 package com.tsa.movieland.currency;
 
-
+import com.tsa.movieland.dao.DaoBaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = {com.tsa.movieland.config.CurrencyConfigTest.class})
+@SpringBootTest
 @ActiveProfiles("test")
-class CurrencyExchangeExtractorTest {
+class CurrencyExchangeExtractorTest extends DaoBaseTest {
 
     @Autowired
     private CurrencyExchangeHolder currencyExchangeHolder;
 
     @Test
     void shouldReturnCurrencyRates() {
+        double price = 200.00;
 
-        Double usd = currencyExchangeHolder.getRating(CurrencyType.USD);
-        Double eur = currencyExchangeHolder.getRating(CurrencyType.EUR);
+        double usdPrice = currencyExchangeHolder.excange(CurrencyType.USD, price);
+        double eurPrice = currencyExchangeHolder.excange(CurrencyType.EUR, price);
 
-        assertNotNull(usd);
-        assertEquals(36.5686, usd);
-        assertNotNull(eur);
-        assertEquals(40.3242, eur);
+        assertTrue(usdPrice < price);
+        assertTrue(eurPrice < price);
     }
 }

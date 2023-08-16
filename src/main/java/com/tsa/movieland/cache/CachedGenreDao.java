@@ -4,13 +4,13 @@ import com.tsa.movieland.dao.GenreDao;
 import com.tsa.movieland.context.Cache;
 import com.tsa.movieland.entity.Genre;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,16 +20,25 @@ public class CachedGenreDao implements GenreDao {
 
     private final GenreDao genreDao;
 
-    private Collection<Genre> genres;
+    private volatile Collection<Genre> genres;
 
-    @Scheduled(fixedRateString = "${genre.cache.cycle.hours}", timeUnit = TimeUnit.HOURS)
+    @Scheduled(cron = "${genre.refresh-cron}")
+    @PostConstruct
     private void fillCache() {
         genres = (Collection<Genre>) genreDao.findAll();
         log.info("Cache of Genres has been refreshed");
     }
     @Override
     public Iterable<Genre> findAll() {
+        retryFillCache();
         return new ArrayList<>(genres);
+    }
+//    Only for DBRider, without this method test will fail, hence
+//    DBRider does not fill test-Db with DataSets on @PostConstruct stage
+    void retryFillCache() {
+        if (Objects.isNull(genres) || genres.size() == 0) {
+            fillCache();
+        }
     }
 
     @Override

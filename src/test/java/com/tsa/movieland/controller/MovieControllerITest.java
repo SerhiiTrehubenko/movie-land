@@ -135,7 +135,7 @@ public class MovieControllerITest extends ControllerBaseTest {
                         .param("currency", "usd")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getContent("mock/movie-by-id-usd.json"), true));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[?(@.price < 5)]").exists());
     }
 
     @Test
@@ -145,6 +145,6 @@ public class MovieControllerITest extends ControllerBaseTest {
                         .param("currency", "eur")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(getContent("mock/movie-by-id-eur.json"), true));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[?(@.price < 5)]").exists());
     }
 }

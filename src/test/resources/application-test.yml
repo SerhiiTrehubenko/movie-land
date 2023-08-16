@@ -11,15 +11,14 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 genre:
-  cache:
-    cycle:
-      hours: 4
+  refresh-cron: 0 0 */2 * * MON-SUN
+
 number:
   movies:
     random: 3
 
 currency:
-  url: currency/exchange.json
+  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
   refresh-cron: 0 30 15 * * MON-SUN
 
 encoder:
@@ -30,3 +29,7 @@ token:
     unit: HOURS
   expiration:
     period: 2
+
+logging:
+  level:
+    org.springframework.jdbc.core: TRACE

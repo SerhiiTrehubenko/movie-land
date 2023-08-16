@@ -1,14 +1,14 @@
 package com.tsa.movieland.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@ActiveProfiles("no-secure")
 public class GenreControllerITest extends ControllerBaseTest {
 
     @Test
@@ -16,7 +16,7 @@ public class GenreControllerITest extends ControllerBaseTest {
     // When using <JdbcGenreDao.class directly> all works fine
     // I tried BeanPostProcessor and EventListener approaches, but they do not work too;
     // I tried to use @ExtendWith(DBUnitExtension.class) and it failed ether;
-    @Disabled
+
     public void shouldReturnAllGenres() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/genre")

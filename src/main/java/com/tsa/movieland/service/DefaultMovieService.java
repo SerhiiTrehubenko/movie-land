@@ -9,8 +9,6 @@ import com.tsa.movieland.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
 @Service
@@ -59,16 +57,10 @@ public class DefaultMovieService implements MovieService {
         CurrencyType currencyType = movieRequest.getCurrencyType();
         if (Objects.nonNull(currencyType)) {
             MovieByIdDto movie = movieDao.findById(movieId);
-            double convertedPrice = convertPrice(movie.getPrice(), exchangeHolder.getRating(currencyType));
+            double convertedPrice = exchangeHolder.excange(currencyType, movie.getPrice());
             movie.setPrice(convertedPrice);
             return movie;
         }
         return movieDao.findById(movieId);
-    }
-
-    private double convertPrice(double dividend, double divider) {
-        BigDecimal bigDecimal = new BigDecimal(dividend / divider);
-        bigDecimal = bigDecimal.setScale(2, RoundingMode.CEILING);
-        return bigDecimal.doubleValue();
     }
 }

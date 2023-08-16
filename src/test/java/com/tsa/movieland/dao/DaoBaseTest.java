@@ -2,6 +2,7 @@ package com.tsa.movieland.dao;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import com.tsa.movieland.BaseITest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -23,6 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
         skipCleaningFor = "flyway_schema_history",
         executeStatementsBefore = {"ALTER SEQUENCE IF EXISTS users_id RESTART WITH 1000015;"}
 )
-public abstract class DaoBaseTest {
+public abstract class DaoBaseTest extends BaseITest {
 
 }

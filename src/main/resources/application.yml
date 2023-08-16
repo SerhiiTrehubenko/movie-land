@@ -15,9 +15,8 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 genre:
-  cache:
-    cycle:
-      hours: 4
+  refresh-cron: 0 0 */2 * * MON-SUN
+
 number:
   movies:
     random: 3

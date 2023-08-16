@@ -2,6 +2,7 @@ package com.tsa.movieland.controller;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import com.tsa.movieland.BaseITest;
 import com.tsa.movieland.entity.Credentials;
 import com.tsa.movieland.service.CredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.Objects;
         cleanAfter = true, cleanBefore = true,
         skipCleaningFor = "flyway_schema_history"
 )
-public abstract class ControllerBaseTest {
+public abstract class ControllerBaseTest extends BaseITest {
 
     @Autowired
     protected MockMvc mockMvc;
