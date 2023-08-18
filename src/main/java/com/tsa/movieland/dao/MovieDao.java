@@ -1,18 +1,22 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.entity.MovieFindAllDto;
 
 public interface MovieDao {
-    Iterable<Movie> findAll();
+    Iterable<MovieFindAllDto> findAll();
 
-    Iterable<Movie> findAll(String column, String direction);
+    Iterable<MovieFindAllDto> findAll(String column, String direction);
 
-    Iterable<Movie> findRandom();
+    Iterable<MovieFindAllDto> findRandom();
 
-    Iterable<Movie> findByGenreId(int genreId);
+    Iterable<MovieFindAllDto> findByGenreId(int genreId);
 
-    Iterable<Movie> findByGenreId(int genreId, String column, String direction);
+    Iterable<MovieFindAllDto> findByGenreId(int genreId, String column, String direction);
 
     MovieByIdDto findById(int movieId);
+
+    int save(AddUpdateMovieDto movie);
+    void update(int movieId, AddUpdateMovieDto movie);
 }

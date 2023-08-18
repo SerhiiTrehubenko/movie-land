@@ -31,7 +31,10 @@ import java.util.Objects;
         "datasets/posters/dataset-posters.json"
 },
         cleanAfter = true, cleanBefore = true,
-        skipCleaningFor = "flyway_schema_history"
+        skipCleaningFor = "flyway_schema_history",
+        executeStatementsBefore = {
+                "ALTER SEQUENCE IF EXISTS movies_id RESTART WITH 1126;"
+        }
 )
 public abstract class ControllerBaseTest extends BaseITest {
 

@@ -1,9 +1,11 @@
 package com.tsa.movieland.security.config;
 
+import com.tsa.movieland.common.Role;
 import com.tsa.movieland.security.filter.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,7 +35,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable);
         http
-                .authorizeHttpRequests((requests) -> requests.requestMatchers("/login", "/registration", "/logout").permitAll());
+                .authorizeHttpRequests((requests) -> {
+                    requests.requestMatchers("/login", "/registration", "/logout").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/movie").hasAuthority(Role.ADMIN.name());
+                    requests.requestMatchers(HttpMethod.PUT, "/movie/**").hasAuthority(Role.ADMIN.name());
+                });
         http
                 .authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());
         http

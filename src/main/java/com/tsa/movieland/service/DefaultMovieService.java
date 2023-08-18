@@ -4,8 +4,9 @@ import com.tsa.movieland.currency.CurrencyExchangeHolder;
 import com.tsa.movieland.currency.CurrencyType;
 import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.common.*;
+import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.entity.MovieFindAllDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class DefaultMovieService implements MovieService {
     private final CurrencyExchangeHolder exchangeHolder;
 
     @Override
-    public Iterable<Movie> findAll(MovieRequest defaultMovieRequest) {
+    public Iterable<MovieFindAllDto> findAll(MovieRequest defaultMovieRequest) {
         if (notEmptyMovieRequest(defaultMovieRequest)) {
             return movieDao.findAll(field(defaultMovieRequest), direction(defaultMovieRequest));
         }
@@ -40,12 +41,12 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public Iterable<Movie> findRandom() {
+    public Iterable<MovieFindAllDto> findRandom() {
         return movieDao.findRandom();
     }
 
     @Override
-    public Iterable<Movie> findByGenre(int genreId, MovieRequest defaultMovieRequest) {
+    public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest defaultMovieRequest) {
         if (notEmptyMovieRequest(defaultMovieRequest)) {
             return movieDao.findByGenreId(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
         }

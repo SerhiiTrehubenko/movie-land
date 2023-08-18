@@ -147,4 +147,48 @@ public class MovieControllerITest extends ControllerBaseTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[?(@.price < 5)]").exists());
     }
+
+    @Test
+    void shouldAddNewMovie() throws Exception {
+        String requestBody =
+                        """
+                            {
+                            "nameRussian": "test",
+                            "nameNative": "test",
+                            "yearOfRelease": 2023,
+                            "description": "description",
+                            "price": 325.89,
+                            "picturePath": "Hello world",
+                            "countries": [503,504],
+                            "genres": [1,2,3]
+                            }
+                        """;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/movie")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldUpdateNewMovie() throws Exception {
+        String requestBody =
+                """
+                    {
+                    "nameRussian": "test",
+                    "nameNative": "test",
+                    "yearOfRelease": 2023,
+                    "description": "description",
+                    "price": 325.89,
+                    "picturePath": "Hello world; 0",
+                    "countries": [503,504],
+                    "genres": [1,2,3]
+                    }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/movie/1116")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
