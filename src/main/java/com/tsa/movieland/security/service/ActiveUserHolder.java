@@ -5,9 +5,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -15,22 +14,25 @@ public class ActiveUserHolder {
 
     private final JwtService jwtService;
 
-    private final Set<String> emails = Collections.synchronizedSet(new HashSet<>());
+    private final Map<String, Date> usersTimeStamps = new ConcurrentHashMap<>();
 
     public void add(String email) {
-        emails.add(email);
+        usersTimeStamps.put(email, new Date(System.currentTimeMillis() - 1000));
     }
 
     public void remove(String userEmailExpiredToken) {
-        emails.remove(userEmailExpiredToken);
+        usersTimeStamps.remove(userEmailExpiredToken);
     }
 
     public String getUserEmail(String authHeader) {
         String jwtToken = jwtService.getToken(authHeader);
         String userEmail = getEmail(jwtToken);
+        Date issueAt = jwtService.getIssueAt(jwtToken);
 
-        if (emails.contains(userEmail)) {
-            return userEmail;
+        if (usersTimeStamps.containsKey(userEmail)) {
+            if (issueAt.after(usersTimeStamps.get(userEmail))) {
+                return userEmail;
+            }
         }
         return null;
     }
@@ -45,7 +47,7 @@ public class ActiveUserHolder {
         }
 
         final String userEmailExpiredToken = jwtService.extractClaim(Claims::getSubject, claims);
-        emails.remove(userEmailExpiredToken);
+        usersTimeStamps.remove(userEmailExpiredToken);
 
         return userEmailExpiredToken;
     }

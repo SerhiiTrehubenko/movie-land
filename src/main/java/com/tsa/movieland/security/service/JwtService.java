@@ -76,4 +76,8 @@ public class JwtService {
     public String getToken(String header) {
         return header.substring(AFTER_BEARER);
     }
+
+    public Date getIssueAt(String token) {
+        return extractClaim(token, Claims::getIssuedAt);
+    }
 }
