@@ -1,7 +1,6 @@
 package com.tsa.movieland.controller;
 
 import com.tsa.movieland.common.MovieRequest;
-import com.tsa.movieland.dao.PosterDao;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Country;
@@ -9,6 +8,8 @@ import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.entity.MovieFindAllDto;
 import com.tsa.movieland.entity.Review;
 import com.tsa.movieland.service.*;
+import com.tsa.movieland.service.parallel.ResultExtractor;
+import com.tsa.movieland.service.parallel.ThreadExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class MovieController {
     private final CountryService countryService;
     private final GenreService genreService;
     private final ReviewService reviewService;
-    private final PosterDao posterDao;
+    private final PosterService posterService;
     private final ThreadExecutor executor;
 
     @GetMapping()
@@ -68,6 +69,12 @@ public class MovieController {
     @PostMapping
     public void addMovie(@RequestBody AddUpdateMovieDto movie) {
         final int movieId = movieService.save(movie);
-        posterDao.addPoster(movieId, movie.getPicturePath());
+        posterService.add(movieId, movie.getPicturePath());
+    }
+
+    @PutMapping("/{id}")
+    public void  updateMovie(@PathVariable("id") int movieId, @RequestBody AddUpdateMovieDto movie) {
+        movieService.update(movieId, movie);
+        posterService.update(movieId, movie.getPicturePath());
     }
 }

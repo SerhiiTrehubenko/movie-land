@@ -1,4 +1,4 @@
-package com.tsa.movieland.service;
+package com.tsa.movieland.service.parallel;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -11,7 +11,12 @@ public class DefaultPosterService implements PosterService {
     private  final PosterDao posterDao;
 
     @Override
-    public void addPoster(int movieId, String posterLink) {
-        posterDao.addPoster(movieId, posterLink);
+    public void add(int movieId, String posterLink) {
+        posterDao.add(movieId, posterLink);
+    }
+
+    @Override
+    public void update(int movieId, String posterLink) {
+        posterDao.update(movieId, posterLink);
     }
 }

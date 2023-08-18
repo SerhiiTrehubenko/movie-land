@@ -15,4 +15,5 @@ public interface MovieService {
     MovieByIdDto getById(int movieId, MovieRequest movieRequest);
 
     int save(AddUpdateMovieDto movie);
+    void update(int movieId, AddUpdateMovieDto movie);
 }

@@ -131,7 +131,6 @@ public class JdbcMovieDao implements MovieDao {
             ps.executeUpdate();
             final Connection connection = ps.getConnection();
             final PreparedStatement preparedStatement = connection.prepareStatement(GET_MOVIE_ID);
-            try (connection; preparedStatement) {
                 preparedStatement.setString(1, nameRussian);
                 preparedStatement.setString(2, nameNative);
                 final ResultSet resultSet = preparedStatement.executeQuery();
@@ -139,7 +138,6 @@ public class JdbcMovieDao implements MovieDao {
                     return Optional.of(resultSet.getInt("movie_id"));
                 }
                 return Optional.empty();
-            }
         };
     }
 
@@ -154,6 +152,22 @@ public class JdbcMovieDao implements MovieDao {
         refresh(foundMovie, movie);
         Map<String, ? extends Serializable> paramUpdate = Map.of("rusName", foundMovie.getNameRussian(), "nativeName", foundMovie.getNameNative(), "releaseYear", foundMovie.getYearOfRelease(), "description", foundMovie.getDescription(), "price", foundMovie.getPrice(), "id", movieId);
         namedParameterJdbcTemplate.update(queryUpdate, paramUpdate);
+
+        List<Integer> countries = movie.getCountries();
+        if (Objects.nonNull(countries) &&countries.size() != 0) {
+            String deleteOldCountries = "DELETE FROM movies_countries WHERE movie_id = :id;";
+            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of("id", movieId));
+            String joinCountry = "INSERT INTO movies_countries (movie_id, country_id) VALUES (:movieId, :joinId);";
+            saveJoins(joinCountry, movieId, movie::getCountries);
+        }
+
+        List<Integer> genres = movie.getGenres();
+        if (Objects.nonNull(genres) && genres.size() != 0) {
+            String deleteOldCountries = "DELETE FROM movies_genres WHERE movie_id = :id;";
+            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of("id", movieId));
+            String joinGenre = "INSERT INTO movies_genres (movie_id, genre_id) VALUES (:movieId, :joinId);";
+            saveJoins(joinGenre, movieId, movie::getGenres);
+        }
     }
 
     private void refresh(Movie foundMovie, AddUpdateMovieDto movie) {

@@ -1,5 +1,6 @@
 package com.tsa.movieland.service;
 
 public interface PosterService {
-    void addPoster(int movieId, String posterLink);
+    void add(int movieId, String posterLink);
+    void update(int movieId, String posterLink);
 }

@@ -1,5 +1,7 @@
 package com.tsa.movieland.service;
 
+import com.tsa.movieland.service.parallel.ResultExtractor;
+import com.tsa.movieland.service.parallel.ThreadExecutor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

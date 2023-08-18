@@ -122,6 +122,8 @@ public class MovieDaoITest extends DaoBaseTest {
 
         String valueTest = "test";
         int idExistMovie = 1116;
+        List<Integer> countriesToUpdate = List.of(505, 506);
+        List<Integer> genresToUpdate = List.of(1, 2, 3);
 
         final MovieByIdDto foundMovieBeforeUpdate = movieDao.findById(1116);
         assertEquals(rusNameBeforeUpdate, foundMovieBeforeUpdate.getNameRussian());
@@ -136,6 +138,8 @@ public class MovieDaoITest extends DaoBaseTest {
                 .yearOfRelease(2023)
                 .description(valueTest)
                 .price(256.78)
+                .countries(countriesToUpdate)
+                .genres(genresToUpdate)
                 .build();
 
         movieDao.update(idExistMovie, movieWithUpdateData);
@@ -148,6 +152,16 @@ public class MovieDaoITest extends DaoBaseTest {
         assertEquals(2023, updatedMovie.getYearOfRelease());
         assertEquals(valueTest, updatedMovie.getDescription());
         assertEquals(256.78, updatedMovie.getPrice());
+
+        final List<Country> updatedCountries = (List<Country>) countryDao.findByMovieId(idExistMovie);
+        assertEquals(countriesToUpdate.get(0), updatedCountries.get(0).getId());
+        assertEquals(countriesToUpdate.get(1), updatedCountries.get(1).getId());
+
+        final List<Genre> updatedGenres = (List<Genre>) genreDao.findByMovieId(idExistMovie);
+        assertEquals(genresToUpdate.get(0), updatedGenres.get(0).getId());
+        assertEquals(genresToUpdate.get(1), updatedGenres.get(1).getId());
+        assertEquals(genresToUpdate.get(2), updatedGenres.get(2).getId());
+
     }
 }
 

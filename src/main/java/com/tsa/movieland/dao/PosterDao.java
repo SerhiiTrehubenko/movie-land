@@ -1,8 +1,9 @@
 package com.tsa.movieland.dao;
 
-import com.tsa.movieland.entity.Poster;
+import com.tsa.movieland.dto.PosterDto;
 
 public interface PosterDao {
-    void addPoster(int movieId, String posterLink);
-    Iterable<Poster> findPosterByMovieId(int movieId);
+    void add(int movieId, String posterLink);
+    Iterable<PosterDto> findPosterByMovieId(int movieId);
+    void update(int movieId, String picturePath);
 }
