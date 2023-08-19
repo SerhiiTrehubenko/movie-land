@@ -64,4 +64,14 @@ public class DefaultMovieService implements MovieService {
         }
         return movieDao.findById(movieId);
     }
+
+    @Override
+    public int save(AddUpdateMovieDto movie) {
+        return movieDao.save(movie);
+    }
+
+    @Override
+    public void update(int movieId, AddUpdateMovieDto movie) {
+        movieDao.update(movieId, movie);
+    }
 }

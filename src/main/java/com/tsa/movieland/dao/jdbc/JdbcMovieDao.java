@@ -1,6 +1,7 @@
 package com.tsa.movieland.dao.jdbc;
 
 import com.tsa.movieland.dao.MovieDao;
+import com.tsa.movieland.dao.jdbc.callback.AddMovieCallback;
 import com.tsa.movieland.dao.jdbc.mapper.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
@@ -8,22 +9,17 @@ import com.tsa.movieland.entity.Movie;
 import com.tsa.movieland.entity.MovieFindAllDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.function.Supplier;
 
 @Repository
 @RequiredArgsConstructor
 public class JdbcMovieDao implements MovieDao {
-
+    private final static String ID = "id";
     private final static String FIND_ALL = "SELECT movie_id, movie_rus_name, movie_native_name, movie_release_year, " +
             "movie_rating, movie_price, movie_posters FROM movies_with_posters";
 
@@ -34,18 +30,16 @@ public class JdbcMovieDao implements MovieDao {
             "ON movie.movie_id = m_g.movie_id " +
             "WHERE m_g.genre_id = :genreId";
 
-    private final static String GET_MOVIE_ID = "SELECT movie_id FROM movies WHERE movie_rus_name = ? AND movie_native_name = ?";
-
     @Value("${number.movies.random}")
     private Integer randomNumber;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final MovieFindAllMapper findAllMapper;
     private final MovieByIdMapper descPosterMapper;
     private final MovieMapper movieMapper;
+    private final AddMovieCallback addMovieCallback;
 
     @Override
     public Iterable<MovieFindAllDto> findAll() {
-
         return namedParameterJdbcTemplate.query(FIND_ALL, findAllMapper);
     }
 
@@ -80,11 +74,11 @@ public class JdbcMovieDao implements MovieDao {
     public MovieByIdDto findById(int movieId) {
         String movieWithDescriptionPoster = "SELECT movie_id, movie_rus_name, movie_native_name, " +
                 "movie_release_year, movie_description, movie_rating, movie_price, movie_posters FROM movies_with_description_posters " +
-                "WHERE movie_id = :movieId";
+                "WHERE movie_id = :id";
 
         return namedParameterJdbcTemplate
                 .queryForObject(movieWithDescriptionPoster,
-                        Map.of("movieId", movieId),
+                        Map.of(ID, movieId),
                         descPosterMapper
                 );
     }
@@ -93,103 +87,117 @@ public class JdbcMovieDao implements MovieDao {
     public int save(AddUpdateMovieDto movie) {
         String queryInsertMovie = "INSERT INTO movies (movie_rus_name, movie_native_name, movie_release_year, movie_description, movie_price) " +
                 "VALUES (:rusName, :nativeName, :releaseYear, :description, :price)";
-        Map<String, ? extends Serializable> parametersForInsert = Map.of("rusName", movie.getNameRussian(), "nativeName", movie.getNameNative(), "releaseYear", movie.getYearOfRelease(), "description", movie.getDescription(), "price", movie.getPrice());
-        Optional<Integer> movieId = namedParameterJdbcTemplate.execute(queryInsertMovie, parametersForInsert, createCallback(movie.getNameRussian(), movie.getNameNative()));
+        Map<String, Object> parametersForInsert = createInsertParams(movie);
+        Optional<Integer> movieId =
+                namedParameterJdbcTemplate
+                        .execute(queryInsertMovie,
+                                parametersForInsert,
+                                addMovieCallback.getInstance(movie.getNameRussian(), movie.getNameNative()));
 
         Integer movieIdValue = movieId.orElseThrow(() -> new RuntimeException("Movie was not saved"));
 
-        String joinCountry = "INSERT INTO movies_countries (movie_id, country_id) VALUES (:movieId, :joinId);";
-        saveJoins(joinCountry, movieIdValue, movie::getCountries);
+        saveCountryJoins(movie, movieIdValue);
 
-        String joinGenre = "INSERT INTO movies_genres (movie_id, genre_id) VALUES (:movieId, :joinId);";
-        saveJoins(joinGenre, movieIdValue, movie::getGenres);
+        saveGenresJoins(movie, movieIdValue);
 
         return movieIdValue;
     }
 
-    private void saveJoins(String query, Integer movieIdValue, Supplier<List<Integer>> supplier ) {
+    private Map<String, Object> createInsertParams(AddUpdateMovieDto movie) {
+        return Map.of(
+                "rusName", movie.getNameRussian(),
+                "nativeName", movie.getNameNative(),
+                "releaseYear", movie.getYearOfRelease(),
+                "description", movie.getDescription(),
+                "price", movie.getPrice()
+        );
+    }
+
+    private void saveCountryJoins(AddUpdateMovieDto movie, Integer movieIdValue) {
+        String joinCountry = "INSERT INTO movies_countries (movie_id, country_id) VALUES (:id, :joinId);";
+        saveJoins(joinCountry, movieIdValue, movie::getCountries);
+    }
+
+    private void saveGenresJoins(AddUpdateMovieDto movie, Integer movieIdValue) {
+        String joinGenre = "INSERT INTO movies_genres (movie_id, genre_id) VALUES (:id, :joinId);";
+        saveJoins(joinGenre, movieIdValue, movie::getGenres);
+    }
+
+    private void saveJoins(String query, Integer movieIdValue, Supplier<List<Integer>> supplier) {
         List<Integer> joins = supplier.get();
         if (Objects.nonNull(joins) && joins.size() != 0) {
-            Map<String, Integer>[] params = createParams(movieIdValue, joins);
+            Map<String, Integer>[] params = createJoinParams(movieIdValue, joins);
             namedParameterJdbcTemplate.batchUpdate(query, params);
         }
     }
 
-    private Map<String, Integer>[] createParams(Integer movieIdValue, List<Integer> joinId) {
+    private Map<String, Integer>[] createJoinParams(Integer movieIdValue, List<Integer> joinId) {
         int size = joinId.size();
         List<Map<String, Integer>> mapList = new ArrayList<>(size);
         for (Integer countryId : joinId) {
-            mapList.add(Map.of("movieId", movieIdValue, "joinId", countryId));
+            mapList.add(Map.of(ID, movieIdValue, "joinId", countryId));
         }
         @SuppressWarnings("unchecked")
         Map<String, Integer>[] maps = mapList.toArray(new Map[size]);
         return maps;
     }
 
-    private PreparedStatementCallback<Optional<Integer>> createCallback(String nameRussian, String nameNative) {
-        return ps -> {
-            ps.executeUpdate();
-            final Connection connection = ps.getConnection();
-            final PreparedStatement preparedStatement = connection.prepareStatement(GET_MOVIE_ID);
-                preparedStatement.setString(1, nameRussian);
-                preparedStatement.setString(2, nameNative);
-                final ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    return Optional.of(resultSet.getInt("movie_id"));
-                }
-                return Optional.empty();
-        };
-    }
-
     @Override
     public void update(int movieId, AddUpdateMovieDto movie) {
         String queryFindMovieById = "SELECT movie_id, movie_rus_name, movie_native_name, movie_release_year, movie_description, movie_price FROM movies WHERE movie_id = :id;";
         String queryUpdate = "UPDATE movies SET movie_rus_name = :rusName, movie_native_name = :nativeName, movie_release_year = :releaseYear, movie_description = :description, movie_price = :price WHERE movie_id = :id";
-        Movie foundMovie = namedParameterJdbcTemplate.query(queryFindMovieById, Map.of("id", movieId), movieMapper);
+        Movie foundMovie = namedParameterJdbcTemplate.query(queryFindMovieById, Map.of(ID, movieId), movieMapper);
         if (Objects.isNull(foundMovie)) {
             throw new RuntimeException("Movie with id: [%s] was not found".formatted(movie));
         }
         refresh(foundMovie, movie);
-        Map<String, ? extends Serializable> paramUpdate = Map.of("rusName", foundMovie.getNameRussian(), "nativeName", foundMovie.getNameNative(), "releaseYear", foundMovie.getYearOfRelease(), "description", foundMovie.getDescription(), "price", foundMovie.getPrice(), "id", movieId);
+        Map<String, Object> paramUpdate = createUpdateParams(movieId, movie);
         namedParameterJdbcTemplate.update(queryUpdate, paramUpdate);
 
-        List<Integer> countries = movie.getCountries();
-        if (Objects.nonNull(countries) &&countries.size() != 0) {
-            String deleteOldCountries = "DELETE FROM movies_countries WHERE movie_id = :id;";
-            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of("id", movieId));
-            String joinCountry = "INSERT INTO movies_countries (movie_id, country_id) VALUES (:movieId, :joinId);";
-            saveJoins(joinCountry, movieId, movie::getCountries);
-        }
+        updateCountries(movieId, movie);
 
+        updateGenres(movieId, movie);
+    }
+
+    private Map<String, Object> createUpdateParams(Integer movieId, AddUpdateMovieDto movieDto) {
+        final Map<String, Object> updateParams = new HashMap<>(createInsertParams(movieDto));
+        updateParams.put(ID, movieId);
+        return updateParams;
+    }
+
+    private void updateCountries(int movieId, AddUpdateMovieDto movie) {
+        List<Integer> countries = movie.getCountries();
+        if (Objects.nonNull(countries) && countries.size() != 0) {
+            String deleteOldCountries = "DELETE FROM movies_countries WHERE movie_id = :id;";
+            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of(ID, movieId));
+            saveCountryJoins(movie, movieId);
+        }
+    }
+
+    private void updateGenres(int movieId, AddUpdateMovieDto movie) {
         List<Integer> genres = movie.getGenres();
         if (Objects.nonNull(genres) && genres.size() != 0) {
             String deleteOldCountries = "DELETE FROM movies_genres WHERE movie_id = :id;";
-            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of("id", movieId));
-            String joinGenre = "INSERT INTO movies_genres (movie_id, genre_id) VALUES (:movieId, :joinId);";
-            saveJoins(joinGenre, movieId, movie::getGenres);
+            namedParameterJdbcTemplate.update(deleteOldCountries, Map.of(ID, movieId));
+            saveGenresJoins(movie, movieId);
         }
     }
 
     private void refresh(Movie foundMovie, AddUpdateMovieDto movie) {
-        if (isDifferent(foundMovie.getNameRussian(), movie.getNameRussian())) {
-            foundMovie.setNameRussian(movie.getNameRussian());
+        if (Objects.isNull(movie.getNameRussian())) {
+            movie.setNameRussian(foundMovie.getNameRussian());
         }
-        if (isDifferent(foundMovie.getNameNative(), movie.getNameNative())) {
-            foundMovie.setNameNative(movie.getNameNative());
+        if (Objects.isNull(movie.getNameNative())) {
+            movie.setNameNative(foundMovie.getNameNative());
         }
-        if (isDifferent(foundMovie.getYearOfRelease(), movie.getYearOfRelease())) {
-            foundMovie.setYearOfRelease(movie.getYearOfRelease());
+        if (Objects.isNull(movie.getYearOfRelease())) {
+            movie.setYearOfRelease(foundMovie.getYearOfRelease());
         }
-        if (isDifferent(foundMovie.getDescription(), movie.getDescription())) {
-            foundMovie.setDescription(movie.getDescription());
+        if (Objects.isNull(movie.getDescription())) {
+            movie.setDescription(foundMovie.getDescription());
         }
-        if (isDifferent(foundMovie.getPrice(), movie.getPrice())) {
-            foundMovie.setPrice(movie.getPrice());
+        if (Objects.isNull(movie.getPrice())) {
+            movie.setPrice(foundMovie.getPrice());
         }
-    }
-
-    private boolean isDifferent(Object nameRussianDb, Object nameRussianIncome) {
-        return !Objects.equals(nameRussianDb, nameRussianIncome) &&
-                Objects.nonNull(nameRussianIncome);
     }
 }
