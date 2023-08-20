@@ -39,6 +39,7 @@ public class SecurityConfig {
                     requests.requestMatchers("/login", "/registration", "/logout").permitAll();
                     requests.requestMatchers(HttpMethod.POST, "/movie").hasAuthority(Role.ADMIN.name());
                     requests.requestMatchers(HttpMethod.PUT, "/movie/**").hasAuthority(Role.ADMIN.name());
+                    requests.requestMatchers(HttpMethod.POST, "/review").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name());
                 });
         http
                 .authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());

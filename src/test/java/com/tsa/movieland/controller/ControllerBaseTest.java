@@ -3,13 +3,16 @@ package com.tsa.movieland.controller;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.tsa.movieland.BaseITest;
+import com.tsa.movieland.common.Role;
 import com.tsa.movieland.entity.Credentials;
 import com.tsa.movieland.service.CredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -51,11 +54,28 @@ public abstract class ControllerBaseTest extends BaseITest {
         }
     }
 
-    protected void setCredentials(CredentialsService credentialsService) {
-        final Credentials credentials = Credentials.builder()
+    protected void setCredentialsUserAndAdmin(CredentialsService credentialsService) {
+        final Credentials credentialsFirst = Credentials.builder()
                 .userId(1000002)
                 .password("password")
+                .role(Role.ADMIN)
                 .build();
-        credentialsService.save(credentials);
+        credentialsService.save(credentialsFirst);
+
+        final Credentials credentialsSecond = Credentials.builder()
+                .userId(1000003)
+                .password("password")
+                .role(Role.USER)
+                .build();
+        credentialsService.save(credentialsSecond);
+    }
+
+    protected String getToken(String requestBody) throws Exception {
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/login")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
+        return responseBody.substring(13, responseBody.length() - 2);
     }
 }

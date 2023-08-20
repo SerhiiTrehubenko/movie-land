@@ -24,15 +24,9 @@ class LogoutControllerITest extends ControllerBaseTest {
                     "userEmail" : "ronald.reynolds66@example.com",
                     "password" : "password"
                 }""";
-        setCredentials(credentialsService);
+        setCredentialsUserAndAdmin(credentialsService);
 
-        String responseBody = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/login")
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
-        System.out.println(responseBody);
-        String token = responseBody.substring(13, responseBody.length() - 2);
+        String token = getToken(requestBody);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/logout")

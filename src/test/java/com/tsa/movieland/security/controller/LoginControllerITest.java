@@ -21,7 +21,7 @@ class LoginControllerITest extends ControllerBaseTest {
                     "userEmail" : "ronald.reynolds66@example.com",
                     "password" : "password"
                 }""";
-        setCredentials(credentialsService);
+        setCredentialsUserAndAdmin(credentialsService);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/login")
@@ -38,7 +38,7 @@ class LoginControllerITest extends ControllerBaseTest {
                     "userEmail" : "ronald.reynolds66@example.com",
                     "password" : "passwordddddd"
                 }""";
-        setCredentials(credentialsService);
+        setCredentialsUserAndAdmin(credentialsService);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/login")
@@ -54,7 +54,7 @@ class LoginControllerITest extends ControllerBaseTest {
                     "userEmail" : "ronald.eynolds66@example.com",
                     "password" : "password"
                 }""";
-        setCredentials(credentialsService);
+        setCredentialsUserAndAdmin(credentialsService);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/login")
@@ -70,7 +70,7 @@ class LoginControllerITest extends ControllerBaseTest {
                     "userEmail" : "ronald.eynolds66@example.com",
                     "password" : "passwordssss"
                 }""";
-        setCredentials(credentialsService);
+        setCredentialsUserAndAdmin(credentialsService);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/login")
