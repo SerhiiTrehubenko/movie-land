@@ -11,12 +11,14 @@ import com.tsa.movieland.service.*;
 import com.tsa.movieland.service.parallel.ResultExtractor;
 import com.tsa.movieland.service.parallel.ThreadExecutor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/movie", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class MovieController {
 
     private final MovieService movieService;
@@ -28,23 +30,27 @@ public class MovieController {
 
     @GetMapping()
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
+        log.info("Query get all movies");
         return movieService.findAll(movieRequest);
     }
 
     @GetMapping("/random")
     public Iterable<MovieFindAllDto> random() {
+        log.info("Query get random movies");
         return movieService.findRandom();
     }
 
     @GetMapping("/genre/{genreId}")
     public Iterable<MovieFindAllDto> findByGenreSorted(@PathVariable("genreId") int genreId,
                                                        MovieRequest movieRequest) {
+        log.info("Query get a movie by genre id: [{}]", genreId);
         return movieService.findByGenre(genreId, movieRequest);
     }
 
     @GetMapping("/{movieId}")
     public MovieByIdDto getById(@PathVariable int movieId,
                                 MovieRequest movieRequest) {
+        log.info("Query get a movie by id: [{}]", movieId);
         processRequest(movieId, movieRequest);
         return getMovieByIdDto();
     }
@@ -68,12 +74,14 @@ public class MovieController {
 
     @PostMapping
     public void addMovie(@RequestBody AddUpdateMovieDto movie) {
+        log.info("Query add a movie");
         final int movieId = movieService.save(movie);
         posterService.add(movieId, movie.getPicturePath());
     }
 
     @PutMapping("/{id}")
     public void  updateMovie(@PathVariable("id") int movieId, @RequestBody AddUpdateMovieDto movie) {
+        log.info("Query update a movie");
         movieService.update(movieId, movie);
         posterService.update(movieId, movie.getPicturePath());
     }

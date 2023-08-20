@@ -8,6 +8,7 @@ import com.tsa.movieland.security.service.ActiveUserHolder;
 import com.tsa.movieland.security.service.JwtService;
 import com.tsa.movieland.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
 
     private final ActiveUserHolder activeUserHolder;
@@ -42,7 +44,7 @@ public class LoginController {
                 .build();
 
         activeUserHolder.add(userRegistration.getEmail());
-
+        log.info("Successfully login for user [{}]", user.getEmail());
         return ResponseEntity.ok().body(getAuthenticationResponse(userRegistration));
     }
 

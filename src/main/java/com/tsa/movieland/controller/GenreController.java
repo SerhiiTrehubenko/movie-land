@@ -2,6 +2,7 @@ package com.tsa.movieland.controller;
 
 import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.service.GenreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class GenreController {
 
 
@@ -20,6 +22,7 @@ public class GenreController {
 
     @GetMapping("/genre")
     public Iterable<Genre> findAll() {
+        log.info("Query get all genres");
         return genreService.findAll();
     }
 }

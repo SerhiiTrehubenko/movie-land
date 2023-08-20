@@ -4,6 +4,7 @@ import com.tsa.movieland.security.common.AuthenticationResponse;
 import com.tsa.movieland.security.service.ActiveUserHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RestController
 @RequestMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class LogoutController {
     private final static String NOT_AUTH = "You was not authorize";
     private final ActiveUserHolder activeUserHolder;
@@ -25,12 +27,14 @@ public class LogoutController {
         String authHeader = request.getHeader(AUTHORIZATION);
 
         if (Objects.isNull(authHeader)) {
+            log.info("Unknown user tried to logout");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(createResponse(NOT_AUTH));
         }
 
         String userEmail = activeUserHolder.getUserEmail(authHeader);
 
         if (Objects.nonNull(userEmail)) {
+            log.info("Successfully logout for user [{}]", userEmail);
             activeUserHolder.remove(userEmail);
             return ResponseEntity.ok().body(createResponse("You have been successfully logout"));
         }
