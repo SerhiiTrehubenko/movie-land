@@ -15,4 +15,9 @@ public class DefaultCountryService implements CountryService {
     public Iterable<Country> findByMovieId(int movieId) {
         return countryDao.findByMovieId(movieId);
     }
+
+    @Override
+    public Iterable<Country> findAll() {
+        return countryDao.findAll();
+    }
 }

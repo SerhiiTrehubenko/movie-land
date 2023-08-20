@@ -26,4 +26,10 @@ public class JdbcCountryDao implements CountryDao {
                 countryMapper
         );
     }
+
+    @Override
+    public Iterable<Country> findAll() {
+        String findAllQuery = "SELECT country_id, country_name FROM countries ORDER BY country_id;";
+        return namedParameterJdbcTemplate.query(findAllQuery, countryMapper);
+    }
 }
