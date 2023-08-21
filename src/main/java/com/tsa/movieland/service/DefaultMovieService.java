@@ -1,7 +1,5 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.currency.CurrencyExchangeHolder;
-import com.tsa.movieland.currency.CurrencyType;
 import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.common.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
@@ -16,12 +14,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class DefaultMovieService implements MovieService {
     private final MovieDao movieDao;
-    private final CurrencyExchangeHolder exchangeHolder;
 
     @Override
-    public Iterable<MovieFindAllDto> findAll(MovieRequest defaultMovieRequest) {
-        if (notEmptyMovieRequest(defaultMovieRequest)) {
-            return movieDao.findAll(field(defaultMovieRequest), direction(defaultMovieRequest));
+    public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
+        if (notEmptyMovieRequest(movieRequest)) {
+            return movieDao.findAll(field(movieRequest), direction(movieRequest));
         }
         return movieDao.findAll();
     }
@@ -46,22 +43,15 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest defaultMovieRequest) {
-        if (notEmptyMovieRequest(defaultMovieRequest)) {
-            return movieDao.findByGenreId(genreId, field(defaultMovieRequest), direction(defaultMovieRequest));
+    public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest) {
+        if (notEmptyMovieRequest(movieRequest)) {
+            return movieDao.findByGenreId(genreId, field(movieRequest), direction(movieRequest));
         }
         return movieDao.findByGenreId(genreId);
     }
 
     @Override
     public MovieByIdDto getById(int movieId, MovieRequest movieRequest) {
-        CurrencyType currencyType = movieRequest.getCurrencyType();
-        if (Objects.nonNull(currencyType)) {
-            MovieByIdDto movie = movieDao.findById(movieId);
-            double convertedPrice = exchangeHolder.excange(currencyType, movie.getPrice());
-            movie.setPrice(convertedPrice);
-            return movie;
-        }
         return movieDao.findById(movieId);
     }
 

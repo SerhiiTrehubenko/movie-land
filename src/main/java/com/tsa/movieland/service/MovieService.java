@@ -8,9 +8,9 @@ import com.tsa.movieland.entity.MovieFindAllDto;
 public interface MovieService {
     Iterable<MovieFindAllDto> findRandom();
 
-    Iterable<MovieFindAllDto> findAll(MovieRequest defaultMovieRequest);
+    Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest);
 
-    Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest defaultMovieRequest);
+    Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest);
 
     MovieByIdDto getById(int movieId, MovieRequest movieRequest);
 
