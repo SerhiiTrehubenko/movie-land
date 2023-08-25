@@ -1,9 +1,6 @@
 package com.tsa.movieland.config;
 
 import com.tsa.movieland.logging.DataRequestInterceptor;
-import com.tsa.movieland.logging.LoginInterceptor;
-import com.tsa.movieland.logging.LogoutInterceptor;
-import com.tsa.movieland.security.service.ActiveUserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +19,6 @@ import java.util.List;
 public class ApplicationConfiguration implements WebMvcConfigurer {
 
     private final DataSource dataSource;
-    private final ActiveUserHolder activeUserHolder;
 
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
@@ -36,8 +32,6 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor());
-        registry.addInterceptor(new LogoutInterceptor());
-        registry.addInterceptor(new DataRequestInterceptor(activeUserHolder));
+        registry.addInterceptor(new DataRequestInterceptor());
     }
 }

@@ -1,6 +1,5 @@
 package com.tsa.movieland.logging;
 
-import com.tsa.movieland.security.service.ActiveUserHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +15,21 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DataRequestInterceptor implements HandlerInterceptor, BaseInterceptor {
+public class DataRequestInterceptor implements HandlerInterceptor {
 
-    private final ActiveUserHolder activeUserHolder;
+    private final static String REQUEST_ID = "requestId";
+    private final static String SPECIFIER = "specifier";
+    private final static String GUEST = "GUEST";
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              @NonNull HttpServletResponse response,
                              @NonNull Object handler) {
-        final String requestURI = request.getRequestURI();
+        MDC.put(REQUEST_ID, UUID.randomUUID().toString());
+        String authHeader = request.getHeader(AUTHORIZATION);
 
-        if (!requestURI.endsWith(LOGIN) && !requestURI.endsWith(LOGOUT)) {
-            MDC.put(REQUEST_ID, UUID.randomUUID().toString());
-            String authHeader = request.getHeader(AUTHORIZATION);
-            if (Objects.nonNull(authHeader)) {
-                final String userEmail = activeUserHolder.getUserEmail(authHeader);
-                MDC.put(SPECIFIER, userEmail);
-            } else {
-                MDC.put(SPECIFIER, GUEST);
-                log.info("Unknown user tried to get access to {}", requestURI);
-            }
+        if (Objects.isNull(authHeader)) {
+            MDC.put(SPECIFIER, GUEST);
         }
         return true;
     }

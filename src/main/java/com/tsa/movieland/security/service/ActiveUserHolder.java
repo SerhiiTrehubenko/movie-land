@@ -16,27 +16,27 @@ public class ActiveUserHolder {
     private final static long LAG_FOR_REGISTRATION_DATE = 1000L;
     private final JwtService jwtService;
 
-    private final Map<String, Date> usersTimeStamps = new ConcurrentHashMap<>();
+    private final Map<String, Date> tokenIssueAtTime = new ConcurrentHashMap<>();
 
     public void add(String email) {
-        usersTimeStamps.put(email, new Date(System.currentTimeMillis() - LAG_FOR_REGISTRATION_DATE));
+        tokenIssueAtTime.put(email, new Date(System.currentTimeMillis() - LAG_FOR_REGISTRATION_DATE));
     }
 
     public void remove(String userEmail) {
-        usersTimeStamps.remove(userEmail);
+        tokenIssueAtTime.remove(userEmail);
     }
 
     public String getUserEmail(String authHeader) {
         String jwtToken = jwtService.getToken(authHeader);
         String userEmail = getEmail(jwtToken);
 
-        if (usersTimeStamps.containsKey(userEmail)) {
+        if (tokenIssueAtTime.containsKey(userEmail)) {
             Date issueAt = jwtService.getIssueAt(jwtToken);
-            if (issueAt.after(usersTimeStamps.get(userEmail))) {
+            if (issueAt.after(tokenIssueAtTime.get(userEmail))) {
                 return userEmail;
             }
         }
-        usersTimeStamps.remove(userEmail);
+        tokenIssueAtTime.remove(userEmail);
         log.info("User [{}] tried to get access with token that was logout", userEmail);
         return null;
     }
@@ -52,7 +52,7 @@ public class ActiveUserHolder {
 
         final String userEmailExpiredToken = jwtService.extractClaim(Claims::getSubject, claims);
         log.info("User [{}] tried to use expired token, as result was removed from active users", userEmailExpiredToken);
-        usersTimeStamps.remove(userEmailExpiredToken);
+        tokenIssueAtTime.remove(userEmailExpiredToken);
 
         return userEmailExpiredToken;
     }

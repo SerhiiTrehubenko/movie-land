@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class MovieController {
 
     private final MovieService movieService;
-    private final PosterService posterService;
 
     @GetMapping()
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
@@ -47,15 +46,13 @@ public class MovieController {
 
     @PostMapping
     public void addMovie(@RequestBody AddUpdateMovieDto movie) {
-        int movieId = movieService.save(movie);
-        posterService.add(movieId, movie.getPicturePath());
+        movieService.save(movie);
         log.info("Query add a movie");
     }
 
     @PutMapping("/{id}")
     public void  updateMovie(@PathVariable("id") int movieId, @RequestBody AddUpdateMovieDto movie) {
         movieService.update(movieId, movie);
-        posterService.update(movieId, movie.getPicturePath());
         log.info("Query update a movie");
     }
 }

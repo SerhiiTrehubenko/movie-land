@@ -44,7 +44,7 @@ public class LoginController {
                 .build();
 
         activeUserHolder.add(userRegistration.getEmail());
-        log.info("Successfully login for user [{}]", user.getEmail());
+        log.info("Successfully login");
         return ResponseEntity.ok().body(getAuthenticationResponse(userRegistration));
     }
 

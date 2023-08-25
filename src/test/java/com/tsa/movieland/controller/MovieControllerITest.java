@@ -120,7 +120,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldReturnMovieByIdPriceUAH() throws Exception {
+    public void shouldReturnMovieByIdPriceUAH() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1112")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -129,7 +129,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldReturnMovieByIdPriceUSD() throws Exception {
+    public void shouldReturnMovieByIdPriceUSD() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1112")
                         .param("currency", "usd")
@@ -139,7 +139,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldReturnMovieByIdPriceEUR() throws Exception {
+    public void shouldReturnMovieByIdPriceEUR() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1112")
                         .param("currency", "eur")
@@ -149,7 +149,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldAddNewMovie() throws Exception {
+    public void shouldAddNewMovie() throws Exception {
         String requestBody =
                         """
                             {
@@ -171,7 +171,7 @@ public class MovieControllerITest extends ControllerBaseTest {
     }
 
     @Test
-    void shouldUpdateNewMovie() throws Exception {
+    public void shouldUpdateNewMovie() throws Exception {
         String requestBody =
                 """
                     {

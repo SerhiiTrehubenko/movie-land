@@ -1,14 +1,16 @@
 spring:
   flyway:
     enabled: true
-    locations: classpath:db.migration #When it is removed flyway does not migrate
+    locations: classpath:db.migration, classpath:db.test #When it is removed flyway does not migrate
     baseline-on-migrate: true
-
+    clean-disabled: false
   datasource:
     username: ${USER_NAME}
     password: ${DB_PASSWORD}
     url: ${DB_URL_DEV}/movie_land_dev
     driver-class-name: org.postgresql.Driver
+  main:
+    lazy-initialization: true
 
 genre:
   refresh-cron: 0 0 */2 * * MON-SUN
@@ -18,8 +20,8 @@ number:
     random: 3
 
 currency:
-  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
-  refresh-cron: 0 30 15 * * MON-SUN
+  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=yyyyMMdd&json
+  refresh-cron: 0 10 0 * * MON-SUN
 
 encoder:
   strength: 11

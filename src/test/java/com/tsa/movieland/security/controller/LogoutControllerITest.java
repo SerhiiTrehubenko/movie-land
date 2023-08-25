@@ -41,9 +41,7 @@ class LogoutControllerITest extends ControllerBaseTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/logout")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value("You was not authorize"));
-
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -53,7 +51,6 @@ class LogoutControllerITest extends ControllerBaseTest {
                         .delete("/logout")
                         .header(AUTHORIZATION, "Bearer: " + token)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value("You was not authorize"));
+                .andExpect(status().isBadRequest());
     }
 }

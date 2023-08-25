@@ -30,15 +30,7 @@ public class CachedGenreDao implements GenreDao {
     }
     @Override
     public Iterable<Genre> findAll() {
-        retryFillCache();
         return new ArrayList<>(genres);
-    }
-//    Only for DBRider, without this method test will fail, hence
-//    DBRider does not fill test-Db with DataSets on @PostConstruct stage
-    void retryFillCache() {
-        if (Objects.isNull(genres) || genres.size() == 0) {
-            fillCache();
-        }
     }
 
     @Override

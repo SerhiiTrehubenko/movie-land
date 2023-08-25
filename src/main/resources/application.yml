@@ -22,8 +22,8 @@ number:
     random: 3
 
 currency:
-  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
-  refresh-cron: 0 35 15 * * MON-SUN
+  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=yyyyMMdd&json
+  refresh-cron: 0 10 0 * * MON-SUN
 
 encoder:
   strength: 11

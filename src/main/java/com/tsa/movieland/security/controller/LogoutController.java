@@ -19,7 +19,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 @Slf4j
 public class LogoutController {
-    private final static String NOT_AUTH = "You was not authorize";
     private final ActiveUserHolder activeUserHolder;
 
     @DeleteMapping
@@ -27,24 +26,23 @@ public class LogoutController {
         String authHeader = request.getHeader(AUTHORIZATION);
 
         if (Objects.isNull(authHeader)) {
-            log.info("Unknown user tried to logout");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(createResponse(NOT_AUTH));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         String userEmail = activeUserHolder.getUserEmail(authHeader);
 
         if (Objects.nonNull(userEmail)) {
-            log.info("Successfully logout for user [{}]", userEmail);
+            log.info("Successfully logout");
             activeUserHolder.remove(userEmail);
-            return ResponseEntity.ok().body(createResponse("You have been successfully logout"));
+            return ResponseEntity.ok().body(createResponse());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(createResponse(NOT_AUTH));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    private AuthenticationResponse createResponse(String message) {
+    private AuthenticationResponse createResponse() {
         return AuthenticationResponse.builder()
-                .response(message)
+                .response("You have been successfully logout")
                 .build();
     }
 }

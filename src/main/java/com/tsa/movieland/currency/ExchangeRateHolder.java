@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class ExchangeNode {
+public class ExchangeRateHolder {
     private int r030;
     private String txt;
     private double rate;
