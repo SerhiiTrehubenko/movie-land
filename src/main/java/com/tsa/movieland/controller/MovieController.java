@@ -1,6 +1,7 @@
 package com.tsa.movieland.controller;
 
 import com.tsa.movieland.common.MovieRequest;
+import com.tsa.movieland.common.RatingRequest;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.MovieFindAllDto;
@@ -54,5 +55,11 @@ public class MovieController {
     public void  updateMovie(@PathVariable("id") int movieId, @RequestBody AddUpdateMovieDto movie) {
         movieService.update(movieId, movie);
         log.info("Query update a movie");
+    }
+
+    @PostMapping("/{movieId}/rate")
+    public void rateMovie(RatingRequest ratingRequest) {
+        movieService.addRating(ratingRequest);
+        log.info("rating was added for movie: [{}]", ratingRequest.getMovieId());
     }
 }

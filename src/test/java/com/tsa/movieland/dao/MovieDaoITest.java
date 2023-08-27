@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.*;
@@ -12,7 +13,7 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MovieDaoITest extends DaoBaseTest {
+public class MovieDaoITest extends CommonContainer {
 
     @Autowired
     MovieDao movieDao;

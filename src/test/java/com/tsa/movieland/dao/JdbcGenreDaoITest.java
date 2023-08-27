@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dao.jdbc.JdbcGenreDao;
 import com.tsa.movieland.entity.Genre;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class JdbcGenreDaoITest extends DaoBaseTest {
+public class JdbcGenreDaoITest extends CommonContainer {
     @Autowired
     private JdbcGenreDao genreDao;
 

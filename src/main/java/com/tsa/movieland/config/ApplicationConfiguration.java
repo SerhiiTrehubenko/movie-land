@@ -1,6 +1,7 @@
 package com.tsa.movieland.config;
 
 import com.tsa.movieland.logging.DataRequestInterceptor;
+import com.tsa.movieland.security.service.ActiveUserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ApplicationConfiguration implements WebMvcConfigurer {
 
     private final DataSource dataSource;
+    private final ActiveUserHolder activeUserHolder;
 
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
@@ -28,6 +30,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new MovieRequestMethodArgumentResolver());
+        resolvers.add(new RatingRequestMethodArgumentResolver(activeUserHolder));
     }
 
     @Override

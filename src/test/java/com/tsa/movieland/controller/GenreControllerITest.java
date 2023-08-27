@@ -1,17 +1,14 @@
 package com.tsa.movieland.controller;
 
-import org.junit.jupiter.api.Disabled;
+import com.tsa.movieland.CommonContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("no-secure")
-@Disabled
-public class GenreControllerITest extends ControllerBaseTest {
+public class GenreControllerITest extends CommonContainer {
 
     @Test
     public void shouldReturnAllGenres() throws Exception {

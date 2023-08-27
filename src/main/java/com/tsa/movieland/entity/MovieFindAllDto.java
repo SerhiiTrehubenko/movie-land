@@ -14,4 +14,8 @@ public class MovieFindAllDto {
     private double rating;
     private double price;
     private List<String> picturePath;
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 }

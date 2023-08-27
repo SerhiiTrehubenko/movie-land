@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.entity.Country;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JdbcCountryDaoITest extends DaoBaseTest {
+public class JdbcCountryDaoITest extends CommonContainer {
 
     @Autowired
     CountryDao countryDao;

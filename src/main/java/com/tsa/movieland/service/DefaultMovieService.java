@@ -16,6 +16,7 @@ import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.*;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -25,15 +26,23 @@ public class DefaultMovieService implements MovieService {
 
     private final MovieDao movieDao;
     private final PosterService posterService;
+    private final RatingService ratingService;
     private final MovieEnrichmentService movieEnrichmentService;
     private final CurrencyExchangeHolder exchangeHolder;
 
     @Override
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
         if (notEmptyMovieRequest(movieRequest)) {
-            return movieDao.findAll(field(movieRequest), direction(movieRequest));
+            Iterable<MovieFindAllDto> movies = movieDao.findAll(field(movieRequest), direction(movieRequest));
+            return refreshAvgRating(movies);
         }
-        return movieDao.findAll();
+
+        return refreshAvgRating(movieDao.findAll());
+    }
+
+    private Iterable<MovieFindAllDto> refreshAvgRating(Iterable<MovieFindAllDto> movies) {
+        StreamSupport.stream(movies.spliterator(), false).forEach(movie -> movie.setRating(ratingService.getAvgRate(movie.getId())));
+        return movies;
     }
 
     private boolean notEmptyMovieRequest(MovieRequest movieRequest) {
@@ -52,7 +61,7 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public Iterable<MovieFindAllDto> findRandom() {
-        return movieDao.findRandom();
+        return refreshAvgRating(movieDao.findRandom());
     }
 
     @Override
@@ -60,7 +69,7 @@ public class DefaultMovieService implements MovieService {
         if (notEmptyMovieRequest(movieRequest)) {
             return movieDao.findByGenreId(genreId, field(movieRequest), direction(movieRequest));
         }
-        return movieDao.findByGenreId(genreId);
+        return refreshAvgRating(movieDao.findByGenreId(genreId));
     }
 
     @Override
@@ -89,8 +98,9 @@ public class DefaultMovieService implements MovieService {
 
     private MovieByIdDto getFromCache(int movieId) {
         SoftReference<MovieByIdDto> movieReference = CACHED_MOVIES.get(movieId);
-        final MovieByIdDto movie = movieReference.get();
+        MovieByIdDto movie = movieReference.get();
         Objects.requireNonNull(movie);
+        movie.setRating(ratingService.getAvgRate(movieId));
         return movie;
     }
 
@@ -129,7 +139,7 @@ public class DefaultMovieService implements MovieService {
         CurrencyType currency = movieRequest.getCurrencyType();
 
         MovieByIdDto movieByIdDto = getEnrichedMovie(movieId);
-
+        movieByIdDto.setRating(ratingService.getAvgRate(movieId));
         addToCache(movieId, movieByIdDto);
 
         return createResponse(currency, movieByIdDto);
@@ -172,5 +182,10 @@ public class DefaultMovieService implements MovieService {
 
     private void removeFromCache(int movieId) {
         CACHED_MOVIES.remove(movieId);
+    }
+
+    @Override
+    public void addRating(RatingRequest ratingRequest) {
+        ratingService.addRating(ratingRequest);
     }
 }
