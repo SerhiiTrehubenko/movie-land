@@ -194,10 +194,6 @@ public class MovieControllerITest extends PostConstructContainer {
     }
 
     @Test
-//    @Disabled
-//    Run test separately from others hence specific of work DBRider,
-//    DBRider does not insert mock data on @PostConstruct stage
-//    this duty fulfils Flyway first mock migration
     void shouldAddNewRatingAndCalculateValidRatingAfterMovieAppearsInMovieCache() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1115")
@@ -224,10 +220,6 @@ public class MovieControllerITest extends PostConstructContainer {
     }
 
     @Test
-//    @Disabled
-//    Run test separately from others hence specific of work DBRider,
-//    DBRider does not insert mock data on @PostConstruct stage
-//    this duty fulfils Flyway first mock migration
     void shouldAddNewRatingAndCalculateValidRatingBeforeMovieAppearsInMovieCache() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/movie/1116/rate")
