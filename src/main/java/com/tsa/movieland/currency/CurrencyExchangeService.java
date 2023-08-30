@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @CurrencyExchange
 @Slf4j
-public class CurrencyExchangeHolder {
+public class CurrencyExchangeService {
     private final static String DATE_FORMAT = "yyyyMMdd";
     private final static RestTemplate REST_TEMPLATE = new RestTemplate();
     @Value("${currency.url}")
@@ -27,6 +28,7 @@ public class CurrencyExchangeHolder {
     private volatile Map<Integer, ExchangeRateHolder> exchangeRates;
     @Scheduled(cron = "${currency.refresh-cron}")
     @PostConstruct
+    @Retryable(retryFor = Exception.class)
     private void init() {
         extractCurrencyRates();
         log.info("Currency exchange refreshed");

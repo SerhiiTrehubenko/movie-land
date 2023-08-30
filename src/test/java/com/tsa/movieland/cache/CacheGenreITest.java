@@ -1,6 +1,5 @@
 package com.tsa.movieland.cache;
 
-import com.tsa.movieland.cache.CachedGenreDao;
 import com.tsa.movieland.dao.DaoBaseTest;
 import com.tsa.movieland.entity.Genre;
 import org.junit.jupiter.api.Disabled;

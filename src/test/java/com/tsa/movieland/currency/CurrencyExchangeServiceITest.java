@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CurrencyExchangeExtractorTest extends DaoBaseTest {
+class CurrencyExchangeServiceITest extends DaoBaseTest {
 
     @Autowired
-    private CurrencyExchangeHolder currencyExchangeHolder;
+    private CurrencyExchangeService currencyExchangeHolder;
 
     @Test
     void shouldReturnCurrencyRates() {

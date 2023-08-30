@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("no-secure")
+@ActiveProfiles({"no-secure", "dev-async"})
 public class MovieControllerITest extends ControllerBaseTest {
 
     @Test
