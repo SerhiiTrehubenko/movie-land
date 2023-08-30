@@ -20,6 +20,9 @@ spring:
 genre:
   refresh-cron: 0 0 */2 * * MON-SUN
 
+ratings:
+  flush-buffer: 0 */5 * * * MON-SUN
+
 number:
   movies:
     random: 3

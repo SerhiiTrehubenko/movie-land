@@ -1,6 +1,6 @@
 package com.tsa.movieland.currency;
 
-import com.tsa.movieland.dao.DaoBaseTest;
+import com.tsa.movieland.CommonContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CurrencyExchangeServiceITest extends DaoBaseTest {
+class CurrencyExchangeExtractorTest extends CommonContainer {
 
     @Autowired
     private CurrencyExchangeService currencyExchangeHolder;

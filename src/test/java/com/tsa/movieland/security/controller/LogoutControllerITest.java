@@ -1,6 +1,6 @@
 package com.tsa.movieland.security.controller;
 
-import com.tsa.movieland.controller.ControllerBaseTest;
+import com.tsa.movieland.SecurityContainer;
 import com.tsa.movieland.service.CredentialsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class LogoutControllerITest extends ControllerBaseTest {
+class LogoutControllerITest extends SecurityContainer {
 
     @Autowired
     private CredentialsService credentialsService;

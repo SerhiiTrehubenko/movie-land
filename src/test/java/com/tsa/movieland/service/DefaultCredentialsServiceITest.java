@@ -1,14 +1,14 @@
 package com.tsa.movieland.service;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.common.Role;
-import com.tsa.movieland.dao.DaoBaseTest;
 import com.tsa.movieland.entity.Credentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DefaultCredentialsServiceITest extends DaoBaseTest {
+class DefaultCredentialsServiceITest extends CommonContainer {
     @Autowired
     DefaultCredentialsService service;
 

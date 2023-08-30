@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dao.jdbc.JdbcPosterDao;
 import com.tsa.movieland.dto.PosterDto;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JdbcPosterDaoTest extends DaoBaseTest {
+class JdbcPosterDaoTest extends CommonContainer {
 
     @Autowired
     JdbcPosterDao posterDao;

@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao;
 
+import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dto.AddReviewRequest;
 import com.tsa.movieland.entity.Review;
 import com.tsa.movieland.dto.UserDto;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JdbcReviewDaoITest extends DaoBaseTest {
+public class JdbcReviewDaoITest extends CommonContainer {
 
     @Autowired
     ReviewDao reviewDao;
