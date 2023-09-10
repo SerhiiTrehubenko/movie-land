@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,34 +20,32 @@ public class JdbcRatingDao implements RatingDao {
     @Override
     public Iterable<AvgRating> fidAllAvgRatingsGroupedMovie() {
         String query = "SELECT movie_id, AVG(movie_raring) avg_rating," +
-                " ARRAY_AGG((SELECT u.user_email FROM users u WHERE u.user_id = mr.user_id)) AS user_emails," +
-                " ARRAY_AGG(movie_raring) AS user_votes FROM movies_ratings mr" +
+                " COUNT(movie_id) AS user_votes FROM movies_ratings" +
                 " GROUP BY movie_id ORDER BY movie_id;";
         return namedParameterJdbcTemplate.query(query, avgRatingDtoMapper);
     }
 
     @Override
-    public void saveBuffer(Set<Map.Entry<String, List<RatingRequest>>> entrySet) {
+    public void saveBuffer(Iterator<RatingRequest> iterator) {
         String query = "INSERT INTO movies_ratings (movie_id, user_id, movie_raring) " +
                 "VALUES (:movieId, (SELECT user_id FROM users where user_email=:userEmail), :rating) " +
                 "ON CONFLICT ON CONSTRAINT compound_id DO UPDATE SET movie_raring = :rating;";
 
-        List<Map<String, Object>> params = new ArrayList<>();
-        entrySet.forEach(entry -> params.addAll(createParams(entry)));
-        @SuppressWarnings("unchecked")
-        Map<String, Object>[] preparedParams = params.toArray(new Map[0]);
+        Map<String, Object>[] preparedParams = getParams(iterator);
 
         namedParameterJdbcTemplate.batchUpdate(query, preparedParams);
     }
 
-    private List<Map<String, Object>> createParams(Map.Entry<String, List<RatingRequest>> entry) {
-        String userEmail = entry.getKey();
-        List<RatingRequest> ratingRequests = entry.getValue();
-        int size = ratingRequests.size();
-        List<Map<String, Object>> params = new ArrayList<>(size);
-        for (RatingRequest movieRequest : ratingRequests) {
-            params.add(Map.of("movieId", movieRequest.getMovieId(), "userEmail", userEmail, "rating", movieRequest.getRating()));
+    private Map<String, Object>[] getParams(Iterator<RatingRequest> iterator) {
+        List<Map<String, Object>> params = new ArrayList<>();
+        while (iterator.hasNext()) {
+            RatingRequest movieRequest = iterator.next();
+            params.add(Map.of("movieId", movieRequest.getMovieId(), "userEmail", movieRequest.getUserEmail(), "rating", movieRequest.getRating()));
+            iterator.remove();
         }
-        return params;
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object>[] preparedParams = params.toArray(new Map[0]);
+        return preparedParams;
     }
 }

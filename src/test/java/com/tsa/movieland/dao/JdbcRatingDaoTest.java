@@ -7,8 +7,9 @@ import com.tsa.movieland.common.AvgRating;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,8 +17,6 @@ class JdbcRatingDaoTest extends CommonContainer {
 
     @Autowired
     private JdbcRatingDao jdbcRatingDao;
-    private final String dennisEmail = "dennis.craig82@example.com";
-    private final String travisEmail = "travis.wright36@example.com";
 
     @Test
     void shouldSaveEntrySetAsRatingsBuffer() {
@@ -26,18 +25,17 @@ class JdbcRatingDaoTest extends CommonContainer {
         int movieId1122 = 21;
         int movieId1123 = 22;
 
-        final List<AvgRating> ratingsBeforeInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
+        List<AvgRating> ratingsBeforeInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
         assertEquals(25, ratingsBeforeInsertion.size());
         assertEquals(8.60, ratingsBeforeInsertion.get(movieId1111).getCurrentAvg());
         assertEquals(7.90, ratingsBeforeInsertion.get(movieId1112).getCurrentAvg());
         assertEquals(7.70, ratingsBeforeInsertion.get(movieId1122).getCurrentAvg());
         assertEquals(7.60, ratingsBeforeInsertion.get(movieId1123).getCurrentAvg());
 
-
-        Map<String, List<RatingRequest>> ratings = Map.of(dennisEmail, ratingsOfDennis(), travisEmail, ratingsOfTravis());
-        jdbcRatingDao.saveBuffer(ratings.entrySet());
-        System.out.println();
-        final List<AvgRating> ratingsAfterInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
+        Set<RatingRequest> ratings = new HashSet<>(ratingsOfDennis());
+        ratings.addAll(ratingsOfTravis());
+        jdbcRatingDao.saveBuffer(ratings.iterator());
+        List<AvgRating> ratingsAfterInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
         assertEquals(25, ratingsAfterInsertion.size());
         assertEquals(6.30, ratingsAfterInsertion.get(movieId1111).getCurrentAvg());
         assertEquals(5.45, ratingsAfterInsertion.get(movieId1112).getCurrentAvg());
@@ -45,7 +43,8 @@ class JdbcRatingDaoTest extends CommonContainer {
         assertEquals(7.30, ratingsAfterInsertion.get(movieId1123).getCurrentAvg());
     }
 
-    List<RatingRequest> ratingsOfDennis() {
+    Set<RatingRequest> ratingsOfDennis() {
+        String dennisEmail = "dennis.craig82@example.com";
         RatingRequest ratingFirst = RatingRequest.builder()
                 .userEmail(dennisEmail)
                 .movieId(1122)
@@ -56,10 +55,11 @@ class JdbcRatingDaoTest extends CommonContainer {
                 .movieId(1123)
                 .rating(7)
                 .build();
-        return List.of(ratingFirst, ratingSecond);
+        return Set.of(ratingFirst, ratingSecond);
     }
 
-    List<RatingRequest> ratingsOfTravis() {
+    Set<RatingRequest> ratingsOfTravis() {
+        String travisEmail = "travis.wright36@example.com";
         RatingRequest ratingFirst = RatingRequest.builder()
                 .userEmail(travisEmail)
                 .movieId(1111)
@@ -70,6 +70,6 @@ class JdbcRatingDaoTest extends CommonContainer {
                 .movieId(1112)
                 .rating(3)
                 .build();
-        return List.of(ratingFirst, ratingSecond);
+        return Set.of(ratingFirst, ratingSecond);
     }
 }

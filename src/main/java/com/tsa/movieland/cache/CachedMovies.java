@@ -10,16 +10,16 @@ import java.util.function.Supplier;
 
 public class CachedMovies {
 
-    private final static Map<Integer, SoftReference<MovieByIdDto>> CACHED_MOVIES = new ConcurrentHashMap<>();
+    private final Map<Integer, SoftReference<MovieByIdDto>> CACHED_MOVIES = new ConcurrentHashMap<>();
 
     public MovieByIdDto getMovie(int movieId, Supplier<MovieByIdDto> supplier) {
-        SoftReference<MovieByIdDto> movie = CACHED_MOVIES.compute(movieId, (id, valueOld) -> {
+        SoftReference<MovieByIdDto> softReferenceMovie = CACHED_MOVIES.compute(movieId, (id, valueOld) -> {
             if (Objects.nonNull(valueOld) && Objects.nonNull(valueOld.get())) {
                 return valueOld;
             }
             return new SoftReference<>(supplier.get());
         });
-        return Objects.requireNonNull(movie.get());
+        return softReferenceMovie.get();
     }
 
     public void removeFromCache(int movieId) {

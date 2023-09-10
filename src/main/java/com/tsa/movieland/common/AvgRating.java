@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Builder
 @Getter
@@ -13,21 +14,20 @@ public class AvgRating {
 
     private int movieId;
     private double currentAvg;
-    private Map<String, Double> userVotes;
+    private int userVotes;
 
-    public void updateAvgRating(String userEmail, double rating) {
-        if (userVotes.containsKey(userEmail) && userVotes.get(userEmail) != rating) {
-            userVotes.put(userEmail, rating);
-            calculateAvg();
-        } else if (!userVotes.containsKey(userEmail)) {
-            userVotes.put(userEmail, rating);
-            calculateAvg();
+    public void updateAvgRating(double rating) {
+        synchronized (this) {
+            double addNewAvrRating = (rating / (userVotes + 1));
+            double decreasePercent = (double) 1 / userVotes;
+            double subtractedAvrRating = currentAvg / (1 + decreasePercent);
+            currentAvg = subtractedAvrRating + addNewAvrRating;
+            userVotes++;
         }
     }
 
-    private void calculateAvg() {
-        Double total = userVotes.values().stream()
-                .reduce(0.0, Double::sum);
-        currentAvg = total / userVotes.size();
+    public double getCurrentAvg() {
+        BigDecimal bigDecimal = new BigDecimal(currentAvg).setScale(2, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
     }
 }
