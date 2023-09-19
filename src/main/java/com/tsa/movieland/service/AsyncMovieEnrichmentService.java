@@ -1,9 +1,9 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.common.AsyncExecutor;
+import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.entity.Review;
 import com.tsa.movieland.exception.MovieEnrichmentException;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +31,12 @@ public class AsyncMovieEnrichmentService implements MovieEnrichmentService {
     public MovieByIdDto enrich(int movieId, Supplier<MovieByIdDto> supplier) {
         CompletableFuture<MovieByIdDto> movieTask = asyncExecutor.executeTask(supplier);
         CompletableFuture<Iterable<Country>> countriesTask = asyncExecutor.executeTask(() -> countryService.findByMovieId(movieId));
-        CompletableFuture<Iterable<Genre>> genresTask = asyncExecutor.executeTask(() -> genreService.findByMovieId(movieId));
+        CompletableFuture<Iterable<GenreDto>> genresTask = asyncExecutor.executeTask(() -> genreService.findByMovieId(movieId));
         CompletableFuture<Iterable<Review>> reviewsTask = asyncExecutor.executeTask(() -> reviewService.findByMovieId(movieId));
 
         MovieByIdDto movie = getMovieResult(movieTask);
         movie.setCountries(getResult(countriesTask, Country.class));
-        movie.setGenres(getResult(genresTask, Genre.class));
+        movie.setGenres(getResult(genresTask, GenreDto.class));
         movie.setReviews(getResult(reviewsTask, Review.class));
 
         return movie;

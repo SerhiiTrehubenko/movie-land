@@ -1,7 +1,6 @@
 package com.tsa.movieland.dto;
 
 import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.entity.Review;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +23,6 @@ public class MovieByIdDto {
     private double price;
     private List<String> picturePath;
     private Iterable<Country> countries;
-    private Iterable<Genre> genres;
+    private Iterable<GenreDto> genres;
     private Iterable<Review> reviews;
 }

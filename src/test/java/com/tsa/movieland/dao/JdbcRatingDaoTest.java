@@ -2,7 +2,6 @@ package com.tsa.movieland.dao;
 
 import com.tsa.movieland.common.RatingRequest;
 import com.tsa.movieland.CommonContainer;
-import com.tsa.movieland.dao.jdbc.JdbcRatingDao;
 import com.tsa.movieland.common.AvgRating;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JdbcRatingDaoTest extends CommonContainer {
 
     @Autowired
-    private JdbcRatingDao jdbcRatingDao;
+    private RatingDao jdbcRatingDao;
 
     @Test
     void shouldSaveEntrySetAsRatingsBuffer() {
@@ -43,7 +42,7 @@ class JdbcRatingDaoTest extends CommonContainer {
         assertEquals(7.30, ratingsAfterInsertion.get(movieId1123).getCurrentAvg());
     }
 
-    Set<RatingRequest> ratingsOfDennis() {
+    private Set<RatingRequest> ratingsOfDennis() {
         String dennisEmail = "dennis.craig82@example.com";
         RatingRequest ratingFirst = RatingRequest.builder()
                 .userEmail(dennisEmail)
@@ -58,7 +57,7 @@ class JdbcRatingDaoTest extends CommonContainer {
         return Set.of(ratingFirst, ratingSecond);
     }
 
-    Set<RatingRequest> ratingsOfTravis() {
+    private Set<RatingRequest> ratingsOfTravis() {
         String travisEmail = "travis.wright36@example.com";
         RatingRequest ratingFirst = RatingRequest.builder()
                 .userEmail(travisEmail)

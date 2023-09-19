@@ -38,7 +38,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 )
 @Testcontainers
 @SpringBootTest
-@ActiveProfiles(value = {"test"})
+@ActiveProfiles(value = {"test", "prod-jpa", "dev-threads"})
 @AutoConfigureMockMvc
 public class SecurityContainer {
 

@@ -3,12 +3,14 @@ package com.tsa.movieland.dao.jdbc.mapper;
 import com.tsa.movieland.common.Role;
 import com.tsa.movieland.context.JdbcMapper;
 import com.tsa.movieland.entity.Credentials;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @JdbcMapper
+@Profile("prod-jpa")
 public class CredentialMapper implements RowMapper<Credentials> {
     @Override
     public Credentials mapRow(ResultSet rs, int rowNum) throws SQLException {

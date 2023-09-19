@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao.jdbc;
 
+import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.PosterDao;
 import com.tsa.movieland.dao.jdbc.mapper.PosterMapper;
 import com.tsa.movieland.dao.jdbc.mapper.PosterUpdateMapper;
@@ -7,13 +8,12 @@ import com.tsa.movieland.dto.PosterDto;
 import com.tsa.movieland.entity.PosterUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
-@Repository
 @RequiredArgsConstructor
+@JdbcDao
 public class JdbcPosterDao implements PosterDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -39,12 +39,12 @@ public class JdbcPosterDao implements PosterDao {
         }
 
         String path = pathWithOrderNumber[0].trim();
-        int OrderNumber = Integer.parseInt(pathWithOrderNumber[1].trim());
+        int orderNumber = Integer.parseInt(pathWithOrderNumber[1].trim());
 
         String findPosters = "SELECT movie_id, poster_link, poster_record_time FROM posters where movie_id = :id ORDER BY poster_record_time";
         List<PosterUpdate> foundPosters = namedParameterJdbcTemplate.query(findPosters, Map.of("id", movieId), posterUpdateMapper);
 
-        PosterUpdate posterUpdate = foundPosters.get(OrderNumber);
+        PosterUpdate posterUpdate = foundPosters.get(orderNumber);
         posterUpdate.setLink(path);
 
         String updateQuery = "UPDATE posters SET poster_link = :link WHERE movie_id = :id AND poster_record_time = :time";

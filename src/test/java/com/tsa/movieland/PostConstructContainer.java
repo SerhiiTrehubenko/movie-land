@@ -2,6 +2,7 @@ package com.tsa.movieland;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -26,6 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
                 "ALTER SEQUENCE IF EXISTS movies_id RESTART WITH 1126;"
         }
 )
+@ActiveProfiles({"dev-async", "prod-jpa"})
 public abstract class PostConstructContainer extends BaseTest {
     private static final PostgreSQLContainer<?> POSTGRES_SQL_CONTAINER;
 

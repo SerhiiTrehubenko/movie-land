@@ -9,31 +9,12 @@ spring:
     password: ${DB_PASSWORD}
     url: ${DB_URL_DEV}/movie_land_dev
     driver-class-name: org.postgresql.Driver
-  main:
-    lazy-initialization: true
-
-genre:
-  refresh-cron: 0 0 */2 * * MON-SUN
-
-ratings:
-  flush-buffer: 0 */5 * * * MON-SUN
-
-number:
-  movies:
-    random: 3
-
-currency:
-  url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=yyyyMMdd&json
-  refresh-cron: 0 10 0 * * MON-SUN
-
-encoder:
-  strength: 11
-
-token:
-  time:
-    unit: HOURS
-  expiration:
-    period: 2
+#  main:
+#    lazy-initialization: true
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
 
 logging:
   level:

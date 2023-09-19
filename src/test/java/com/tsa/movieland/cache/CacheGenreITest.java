@@ -1,7 +1,7 @@
 package com.tsa.movieland.cache;
 
 import com.tsa.movieland.PostConstructContainer;
-import com.tsa.movieland.entity.Genre;
+import com.tsa.movieland.entity.GenreEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +17,7 @@ public class CacheGenreITest extends PostConstructContainer {
 
     @Test
     void shouldFillCacheWithGenresNames() {
-        Iterable<Genre> genres = cachedGenreDao.findAll();
+        Iterable<GenreEntity> genres = cachedGenreDao.findAll();
 
         assertNotNull(genres);
         long genreNamesNumber = StreamSupport.stream(genres.spliterator(), false).count();

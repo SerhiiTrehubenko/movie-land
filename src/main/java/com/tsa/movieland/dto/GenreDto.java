@@ -1,17 +1,16 @@
-package com.tsa.movieland.entity;
+package com.tsa.movieland.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Builder
 @Getter
-@ToString
-public class Genre {
-    private final int id;
-    private final String name;
+public class GenreDto {
+
+    private Integer id;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
@@ -19,7 +18,7 @@ public class Genre {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Genre genre = (Genre) o;
+        GenreDto genre = (GenreDto) o;
 
         return new EqualsBuilder().append(id, genre.id).append(name, genre.name).isEquals();
     }

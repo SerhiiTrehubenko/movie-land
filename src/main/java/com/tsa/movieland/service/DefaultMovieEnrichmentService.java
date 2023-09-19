@@ -1,8 +1,8 @@
 package com.tsa.movieland.service;
 
+import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.entity.Review;
 import com.tsa.movieland.exception.MovieEnrichmentException;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class DefaultMovieEnrichmentService implements MovieEnrichmentService {
 
         Future<MovieByIdDto> movieResult = threadPool.submit(movieSupplier::get);
         Future<Iterable<Country>> countryResult = threadPool.submit(() -> getTaskResult(() -> countryService.findByMovieId(movieId), Country.class));
-        Future<Iterable<Genre>> genresResult = threadPool.submit(() -> getTaskResult(() -> genreService.findByMovieId(movieId), Genre.class));
+        Future<Iterable<GenreDto>> genresResult = threadPool.submit(() -> getTaskResult(() -> genreService.findByMovieId(movieId), GenreDto.class));
         Future<Iterable<Review>> reviewResult = threadPool.submit(() -> getTaskResult(() -> reviewService.findByMovieId(movieId), Review.class));
 
         MovieByIdDto foundMovie = getMovieResult(movieResult);

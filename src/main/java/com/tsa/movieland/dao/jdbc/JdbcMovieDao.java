@@ -1,5 +1,6 @@
 package com.tsa.movieland.dao.jdbc;
 
+import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.dao.jdbc.mapper.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
@@ -13,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,8 +21,8 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.function.Supplier;
 
-@Repository
 @RequiredArgsConstructor
+@JdbcDao
 public class JdbcMovieDao implements MovieDao {
     private final static String ID = "movieId";
     private final static String FIND_ALL = "SELECT movie_id, movie_rus_name, movie_native_name, movie_release_year, " +

@@ -1,6 +1,6 @@
 package com.tsa.movieland.controller;
 
-import com.tsa.movieland.entity.Genre;
+import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.service.GenreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ public class GenreController {
     }
 
     @GetMapping("/genre")
-    public Iterable<Genre> findAll() {
+    public Iterable<GenreDto> findAll() {
         log.info("Query get all genres");
         return genreService.findAll();
     }

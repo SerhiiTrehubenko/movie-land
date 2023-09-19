@@ -3,14 +3,12 @@ package com.tsa.movieland.controller;
 import com.tsa.movieland.PostConstructContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles({"no-secure", "dev-async"})
 public class MovieControllerITest extends PostConstructContainer {
 
     @Test
@@ -23,7 +21,7 @@ public class MovieControllerITest extends PostConstructContainer {
     }
 
     @Test
-    void shouldReturnRandomNumberMovies() throws Exception {
+    public void shouldReturnRandomNumberMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/random")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -126,7 +124,7 @@ public class MovieControllerITest extends PostConstructContainer {
                         .get("/movie/1112")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(150.0));
+                .andExpect(content().json(getContent("mock/movie-by-id.json"), true));
     }
 
     @Test
@@ -194,7 +192,7 @@ public class MovieControllerITest extends PostConstructContainer {
     }
 
     @Test
-    void shouldAddNewRatingAndCalculateValidRatingAfterMovieAppearsInMovieCache() throws Exception {
+    public void shouldAddNewRatingAndCalculateValidRatingAfterMovieAppearsInMovieCache() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/movie/1115")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -220,7 +218,7 @@ public class MovieControllerITest extends PostConstructContainer {
     }
 
     @Test
-    void shouldAddNewRatingAndCalculateValidRatingBeforeMovieAppearsInMovieCache() throws Exception {
+    public void shouldAddNewRatingAndCalculateValidRatingBeforeMovieAppearsInMovieCache() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/movie/1116/rate")
                         .content("""

@@ -12,12 +12,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultMovieService implements MovieService {
+    private final static Comparator<MovieFindAllDto> COMPARATOR_BY_RATING = Comparator.comparing(MovieFindAllDto::getRating);
+    private final static Comparator<MovieFindAllDto> COMPARATOR_BY_PRICE = Comparator.comparing(MovieFindAllDto::getPrice);
     private final static CachedMovies CACHED_MOVIES = new CachedMovies();
 
     private final MovieDao movieDao;
@@ -29,8 +34,7 @@ public class DefaultMovieService implements MovieService {
     @Override
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
         if (notEmptyMovieRequest(movieRequest)) {
-            Iterable<MovieFindAllDto> movies = movieDao.findAll(field(movieRequest), direction(movieRequest));
-            return refreshAvgRating(movies);
+            return movieDao.findAll(field(movieRequest), direction(movieRequest));
         }
 
         return refreshAvgRating(movieDao.findAll());
@@ -61,11 +65,37 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest) {
+        List<MovieFindAllDto> moviesByGenreId = new ArrayList<>((List<MovieFindAllDto>) movieDao.findByGenreId(genreId));
+        refreshAvgRating(moviesByGenreId);
         if (notEmptyMovieRequest(movieRequest)) {
-            return movieDao.findByGenreId(genreId, field(movieRequest), direction(movieRequest));
+            if (field(movieRequest).equalsIgnoreCase(SortField.PRICE.getColumnName())) {
+                return sortByPrice(moviesByGenreId, direction(movieRequest));
+            }
+            if (field(movieRequest).equalsIgnoreCase(SortField.RATING.getColumnName())) {
+                return sortByRating(moviesByGenreId, direction(movieRequest));
+            }
         }
-        return refreshAvgRating(movieDao.findByGenreId(genreId));
+        return moviesByGenreId;
+    }
+
+    private List<MovieFindAllDto> sortByRating(List<MovieFindAllDto> movies, String order) {
+        if (order.equalsIgnoreCase("asc")) {
+            movies.sort(COMPARATOR_BY_RATING);
+        } else {
+            movies.sort(COMPARATOR_BY_RATING.reversed());
+        }
+        return movies;
+    }
+
+    private List<MovieFindAllDto> sortByPrice(List<MovieFindAllDto> movies, String order) {
+        if (order.equalsIgnoreCase("asc")) {
+            movies.sort(COMPARATOR_BY_PRICE);
+        } else {
+            movies.sort(COMPARATOR_BY_PRICE.reversed());
+        }
+        return  movies;
     }
 
     @Override

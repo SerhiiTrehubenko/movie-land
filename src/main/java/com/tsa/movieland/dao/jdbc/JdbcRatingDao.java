@@ -1,17 +1,17 @@
 package com.tsa.movieland.dao.jdbc;
 
 import com.tsa.movieland.common.RatingRequest;
+import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.RatingDao;
 import com.tsa.movieland.dao.jdbc.mapper.AvgRatingMapper;
 import com.tsa.movieland.common.AvgRating;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
 @RequiredArgsConstructor
+@JdbcDao
 public class JdbcRatingDao implements RatingDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;

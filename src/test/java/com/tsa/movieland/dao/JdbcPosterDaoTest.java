@@ -1,7 +1,6 @@
 package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
-import com.tsa.movieland.dao.jdbc.JdbcPosterDao;
 import com.tsa.movieland.dto.PosterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JdbcPosterDaoTest extends CommonContainer {
 
     @Autowired
-    JdbcPosterDao posterDao;
+    PosterDao posterDao;
 
     @Test
     void shouldSavePoster() {
@@ -62,7 +61,7 @@ class JdbcPosterDaoTest extends CommonContainer {
         assertEquals(2, posterDtos.size());
         assertNotEquals(oldPosterLinkFirst, posterDtos.get(0).getLink());
 
-        assertEquals(newPoster, posterDtos.get(0).getLink());
-        assertEquals(newPosterLinkSecond, posterDtos.get(1).getLink());
+        assertEquals(newPosterLinkSecond, posterDtos.get(0).getLink());
+        assertEquals(newPoster, posterDtos.get(1).getLink());
     }
 }

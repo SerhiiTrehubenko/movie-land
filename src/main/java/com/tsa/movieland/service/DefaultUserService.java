@@ -1,7 +1,6 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.UserDao;
-import com.tsa.movieland.entity.Credentials;
 import com.tsa.movieland.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import java.util.Objects;
 public class DefaultUserService implements UserService, UserDetailsService {
 
     private final UserDao userDao;
-    private final CredentialsService credentialsService;
 
     @Override
     public User getUserByEmail(String email) {
@@ -24,8 +22,6 @@ public class DefaultUserService implements UserService, UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("User with email:[%s] was not found".formatted(email));
         }
-        final Credentials credentials = credentialsService.getCredentialsByUserId(user.getId());
-        user.setCredentials(credentials);
         return user;
     }
 

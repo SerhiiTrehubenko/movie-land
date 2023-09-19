@@ -43,7 +43,7 @@ public class JdbcReviewDaoITest extends CommonContainer {
         final List<Review> reviews = (List<Review>) reviewDao.findByMovieId(movieId);
         assertEquals(2, reviews.size());
 
-        assertEquals(textTest, reviews.get(0).getText());
-        assertEquals(existedText, reviews.get(1).getText());
+        assertEquals(existedText, reviews.get(0).getText());
+        assertEquals(textTest, reviews.get(1).getText());
     }
 }

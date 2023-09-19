@@ -1,17 +1,17 @@
 package com.tsa.movieland.dao.jdbc;
 
+import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.ReviewDao;
 import com.tsa.movieland.dao.jdbc.mapper.ReviewUserMapper;
 import com.tsa.movieland.dto.AddReviewRequest;
 import com.tsa.movieland.entity.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
-@Repository
 @RequiredArgsConstructor
+@JdbcDao
 public class JdbcReviewDao implements ReviewDao {
 
     private final ReviewUserMapper reviewUserMapper;

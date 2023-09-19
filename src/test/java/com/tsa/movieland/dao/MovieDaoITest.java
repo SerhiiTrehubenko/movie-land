@@ -6,6 +6,7 @@ import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -13,6 +14,7 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@ActiveProfiles("dev-async")
 public class MovieDaoITest extends CommonContainer {
 
     @Autowired
@@ -106,7 +108,7 @@ public class MovieDaoITest extends CommonContainer {
         assertEquals(502, countries.get(1).getId());
         assertEquals("Франция", countries.get(1).getName());
 
-        final List<Genre> genres = (List<Genre>) genreDao.findByMovieId(movieId);
+        final List<GenreEntity> genres = (List<GenreEntity>) genreDao.findByMovieId(movieId);
         assertEquals(1, genres.get(0).getId());
         assertEquals("драма", genres.get(0).getName());
         assertEquals(2, genres.get(1).getId());
@@ -158,7 +160,7 @@ public class MovieDaoITest extends CommonContainer {
         assertEquals(countriesToUpdate.get(0), updatedCountries.get(0).getId());
         assertEquals(countriesToUpdate.get(1), updatedCountries.get(1).getId());
 
-        final List<Genre> updatedGenres = (List<Genre>) genreDao.findByMovieId(idExistMovie);
+        final List<GenreEntity> updatedGenres = (List<GenreEntity>) genreDao.findByMovieId(idExistMovie);
         assertEquals(genresToUpdate.get(0), updatedGenres.get(0).getId());
         assertEquals(genresToUpdate.get(1), updatedGenres.get(1).getId());
         assertEquals(genresToUpdate.get(2), updatedGenres.get(2).getId());

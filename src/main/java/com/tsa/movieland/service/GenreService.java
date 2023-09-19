@@ -1,9 +1,9 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.entity.Genre;
+import com.tsa.movieland.dto.GenreDto;
 
 public interface GenreService {
-    Iterable<Genre> findAll();
+    Iterable<GenreDto> findAll();
 
-    Iterable<Genre> findByMovieId(int movieId);
+    Iterable<GenreDto> findByMovieId(int movieId);
 }

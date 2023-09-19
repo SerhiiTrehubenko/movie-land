@@ -1,16 +1,16 @@
 package com.tsa.movieland.dao.jdbc;
 
+import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.UserCredentialsDao;
 import com.tsa.movieland.dao.jdbc.mapper.CredentialMapper;
 import com.tsa.movieland.entity.Credentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
-@Repository
 @RequiredArgsConstructor
+@JdbcDao
 public class JdbcUserCredentialsDao implements UserCredentialsDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;

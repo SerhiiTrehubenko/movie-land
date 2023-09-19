@@ -2,6 +2,7 @@ package com.tsa.movieland;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -27,6 +28,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
         }
 )
 @Testcontainers
+@ActiveProfiles({"prod-jpa", "dev-async"})
 public abstract class CommonContainer extends BaseTest {
 
     private static final PostgreSQLContainer<?> POSTGRES_SQL_CONTAINER;

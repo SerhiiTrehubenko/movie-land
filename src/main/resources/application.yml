@@ -14,8 +14,15 @@ spring:
     url: ${DB_URL}/movie_land
     driver-class-name: org.postgresql.Driver
 
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+        order_updates: true
+
   profiles:
-    active: dev-threads
+    active: dev-threads, prod-jpa
 
 genre:
   refresh-cron: 0 0 */2 * * MON-SUN
