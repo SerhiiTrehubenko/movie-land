@@ -22,7 +22,7 @@ spring:
         order_updates: true
 
   profiles:
-    active: dev-threads, prod-jpa
+    active: dev-async, prod-jpa
 
 genre:
   refresh-cron: 0 0 */2 * * MON-SUN

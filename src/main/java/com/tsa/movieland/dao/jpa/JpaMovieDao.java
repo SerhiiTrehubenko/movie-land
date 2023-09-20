@@ -60,7 +60,7 @@ public class JpaMovieDao implements MovieDao {
     @Transactional
     public Iterable<MovieFindAllDto> findRandom() {
         MovieRepository.Ids idBounds = movieRepository.findMinMaxId();
-        Random random = new Random(47);
+        Random random = new Random();
         List<Integer> moviesId = random.ints(5, idBounds.getMinId(), idBounds.getMaxId()).distinct().limit(randomQuantity).boxed().toList();
 
         return movieRepository.findAllById(moviesId).stream()

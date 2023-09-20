@@ -6,6 +6,7 @@ import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.dto.CountryDto;
 import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.exception.MovieEnrichmentException;
+import com.tsa.movieland.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Objects;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
@@ -45,8 +49,12 @@ public class AsyncMovieEnrichmentService implements MovieEnrichmentService {
     private MovieByIdDto getMovieResult(Future<MovieByIdDto> task) {
         try {
             return task.get();
-        } catch (Exception e) {
-            throw new MovieEnrichmentException("During execution a fetching MovieDto task occurred an Exception: [%s]".formatted(e.getClass().getCanonicalName()));
+        } catch (InterruptedException | CancellationException | ExecutionException e) {
+            final Throwable cause = e.getCause();
+            if (Objects.nonNull(cause) && MovieNotFoundException.class.isAssignableFrom(cause.getClass())) {
+                throw (MovieNotFoundException) cause;
+            }
+            throw new MovieEnrichmentException("During execution a fetching MovieDto task occurred an Exception: [%s]".formatted(e.getMessage()));
         }
     }
 

@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 public class ErrorHandler {
 
@@ -33,5 +35,14 @@ public class ErrorHandler {
                 .message(e.getMessage())
                 .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<ErrorMessage> movieEnrichmentException(SQLException e) {
+        return new ResponseEntity<>(ErrorMessage.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .message(e.getMessage())
+                .build(),
+                HttpStatus.BAD_REQUEST);
     }
 }
