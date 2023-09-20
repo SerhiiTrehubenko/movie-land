@@ -1,10 +1,10 @@
 package com.tsa.movieland.mapper;
 
 import com.tsa.movieland.dto.GenreDto;
-import com.tsa.movieland.entity.GenreEntity;
+import com.tsa.movieland.entity.Genre;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface GenreMapper {
-    GenreDto toGenreDto(GenreEntity genre);
+    GenreDto toGenreDto(Genre genre);
 }

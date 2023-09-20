@@ -1,4 +1,4 @@
-package com.tsa.movieland.entity;
+package com.tsa.movieland.dto;
 
 import lombok.Builder;
 import lombok.Getter;

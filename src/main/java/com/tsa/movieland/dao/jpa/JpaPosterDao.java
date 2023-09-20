@@ -3,7 +3,7 @@ package com.tsa.movieland.dao.jpa;
 import com.tsa.movieland.context.JpaDao;
 import com.tsa.movieland.dao.PosterDao;
 import com.tsa.movieland.dto.PosterDto;
-import com.tsa.movieland.entity.PosterEntity;
+import com.tsa.movieland.entity.Poster;
 import com.tsa.movieland.mapper.PosterMapper;
 import com.tsa.movieland.repository.PosterRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class JpaPosterDao implements PosterDao {
 
     @Override
     public void add(int movieId, String posterLink) {
-        PosterEntity poster = getPoster(movieId, posterLink);
+        Poster poster = getPoster(movieId, posterLink);
         posterRepository.save(poster);
     }
 
-    private PosterEntity getPoster(int movieId, String posterLink) {
-        return PosterEntity.builder()
+    private Poster getPoster(int movieId, String posterLink) {
+        return Poster.builder()
                 .movieId(movieId)
                 .link(posterLink)
                 .recordTime(new Timestamp(System.currentTimeMillis()))
@@ -34,7 +34,7 @@ public class JpaPosterDao implements PosterDao {
 
     @Override
     public Iterable<PosterDto> findPosterByMovieId(int movieId) {
-        final List<PosterEntity> allByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
+        final List<Poster> allByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
         return allByMovieId
                 .stream().map(posterMapper::toPosterDto).toList();
     }
@@ -49,8 +49,8 @@ public class JpaPosterDao implements PosterDao {
         String path = pathWithOrderNumber[0].trim();
         int orderNumber = Integer.parseInt(pathWithOrderNumber[1].trim());
 
-        List<PosterEntity> allByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
-        PosterEntity posterEntity = allByMovieId.get(orderNumber);
+        List<Poster> allByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
+        Poster posterEntity = allByMovieId.get(orderNumber);
         posterRepository.delete(posterEntity);
 
         posterRepository.save(getPoster(movieId, path));

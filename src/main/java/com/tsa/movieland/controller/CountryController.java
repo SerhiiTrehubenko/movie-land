@@ -1,6 +1,6 @@
 package com.tsa.movieland.controller;
 
-import com.tsa.movieland.entity.Country;
+import com.tsa.movieland.dto.CountryDto;
 import com.tsa.movieland.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,8 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping
-    public Iterable<Country> getAllCountries() {
-        Iterable<Country> countries = countryService.findAll();
+    public Iterable<CountryDto> getAllCountries() {
+        Iterable<CountryDto> countries = countryService.findAll();
         log.info("Query get all Countries");
         return countries;
     }

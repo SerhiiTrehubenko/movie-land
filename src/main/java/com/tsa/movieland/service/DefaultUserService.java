@@ -1,7 +1,7 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.UserDao;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

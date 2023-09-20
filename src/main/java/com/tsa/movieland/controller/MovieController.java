@@ -4,7 +4,7 @@ import com.tsa.movieland.common.MovieRequest;
 import com.tsa.movieland.common.RatingRequest;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import com.tsa.movieland.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.tsa.movieland.common;
 
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 
 import java.util.Comparator;
 import java.util.List;

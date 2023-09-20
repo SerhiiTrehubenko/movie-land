@@ -1,20 +1,20 @@
 package com.tsa.movieland.dao.jdbc.mapper;
 
 import com.tsa.movieland.context.JdbcMapper;
-import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.dto.MovieDto;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @JdbcMapper
-public class MovieMapper implements ResultSetExtractor<Movie> {
+public class MovieMapper implements ResultSetExtractor<MovieDto> {
     @Override
-    public Movie extractData(ResultSet rs) throws SQLException {
+    public MovieDto extractData(ResultSet rs) throws SQLException {
         if (!rs.next()) {
             return null;
         }
-        return Movie.builder()
+        return MovieDto.builder()
                 .id(rs.getInt("movie_id"))
                 .nameRussian(rs.getString("movie_rus_name"))
                 .nameNative(rs.getString("movie_native_name"))

@@ -6,8 +6,8 @@ import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.dto.UserDto;
-import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.exception.MovieEnrichmentException;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
@@ -25,10 +25,10 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
     private final int movieId = 1112;
     private final String expectedDescription = "Молодые влюбленные Джек и Роза находят друг друга в первом и последнем плавании «непотопляемого» Титаника. Они не могли знать, что шикарный лайнер столкнется с айсбергом в холодных водах Северной Атлантики, и их страстная любовь превратится в схватку со смертью…";
     private final List<String> expectedPicturePath = List.of(" https://images-na.ssl-images-amazon.com/images/M/MV5BMDdmZGU3NDQtY2E5My00ZTliLWIzOTUtMTY4ZGI1YjdiNjk3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1._SY209_CR0,0,140,209_.jpg");
-    private final List<Country> expectedCountries = List.of(Country.builder().id(501).name("США").build());
+    private final List<CountryDto> expectedCountries = List.of(CountryDto.builder().id(501).name("США").build());
     private final List<GenreDto> expectedGenres = List.of(GenreDto.builder().id(1).name("драма").build(),
             GenreDto.builder().id(5).name("мелодрама").build());
-    private final List<Review> expectedReviews = List.of(Review.builder().user(UserDto.builder().id(1000010).nickname("tommy").build())
+    private final List<ReviewDto> expectedReviews = List.of(ReviewDto.builder().user(UserDto.builder().id(1000010).nickname("tommy").build())
             .text("В итоге мы имеем отличный представитель своего жанра, который прошёл проверку временем и до сих пор отлично смотрится, несмотря на классический сюжет").build());
 
     @Autowired
@@ -71,7 +71,7 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
 
     @Test
     void shouldReturnPartiallyFilledMovieWhenTaskOfFetchingContentLongerFiveSecond() {
-        when(countryDao.findByMovieId(movieId)).thenAnswer((Answer<Iterable<Country>>) invoke -> getCountriesWithTimeOut());
+        when(countryDao.findByMovieId(movieId)).thenAnswer((Answer<Iterable<CountryDto>>) invoke -> getCountriesWithTimeOut());
 
         MovieByIdDto movieByIdDto = service.enrich(movieId, () -> movieDao.findById(movieId));
 
@@ -89,7 +89,7 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
         assertIterableEquals(expectedReviews, movieByIdDto.getReviews());
     }
 
-    private Iterable<Country> getCountriesWithTimeOut() {
+    private Iterable<CountryDto> getCountriesWithTimeOut() {
         sleep(6000);
         return countryDao.findByMovieId(movieId);
     }

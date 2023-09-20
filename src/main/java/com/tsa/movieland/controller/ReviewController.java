@@ -1,7 +1,7 @@
 package com.tsa.movieland.controller;
 
 import com.tsa.movieland.dto.AddReviewRequest;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import com.tsa.movieland.security.service.ActiveUserHolder;
 import com.tsa.movieland.service.ReviewService;
 import com.tsa.movieland.service.UserService;

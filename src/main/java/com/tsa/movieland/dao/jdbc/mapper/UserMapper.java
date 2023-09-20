@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao.jdbc.mapper;
 
 import com.tsa.movieland.context.JdbcMapper;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

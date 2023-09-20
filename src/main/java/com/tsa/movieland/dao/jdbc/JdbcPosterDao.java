@@ -5,7 +5,7 @@ import com.tsa.movieland.dao.PosterDao;
 import com.tsa.movieland.dao.jdbc.mapper.PosterMapper;
 import com.tsa.movieland.dao.jdbc.mapper.PosterUpdateMapper;
 import com.tsa.movieland.dto.PosterDto;
-import com.tsa.movieland.entity.PosterUpdate;
+import com.tsa.movieland.dto.PosterUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 

@@ -14,8 +14,8 @@ import java.util.Objects;
 @Table(name = "posters")
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(PosterEntity.PrimaryKey.class)
-public class PosterEntity {
+@IdClass(Poster.PrimaryKey.class)
+public class Poster {
 
     @Id
     @Column(name = "movie_id")
@@ -34,7 +34,7 @@ public class PosterEntity {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            PosterEntity.PrimaryKey that = (PosterEntity.PrimaryKey) o;
+            Poster.PrimaryKey that = (Poster.PrimaryKey) o;
             return movieId == that.movieId && link == that.link;
         }
 

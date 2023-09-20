@@ -2,7 +2,7 @@ package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dto.AddReviewRequest;
-import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class JdbcReviewDaoITest extends CommonContainer {
 
     @Test
     void shouldReturnReviewsByMovieId() {
-        List<Review> reviews = (List<Review>) reviewDao.findByMovieId(1121);
+        List<ReviewDto> reviews = (List<ReviewDto>) reviewDao.findByMovieId(1121);
         assertEquals(1, reviews.size());
         assertEquals("Для воскресного вечернего просмотра подходит по всем критериям.",
                 reviews.get(0).getText());
@@ -40,7 +40,7 @@ public class JdbcReviewDaoITest extends CommonContainer {
 
         reviewDao.save(userId, reviewTest);
 
-        final List<Review> reviews = (List<Review>) reviewDao.findByMovieId(movieId);
+        final List<ReviewDto> reviews = (List<ReviewDto>) reviewDao.findByMovieId(movieId);
         assertEquals(2, reviews.size());
 
         assertEquals(existedText, reviews.get(0).getText());

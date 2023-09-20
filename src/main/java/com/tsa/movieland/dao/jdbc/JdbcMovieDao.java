@@ -5,8 +5,8 @@ import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.dao.jdbc.mapper.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Movie;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -145,9 +145,9 @@ public class JdbcMovieDao implements MovieDao {
     public void update(int movieId, AddUpdateMovieDto movie) {
         String queryFindMovieById = "SELECT movie_id, movie_rus_name, movie_native_name, movie_release_year, movie_description, movie_price FROM movies WHERE movie_id = :movieId;";
         String queryUpdate = "UPDATE movies SET movie_rus_name = :rusName, movie_native_name = :nativeName, movie_release_year = :releaseYear, movie_description = :description, movie_price = :price WHERE movie_id = :movieId";
-        Movie foundMovie = namedParameterJdbcTemplate.query(queryFindMovieById, Map.of(ID, movieId), movieMapper);
+        MovieDto foundMovie = namedParameterJdbcTemplate.query(queryFindMovieById, Map.of(ID, movieId), movieMapper);
         if (Objects.isNull(foundMovie)) {
-            throw new RuntimeException("Movie with id: [%s] was not found".formatted(movie));
+            throw new RuntimeException("MovieDto with id: [%s] was not found".formatted(movie));
         }
         refresh(foundMovie, movie);
         Map<String, Object> paramUpdate = createUpdateParams(movieId, movie);
@@ -187,7 +187,7 @@ public class JdbcMovieDao implements MovieDao {
         }
     }
 
-    private void refresh(Movie foundMovie, AddUpdateMovieDto movie) {
+    private void refresh(MovieDto foundMovie, AddUpdateMovieDto movie) {
         if (Objects.isNull(movie.getNameRussian())) {
             movie.setNameRussian(foundMovie.getNameRussian());
         }

@@ -2,7 +2,7 @@ package com.tsa.movieland.dao.jpa;
 
 import com.tsa.movieland.context.JpaDao;
 import com.tsa.movieland.dao.UserDao;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import com.tsa.movieland.mapper.UserMapper;
 import com.tsa.movieland.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

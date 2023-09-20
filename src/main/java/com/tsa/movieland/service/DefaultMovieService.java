@@ -7,7 +7,7 @@ import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.common.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

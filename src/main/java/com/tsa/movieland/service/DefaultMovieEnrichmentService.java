@@ -2,8 +2,8 @@ package com.tsa.movieland.service;
 
 import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.exception.MovieEnrichmentException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -31,9 +31,9 @@ public class DefaultMovieEnrichmentService implements MovieEnrichmentService {
     public MovieByIdDto enrich(int movieId, Supplier<MovieByIdDto> movieSupplier) {
 
         Future<MovieByIdDto> movieResult = threadPool.submit(movieSupplier::get);
-        Future<Iterable<Country>> countryResult = threadPool.submit(() -> getTaskResult(() -> countryService.findByMovieId(movieId), Country.class));
+        Future<Iterable<CountryDto>> countryResult = threadPool.submit(() -> getTaskResult(() -> countryService.findByMovieId(movieId), CountryDto.class));
         Future<Iterable<GenreDto>> genresResult = threadPool.submit(() -> getTaskResult(() -> genreService.findByMovieId(movieId), GenreDto.class));
-        Future<Iterable<Review>> reviewResult = threadPool.submit(() -> getTaskResult(() -> reviewService.findByMovieId(movieId), Review.class));
+        Future<Iterable<ReviewDto>> reviewResult = threadPool.submit(() -> getTaskResult(() -> reviewService.findByMovieId(movieId), ReviewDto.class));
 
         MovieByIdDto foundMovie = getMovieResult(movieResult);
         foundMovie.setCountries(countryResult.get());
@@ -47,7 +47,7 @@ public class DefaultMovieEnrichmentService implements MovieEnrichmentService {
         try {
             return task.get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
-            throw new MovieEnrichmentException("During execution a fetching Movie task occurred an Exception: [%s]".formatted(e.getClass().getCanonicalName()));
+            throw new MovieEnrichmentException("During execution a fetching MovieDto task occurred an Exception: [%s]".formatted(e.getClass().getCanonicalName()));
         }
     }
 

@@ -1,9 +1,9 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.entity.Country;
+import com.tsa.movieland.dto.CountryDto;
 
 public interface CountryService {
-    Iterable<Country> findByMovieId(int movieId);
+    Iterable<CountryDto> findByMovieId(int movieId);
 
-    Iterable<Country> findAll();
+    Iterable<CountryDto> findAll();
 }

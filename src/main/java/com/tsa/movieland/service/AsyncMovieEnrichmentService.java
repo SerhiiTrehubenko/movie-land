@@ -3,8 +3,8 @@ package com.tsa.movieland.service;
 import com.tsa.movieland.common.AsyncExecutor;
 import com.tsa.movieland.dto.GenreDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.Country;
-import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.exception.MovieEnrichmentException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,14 +30,14 @@ public class AsyncMovieEnrichmentService implements MovieEnrichmentService {
     @SneakyThrows
     public MovieByIdDto enrich(int movieId, Supplier<MovieByIdDto> supplier) {
         CompletableFuture<MovieByIdDto> movieTask = asyncExecutor.executeTask(supplier);
-        CompletableFuture<Iterable<Country>> countriesTask = asyncExecutor.executeTask(() -> countryService.findByMovieId(movieId));
+        CompletableFuture<Iterable<CountryDto>> countriesTask = asyncExecutor.executeTask(() -> countryService.findByMovieId(movieId));
         CompletableFuture<Iterable<GenreDto>> genresTask = asyncExecutor.executeTask(() -> genreService.findByMovieId(movieId));
-        CompletableFuture<Iterable<Review>> reviewsTask = asyncExecutor.executeTask(() -> reviewService.findByMovieId(movieId));
+        CompletableFuture<Iterable<ReviewDto>> reviewsTask = asyncExecutor.executeTask(() -> reviewService.findByMovieId(movieId));
 
         MovieByIdDto movie = getMovieResult(movieTask);
-        movie.setCountries(getResult(countriesTask, Country.class));
+        movie.setCountries(getResult(countriesTask, CountryDto.class));
         movie.setGenres(getResult(genresTask, GenreDto.class));
-        movie.setReviews(getResult(reviewsTask, Review.class));
+        movie.setReviews(getResult(reviewsTask, ReviewDto.class));
 
         return movie;
     }
@@ -46,7 +46,7 @@ public class AsyncMovieEnrichmentService implements MovieEnrichmentService {
         try {
             return task.get();
         } catch (Exception e) {
-            throw new MovieEnrichmentException("During execution a fetching Movie task occurred an Exception: [%s]".formatted(e.getClass().getCanonicalName()));
+            throw new MovieEnrichmentException("During execution a fetching MovieDto task occurred an Exception: [%s]".formatted(e.getClass().getCanonicalName()));
         }
     }
 

@@ -4,7 +4,7 @@ import com.tsa.movieland.context.JdbcDao;
 import com.tsa.movieland.dao.ReviewDao;
 import com.tsa.movieland.dao.jdbc.mapper.ReviewUserMapper;
 import com.tsa.movieland.dto.AddReviewRequest;
-import com.tsa.movieland.entity.Review;
+import com.tsa.movieland.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -18,7 +18,7 @@ public class JdbcReviewDao implements ReviewDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Iterable<Review> findByMovieId(int movieId) {
+    public Iterable<ReviewDto> findByMovieId(int movieId) {
 
         String queryReviews = "SELECT user_id, user_nickname, movie_comment " +
                 "FROM review_with_user_by_movie_id " +

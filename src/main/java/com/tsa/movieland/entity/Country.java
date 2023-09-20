@@ -1,31 +1,38 @@
 package com.tsa.movieland.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Builder
 @Getter
-@ToString
+@Entity
+@Table(name = "countries")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Country {
+    @Id
+    @SequenceGenerator(
+            name = "countries_id",
+            sequenceName = "countries_id",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "countries_id"
+    )
+    @Column(name = "country_id")
     private int id;
+    @Column(name = "country_name")
     private String name;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Country country = (Country) o;
-
-        return new EqualsBuilder().append(id, country.id).append(name, country.name).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(name).toHashCode();
-    }
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "movies_countries",
+            joinColumns = @JoinColumn(name = "country_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private List<Movie> movies;
 }

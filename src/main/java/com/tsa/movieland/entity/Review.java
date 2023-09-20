@@ -1,32 +1,55 @@
 package com.tsa.movieland.entity;
 
-import com.tsa.movieland.dto.UserDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Builder
 @Getter
-@ToString
+@Setter
+@Entity
+@Table(name = "movie_reviews")
+@NoArgsConstructor
+@AllArgsConstructor
+@IdClass(Review.PrimaryKey.class)
 public class Review {
-    private UserDto user;
+    @Id
+    @Column(name = "movie_id")
+    private int movieId;
+    @Column(name = "user_id")
+    private int userId;
+    @Column(name = "movie_comment")
     private String text;
+    @Column(name = "review_record_time")
+    private Timestamp recordTime;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "user_id",
+            insertable = false,
+            updatable = false
+    )
+    private UserEntity user;
 
-        if (o == null || getClass() != o.getClass()) return false;
+    public static class PrimaryKey implements Serializable {
+        private int movieId;
+        private int userId;
 
-        Review review = (Review) o;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Review.PrimaryKey that = (Review.PrimaryKey) o;
+            return movieId == that.movieId && userId == that.userId;
+        }
 
-        return new EqualsBuilder().append(user, review.user).append(text, review.text).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(user).append(text).toHashCode();
+        @Override
+        public int hashCode() {
+            return Objects.hash(movieId, userId);
+        }
     }
 }

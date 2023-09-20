@@ -1,6 +1,6 @@
 package com.tsa.movieland.mapper;
 
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import com.tsa.movieland.entity.UserEntity;
 import org.mapstruct.Mapper;
 

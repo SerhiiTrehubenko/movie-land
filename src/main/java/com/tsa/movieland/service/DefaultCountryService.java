@@ -1,7 +1,7 @@
 package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.CountryDao;
-import com.tsa.movieland.entity.Country;
+import com.tsa.movieland.dto.CountryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,12 @@ public class DefaultCountryService implements CountryService {
     private final CountryDao countryDao;
 
     @Override
-    public Iterable<Country> findByMovieId(int movieId) {
+    public Iterable<CountryDto> findByMovieId(int movieId) {
         return countryDao.findByMovieId(movieId);
     }
 
     @Override
-    public Iterable<Country> findAll() {
+    public Iterable<CountryDto> findAll() {
         return countryDao.findAll();
     }
 }

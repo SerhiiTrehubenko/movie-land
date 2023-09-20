@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao.jdbc.mapper;
 
 import com.tsa.movieland.context.JdbcMapper;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

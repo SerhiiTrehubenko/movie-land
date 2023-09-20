@@ -2,7 +2,7 @@ package com.tsa.movieland.config;
 
 import com.tsa.movieland.common.Role;
 import com.tsa.movieland.entity.Credentials;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import com.tsa.movieland.security.service.ActiveUserHolder;
 import com.tsa.movieland.service.UserService;
 import org.mockito.Mockito;

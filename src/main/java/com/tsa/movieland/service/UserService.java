@@ -1,6 +1,6 @@
 package com.tsa.movieland.service;
 
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 
 public interface UserService {
 

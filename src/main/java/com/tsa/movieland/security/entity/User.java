@@ -1,5 +1,6 @@
-package com.tsa.movieland.entity;
+package com.tsa.movieland.security.entity;
 
+import com.tsa.movieland.entity.Credentials;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

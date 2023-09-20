@@ -2,7 +2,9 @@ package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
+import com.tsa.movieland.dto.CountryDto;
 import com.tsa.movieland.dto.MovieByIdDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import com.tsa.movieland.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,13 +104,13 @@ public class MovieDaoITest extends CommonContainer {
         assertEquals(value, movie.getDescription());
         assertEquals(256.78, movie.getPrice());
 
-        final List<Country> countries = (List<Country>) countryDao.findByMovieId(movieId);
+        final List<CountryDto> countries = (List<CountryDto>) countryDao.findByMovieId(movieId);
         assertEquals(501, countries.get(0).getId());
         assertEquals("США", countries.get(0).getName());
         assertEquals(502, countries.get(1).getId());
         assertEquals("Франция", countries.get(1).getName());
 
-        final List<GenreEntity> genres = (List<GenreEntity>) genreDao.findByMovieId(movieId);
+        final List<Genre> genres = (List<Genre>) genreDao.findByMovieId(movieId);
         assertEquals(1, genres.get(0).getId());
         assertEquals("драма", genres.get(0).getName());
         assertEquals(2, genres.get(1).getId());
@@ -156,11 +158,11 @@ public class MovieDaoITest extends CommonContainer {
         assertEquals(valueTest, updatedMovie.getDescription());
         assertEquals(256.78, updatedMovie.getPrice());
 
-        final List<Country> updatedCountries = (List<Country>) countryDao.findByMovieId(idExistMovie);
+        final List<CountryDto> updatedCountries = (List<CountryDto>) countryDao.findByMovieId(idExistMovie);
         assertEquals(countriesToUpdate.get(0), updatedCountries.get(0).getId());
         assertEquals(countriesToUpdate.get(1), updatedCountries.get(1).getId());
 
-        final List<GenreEntity> updatedGenres = (List<GenreEntity>) genreDao.findByMovieId(idExistMovie);
+        final List<Genre> updatedGenres = (List<Genre>) genreDao.findByMovieId(idExistMovie);
         assertEquals(genresToUpdate.get(0), updatedGenres.get(0).getId());
         assertEquals(genresToUpdate.get(1), updatedGenres.get(1).getId());
         assertEquals(genresToUpdate.get(2), updatedGenres.get(2).getId());

@@ -1,8 +1,8 @@
 package com.tsa.movieland.dao;
 
-import com.tsa.movieland.entity.GenreEntity;
+import com.tsa.movieland.entity.Genre;
 
 public interface GenreDao {
-    Iterable<GenreEntity> findAll();
-    Iterable<GenreEntity> findByMovieId(int movieId);
+    Iterable<Genre> findAll();
+    Iterable<Genre> findByMovieId(int movieId);
 }

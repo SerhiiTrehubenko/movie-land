@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
-import com.tsa.movieland.entity.GenreEntity;
+import com.tsa.movieland.entity.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +18,7 @@ public class JdbcGenreDaoITest extends CommonContainer {
     @Test
     void ShouldReturnListOfGenres() {
 
-        Iterable<GenreEntity> genres = genreDao.findAll();
+        Iterable<Genre> genres = genreDao.findAll();
 
         assertNotNull(genres);
 
@@ -28,7 +28,7 @@ public class JdbcGenreDaoITest extends CommonContainer {
 
     @Test
     void shouldReturnGenresByMovieId() {
-        final List<GenreEntity> genres = (List<GenreEntity>) genreDao.findByMovieId(1121);
+        final List<Genre> genres = (List<Genre>) genreDao.findByMovieId(1121);
 
         assertEquals(1, genres.size());
         assertEquals(15, genres.get(0).getId());

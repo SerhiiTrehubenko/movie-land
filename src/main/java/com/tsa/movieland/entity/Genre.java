@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "genres")
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenreEntity {
+public class Genre {
     @Id
     @SequenceGenerator(
             name = "genres_id",
@@ -33,7 +33,7 @@ public class GenreEntity {
     @JoinTable(name = "movies_genres",
             joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private List<MovieEntity> movies;
+    private List<Movie> movies;
 
     @Override
     public boolean equals(Object o) {
@@ -41,7 +41,7 @@ public class GenreEntity {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        GenreEntity genre = (GenreEntity) o;
+        Genre genre = (Genre) o;
 
         return new EqualsBuilder().append(id, genre.id).append(name, genre.name).isEquals();
     }

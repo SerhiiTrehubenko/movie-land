@@ -5,8 +5,8 @@ import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.entity.MovieCountry;
-import com.tsa.movieland.entity.MovieEntity;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.dto.MovieFindAllDto;
 import com.tsa.movieland.entity.MovieGenre;
 import com.tsa.movieland.exception.GenreNotFoundException;
 import com.tsa.movieland.exception.MovieNotFoundException;
@@ -93,12 +93,12 @@ public class JpaMovieDao implements MovieDao {
     }
 
     private MovieNotFoundException throwMovieNotFoundException(int movieId) {
-        return new MovieNotFoundException("Movie with id: [%d] is absent".formatted(movieId));
+        return new MovieNotFoundException("MovieDto with id: [%d] is absent".formatted(movieId));
     }
 
     @Override
     public int save(AddUpdateMovieDto movie) {
-        MovieEntity savedMovie = movieRepository.save(movieMapper.toMovie(movie));
+        Movie savedMovie = movieRepository.save(movieMapper.toMovie(movie));
 
         saveCountries(savedMovie.getId(), movie.getCountries());
         saveGenres(savedMovie.getId(), movie.getGenres());
@@ -131,7 +131,7 @@ public class JpaMovieDao implements MovieDao {
     @Override
     @Transactional
     public void update(int movieId, AddUpdateMovieDto movie) {
-        MovieEntity movieToUpdate = movieRepository.findById(movieId)
+        Movie movieToUpdate = movieRepository.findById(movieId)
                 .orElseThrow(() -> this.throwMovieNotFoundException(movieId));
         movieMapper.updateMovie(movieToUpdate, movie);
 

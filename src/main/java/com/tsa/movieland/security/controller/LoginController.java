@@ -1,7 +1,7 @@
 package com.tsa.movieland.security.controller;
 
 import com.tsa.movieland.dto.UserRegistration;
-import com.tsa.movieland.entity.User;
+import com.tsa.movieland.security.entity.User;
 import com.tsa.movieland.security.common.AuthenticationRequest;
 import com.tsa.movieland.security.common.AuthenticationResponse;
 import com.tsa.movieland.security.service.ActiveUserHolder;

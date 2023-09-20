@@ -2,7 +2,7 @@ package com.tsa.movieland.dao;
 
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
-import com.tsa.movieland.entity.MovieFindAllDto;
+import com.tsa.movieland.dto.MovieFindAllDto;
 
 public interface MovieDao {
     Iterable<MovieFindAllDto> findAll();
