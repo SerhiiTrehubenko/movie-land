@@ -12,18 +12,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultMovieService implements MovieService {
-    private final static Comparator<MovieFindAllDto> COMPARATOR_BY_RATING = Comparator.comparing(MovieFindAllDto::getRating);
-    private final static Comparator<MovieFindAllDto> COMPARATOR_BY_PRICE = Comparator.comparing(MovieFindAllDto::getPrice);
+    private final Map<Boolean, BiConsumer<CurrencyType, MovieByIdDto>> calculateCurrency = Map.of(
+            Boolean.TRUE, this::calculatePrice,
+            Boolean.FALSE, (currency, movie) -> {
+//                "do nothing"
+            }
+    );
     private final static CachedMovies CACHED_MOVIES = new CachedMovies();
+    private final static MovieSorter MOVIE_SORTER = new MovieSorter();
 
     private final MovieDao movieDao;
     private final PosterService posterService;
@@ -33,30 +36,14 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
-        if (notEmptyMovieRequest(movieRequest)) {
-            return movieDao.findAll(field(movieRequest), direction(movieRequest));
-        }
-
-        return refreshAvgRating(movieDao.findAll());
+        List<MovieFindAllDto> movies = (List<MovieFindAllDto>) refreshAvgRating(movieDao.findAll());
+        MOVIE_SORTER.sort(movies, movieRequest);
+        return movies;
     }
 
     private Iterable<MovieFindAllDto> refreshAvgRating(Iterable<MovieFindAllDto> movies) {
         StreamSupport.stream(movies.spliterator(), false).forEach(movie -> movie.setRating(ratingService.getAvgRate(movie.getId())));
         return movies;
-    }
-
-    private boolean notEmptyMovieRequest(MovieRequest movieRequest) {
-        return Objects.nonNull(movieRequest.getSortField()) && Objects.nonNull(movieRequest.getSortDirection());
-    }
-
-    private String field(MovieRequest defaultMovieRequest) {
-        SortField sortField = defaultMovieRequest.getSortField();
-        return sortField.getColumnName();
-    }
-
-    private String direction(MovieRequest defaultMovieRequest) {
-        SortDirection sortDirection = defaultMovieRequest.getSortDirection();
-        return sortDirection.toString();
     }
 
     @Override
@@ -67,42 +54,18 @@ public class DefaultMovieService implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest) {
-        List<MovieFindAllDto> moviesByGenreId = new ArrayList<>((List<MovieFindAllDto>) movieDao.findByGenreId(genreId));
-        refreshAvgRating(moviesByGenreId);
-        if (notEmptyMovieRequest(movieRequest)) {
-            if (field(movieRequest).equalsIgnoreCase(SortField.PRICE.getColumnName())) {
-                return sortByPrice(moviesByGenreId, direction(movieRequest));
-            }
-            if (field(movieRequest).equalsIgnoreCase(SortField.RATING.getColumnName())) {
-                return sortByRating(moviesByGenreId, direction(movieRequest));
-            }
-        }
-        return moviesByGenreId;
-    }
+        List<MovieFindAllDto> movies = (List<MovieFindAllDto>) movieDao.findByGenreId(genreId);
+        refreshAvgRating(movies);
 
-    private List<MovieFindAllDto> sortByRating(List<MovieFindAllDto> movies, String order) {
-        if (order.equalsIgnoreCase("asc")) {
-            movies.sort(COMPARATOR_BY_RATING);
-        } else {
-            movies.sort(COMPARATOR_BY_RATING.reversed());
-        }
+        MOVIE_SORTER.sort(movies, movieRequest);
         return movies;
-    }
-
-    private List<MovieFindAllDto> sortByPrice(List<MovieFindAllDto> movies, String order) {
-        if (order.equalsIgnoreCase("asc")) {
-            movies.sort(COMPARATOR_BY_PRICE);
-        } else {
-            movies.sort(COMPARATOR_BY_PRICE.reversed());
-        }
-        return  movies;
     }
 
     @Override
     public MovieByIdDto getById(int movieId, MovieRequest movieRequest) {
-        MovieByIdDto foundMovie = CACHED_MOVIES.getMovie(movieId, () -> getEnrichedMovie(movieId));
-        CurrencyType currencyType = movieRequest.getCurrencyType();
-        return createResponse(currencyType, foundMovie);
+        MovieByIdDto movie = CACHED_MOVIES.getMovie(movieId, () -> getEnrichedMovie(movieId));
+        CurrencyType currency = movieRequest.getCurrencyType();
+        return createResponse(currency, movie);
     }
 
     private MovieByIdDto getEnrichedMovie(int movieId) {
@@ -112,8 +75,8 @@ public class DefaultMovieService implements MovieService {
     private MovieByIdDto createResponse(CurrencyType currency, MovieByIdDto movie) {
         movie.setRating(ratingService.getAvgRate(movie.getId()));
         MovieByIdDto movieCopy = copy(movie);
-        calculatePrice(currency, movieCopy);
 
+        calculateCurrency.get(Objects.nonNull(currency)).accept(currency, movieCopy);
         return movieCopy;
     }
 
@@ -134,11 +97,9 @@ public class DefaultMovieService implements MovieService {
     }
 
     private void calculatePrice(CurrencyType currency, MovieByIdDto movie) {
-        if (Objects.nonNull(currency)) {
-            double price = movie.getPrice();
-            double excange = exchangeHolder.excange(currency, price);
-            movie.setPrice(excange);
-        }
+        double price = movie.getPrice();
+        double excange = exchangeHolder.excange(currency, price);
+        movie.setPrice(excange);
     }
 
     @Override
