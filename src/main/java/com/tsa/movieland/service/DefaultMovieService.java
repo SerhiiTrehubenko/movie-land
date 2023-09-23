@@ -35,6 +35,7 @@ public class DefaultMovieService implements MovieService {
     private final CurrencyExchangeService exchangeHolder;
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
         List<MovieFindAllDto> movies = (List<MovieFindAllDto>) refreshAvgRating(movieDao.findAll());
         MOVIE_SORTER.sort(movies, movieRequest);
@@ -47,6 +48,7 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findRandom() {
         return refreshAvgRating(movieDao.findRandom());
     }
@@ -62,6 +64,7 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MovieByIdDto getById(int movieId, MovieRequest movieRequest) {
         MovieByIdDto movie = CACHED_MOVIES.getMovie(movieId, () -> getEnrichedMovie(movieId));
         CurrencyType currency = movieRequest.getCurrencyType();

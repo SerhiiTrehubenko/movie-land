@@ -1,5 +1,6 @@
 package com.tsa.movieland.entity;
 
+import com.tsa.movieland.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Review {
     @Id
     @Column(name = "movie_id")
     private int movieId;
+    @Id
     @Column(name = "user_id")
     private int userId;
     @Column(name = "movie_comment")
@@ -33,7 +35,7 @@ public class Review {
             insertable = false,
             updatable = false
     )
-    private UserEntity user;
+    private UserDto user;
 
     public static class PrimaryKey implements Serializable {
         private int movieId;

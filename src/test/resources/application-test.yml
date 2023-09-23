@@ -15,7 +15,9 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
+        show_sql: true
+        format_sql: true
 
 logging:
   level:
-    org.springframework.jdbc.core: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE

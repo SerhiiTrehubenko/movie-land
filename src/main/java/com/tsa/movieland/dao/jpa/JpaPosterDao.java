@@ -20,11 +20,11 @@ public class JpaPosterDao implements PosterDao {
 
     @Override
     public void add(int movieId, String posterLink) {
-        Poster poster = getPoster(movieId, posterLink);
+        Poster poster = createPoster(movieId, posterLink);
         posterRepository.save(poster);
     }
 
-    private Poster getPoster(int movieId, String posterLink) {
+    private Poster createPoster(int movieId, String posterLink) {
         return Poster.builder()
                 .movieId(movieId)
                 .link(posterLink)
@@ -46,13 +46,13 @@ public class JpaPosterDao implements PosterDao {
             throw new RuntimeException("Bad picturePath: [%s]".formatted(picturePath));
         }
 
-        String path = pathWithOrderNumber[0].trim();
-        int orderNumber = Integer.parseInt(pathWithOrderNumber[1].trim());
+        String newPosterLink = pathWithOrderNumber[0].trim();
+        int orderNumberPosterToUpdate = Integer.parseInt(pathWithOrderNumber[1].trim());
 
-        List<Poster> allByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
-        Poster posterEntity = allByMovieId.get(orderNumber);
+        List<Poster> postersByMovieId = posterRepository.findAllByMovieIdOrderByRecordTime(movieId);
+        Poster posterEntity = postersByMovieId.get(orderNumberPosterToUpdate);
         posterRepository.delete(posterEntity);
 
-        posterRepository.save(getPoster(movieId, path));
+        posterRepository.save(createPoster(movieId, newPosterLink));
     }
 }

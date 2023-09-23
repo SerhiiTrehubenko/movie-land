@@ -6,6 +6,7 @@ import com.tsa.movieland.entity.Credentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class DefaultCredentialsService implements CredentialsService {
     private final UserCredentialsDao userCredentialsDao;
 
     @Override
+    @Transactional
     public void save(Credentials credentials) {
         String encryptedPassword = passwordEncoder.encode(credentials.getPassword());
         credentials.setPassword(encryptedPassword);
@@ -24,6 +26,7 @@ public class DefaultCredentialsService implements CredentialsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Credentials getCredentialsByUserId(int userId) {
         return userCredentialsDao.findByUserId(userId);
     }

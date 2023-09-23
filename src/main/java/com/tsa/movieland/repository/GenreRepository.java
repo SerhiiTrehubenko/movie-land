@@ -8,6 +8,6 @@ import java.util.List;
 
 @com.tsa.movieland.context.JpaRepository
 public interface GenreRepository extends JpaRepository<Genre, Integer> {
-    @Query(value = "SELECT genre_id, genre_name FROM genres_by_movie_id WHERE movie_id = :movieId", nativeQuery = true)
+    @Query(value = "SELECT g FROM MovieGenre mg JOIN Genre g ON mg.genreId = g.id WHERE mg.movieId = :movieId")
     List<Genre> findByMovieId(int movieId);
 }

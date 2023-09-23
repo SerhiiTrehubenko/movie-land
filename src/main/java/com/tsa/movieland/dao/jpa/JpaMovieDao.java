@@ -8,7 +8,6 @@ import com.tsa.movieland.entity.MovieCountry;
 import com.tsa.movieland.entity.Movie;
 import com.tsa.movieland.dto.MovieFindAllDto;
 import com.tsa.movieland.entity.MovieGenre;
-import com.tsa.movieland.exception.GenreNotFoundException;
 import com.tsa.movieland.exception.MovieNotFoundException;
 import com.tsa.movieland.mapper.MovieMapper;
 import com.tsa.movieland.repository.*;
@@ -39,7 +38,6 @@ public class JpaMovieDao implements MovieDao {
     @Value("${number.movies.random}")
     Integer randomQuantity;
     private final MovieRepository movieRepository;
-    private final GenreRepository genreRepository;
     private final MovieCountryRepository movieCountryRepository;
     private final MovieGenreRepository movieGenreRepository;
     private final MovieMapper movieMapper;
@@ -70,9 +68,8 @@ public class JpaMovieDao implements MovieDao {
 
     @Override
     public Iterable<MovieFindAllDto> findByGenreId(int genreId) {
-        return genreRepository.findById(genreId)
-                .orElseThrow(() -> new GenreNotFoundException("Genre with id: [%d] is absent".formatted(genreId)))
-                .getMovies().stream()
+        return movieRepository.findByGenreId(genreId)
+                .stream()
                 .map(movieMapper::toMovieFindAllDto)
                 .sorted(COMPARATOR_BY_ID)
                 .collect(Collectors.toCollection(ArrayList::new));

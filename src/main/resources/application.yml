@@ -19,7 +19,12 @@ spring:
       hibernate:
         jdbc:
           batch_size: 100
+          fetch_size: 100
+          batch_versioned_data: true # be careful is not available for every DB
         order_updates: true
+        order_inserts: true
+        connection:
+          pool_size: 10
 
   profiles:
     active: dev-async, prod-jpa

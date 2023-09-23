@@ -10,6 +10,10 @@ import lombok.*;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(
+        name = "UserEntity.credentials",
+        attributeNodes = @NamedAttributeNode("credentials")
+)
 public class UserEntity {
     @Id
     @SequenceGenerator(
@@ -32,7 +36,7 @@ public class UserEntity {
     @Column(name = "user_email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "user_id"

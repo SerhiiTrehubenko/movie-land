@@ -2,6 +2,7 @@ package com.tsa.movieland.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Formula;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Table(name = "movies")
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class Movie {
     @Id
     @SequenceGenerator(

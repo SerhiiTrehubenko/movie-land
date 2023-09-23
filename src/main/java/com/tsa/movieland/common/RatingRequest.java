@@ -20,12 +20,11 @@ public class RatingRequest {
         if (o == null || getClass() != o.getClass()) return false;
         RatingRequest that = (RatingRequest) o;
         return movieId == that.movieId &&
-                Double.compare(that.rating, rating) == 0 &&
                 Objects.equals(userEmail, that.userEmail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userEmail, movieId, rating);
+        return Objects.hash(userEmail, movieId);
     }
 }

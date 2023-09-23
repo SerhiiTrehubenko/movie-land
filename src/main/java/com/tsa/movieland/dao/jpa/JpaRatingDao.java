@@ -9,8 +9,10 @@ import com.tsa.movieland.repository.RatingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @JpaDao
 @RequiredArgsConstructor
@@ -31,6 +33,24 @@ public class JpaRatingDao implements RatingDao {
             RatingRequest next = iterator.next();
             ratingRepository.saveRatingRequest(next);
             iterator.remove();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveBuffer(Set<RatingRequest> avgRatings) {
+        Set<RatingRequest> intermediateRatings = new HashSet<>();
+        Iterator<RatingRequest> iterator = avgRatings.iterator();
+        try {
+            while (iterator.hasNext()) {
+                RatingRequest next = iterator.next();
+                ratingRepository.saveRatingRequest(next);
+                intermediateRatings.add(next);
+                iterator.remove();
+            }
+        } catch (Exception e) {
+            avgRatings.addAll(intermediateRatings);
+            throw new RuntimeException(e);
         }
     }
 }

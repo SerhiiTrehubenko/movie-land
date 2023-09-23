@@ -59,7 +59,7 @@ public class DefaultRatingService implements RatingService {
     @Scheduled(cron = "${ratings.flush-buffer}")
     private void flushToDb() {
         if (!ratingsAggregatorBuffer.isEmpty()) {
-            ratingDao.saveBuffer(ratingsAggregatorBuffer.iterator());
+            ratingDao.saveBuffer(ratingsAggregatorBuffer);
             log.info("Rating buffer has been flushed");
         }
     }

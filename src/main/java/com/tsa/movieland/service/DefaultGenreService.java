@@ -6,11 +6,13 @@ import com.tsa.movieland.entity.Genre;
 import com.tsa.movieland.mapper.GenreMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DefaultGenreService implements GenreService {
     private final GenreDao genreDao;
     private final GenreMapper genreMapper;

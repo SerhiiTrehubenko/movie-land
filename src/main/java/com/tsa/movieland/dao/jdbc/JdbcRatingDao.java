@@ -6,6 +6,7 @@ import com.tsa.movieland.dao.RatingDao;
 import com.tsa.movieland.dao.jdbc.mapper.AvgRatingMapper;
 import com.tsa.movieland.common.AvgRating;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.*;
@@ -34,6 +35,11 @@ public class JdbcRatingDao implements RatingDao {
         Map<String, Object>[] preparedParams = getParams(iterator);
 
         namedParameterJdbcTemplate.batchUpdate(query, preparedParams);
+    }
+
+    @Override
+    public void saveBuffer(Set<RatingRequest> avgRatings) {
+        throw new NotImplementedException();
     }
 
     private Map<String, Object>[] getParams(Iterator<RatingRequest> iterator) {

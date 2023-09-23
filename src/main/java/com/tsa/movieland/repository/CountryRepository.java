@@ -8,6 +8,7 @@ import java.util.List;
 
 @com.tsa.movieland.context.JpaRepository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
-    @Query(value = "SELECT country_id, country_name FROM countries_by_movie_id WHERE movie_id = :movieId", nativeQuery = true)
+
+    @Query(value = "SELECT c FROM MovieCountry mc JOIN Country c ON mc.countryId = c.id WHERE mc.movieId = :movieId")
     List<Country> findAllByMovieId(int movieId);
 }
