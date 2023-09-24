@@ -20,6 +20,7 @@ public class DefaultReviewService implements ReviewService {
     }
 
     @Override
+    @Transactional
     public void save(int user, AddReviewRequest reviewRequest) {
         reviewDao.save(user, reviewRequest);
     }

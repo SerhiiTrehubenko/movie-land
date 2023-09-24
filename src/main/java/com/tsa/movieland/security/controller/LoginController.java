@@ -6,13 +6,13 @@ import com.tsa.movieland.security.common.AuthenticationRequest;
 import com.tsa.movieland.security.common.AuthenticationResponse;
 import com.tsa.movieland.security.service.ActiveUserHolder;
 import com.tsa.movieland.security.service.JwtService;
-import com.tsa.movieland.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,18 +26,17 @@ public class LoginController {
 
     private final ActiveUserHolder activeUserHolder;
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
     private final JwtService jwtService;
 
     @PostMapping
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        authenticationManager.authenticate(
+        Authentication authUser = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserEmail(), request.getPassword()
                 )
         );
 
-        User user = userService.getUserByEmail(request.getUserEmail());
+        User user = (User) authUser.getPrincipal();
 
         UserRegistration userRegistration = UserRegistration.builder()
                 .email(user.getEmail())

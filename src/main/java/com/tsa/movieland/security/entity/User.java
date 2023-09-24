@@ -4,18 +4,17 @@ import com.tsa.movieland.entity.Credentials;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Builder
 @Setter
-@ToString
 public class User implements UserDetails {
     private int id;
     private String firstName;
@@ -57,5 +56,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(id);
     }
 }
