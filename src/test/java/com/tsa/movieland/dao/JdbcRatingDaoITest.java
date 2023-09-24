@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class JdbcRatingDaoTest extends CommonContainer {
+class JdbcRatingDaoITest extends CommonContainer {
 
     @Autowired
-    private RatingDao jdbcRatingDao;
+    private RatingDao ratingDao;
 
     @Test
     void shouldSaveEntrySetAsRatingsBuffer() {
@@ -24,7 +25,7 @@ class JdbcRatingDaoTest extends CommonContainer {
         int movieId1122 = 21;
         int movieId1123 = 22;
 
-        List<AvgRating> ratingsBeforeInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
+        List<AvgRating> ratingsBeforeInsertion = (List<AvgRating>) ratingDao.fidAllAvgRatingsGroupedMovie();
         assertEquals(25, ratingsBeforeInsertion.size());
         assertEquals(8.60, ratingsBeforeInsertion.get(movieId1111).getCurrentAvg());
         assertEquals(7.90, ratingsBeforeInsertion.get(movieId1112).getCurrentAvg());
@@ -33,13 +34,25 @@ class JdbcRatingDaoTest extends CommonContainer {
 
         Set<RatingRequest> ratings = new HashSet<>(ratingsOfDennis());
         ratings.addAll(ratingsOfTravis());
-        jdbcRatingDao.saveBuffer(ratings.iterator());
-        List<AvgRating> ratingsAfterInsertion = (List<AvgRating>) jdbcRatingDao.fidAllAvgRatingsGroupedMovie();
+        ratingDao.saveBuffer(ratings.iterator());
+        List<AvgRating> ratingsAfterInsertion = (List<AvgRating>) ratingDao.fidAllAvgRatingsGroupedMovie();
         assertEquals(25, ratingsAfterInsertion.size());
         assertEquals(6.30, ratingsAfterInsertion.get(movieId1111).getCurrentAvg());
         assertEquals(5.45, ratingsAfterInsertion.get(movieId1112).getCurrentAvg());
         assertEquals(6.35, ratingsAfterInsertion.get(movieId1122).getCurrentAvg());
         assertEquals(7.30, ratingsAfterInsertion.get(movieId1123).getCurrentAvg());
+    }
+
+    @Test
+    void ShouldRestoreSetOfRatingsWhenRollbackIsOccurred() {
+        Set<RatingRequest> ratings = new HashSet<>(ratingsOfDennis());
+        ratings.addAll(ratingsOfTravisWithInvalidRatingRate());
+
+        assertEquals(4, ratings.size());
+
+        assertThrows(RuntimeException.class, () ->  ratingDao.saveBuffer(ratings));
+
+        assertEquals(4, ratings.size());
     }
 
     private Set<RatingRequest> ratingsOfDennis() {
@@ -63,6 +76,21 @@ class JdbcRatingDaoTest extends CommonContainer {
                 .userEmail(travisEmail)
                 .movieId(1111)
                 .rating(4)
+                .build();
+        RatingRequest ratingSecond = RatingRequest.builder()
+                .userEmail(travisEmail)
+                .movieId(1112)
+                .rating(3)
+                .build();
+        return Set.of(ratingFirst, ratingSecond);
+    }
+
+    private Set<RatingRequest> ratingsOfTravisWithInvalidRatingRate() {
+        String travisEmail = "travis.wright36@example.com";
+        RatingRequest ratingFirst = RatingRequest.builder()
+                .userEmail(travisEmail)
+                .movieId(1111)
+                .rating(20)
                 .build();
         RatingRequest ratingSecond = RatingRequest.builder()
                 .userEmail(travisEmail)
