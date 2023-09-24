@@ -13,7 +13,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class JdbcRatingDaoITest extends CommonContainer {
+class RatingDaoITest extends CommonContainer {
 
     @Autowired
     private RatingDao ratingDao;

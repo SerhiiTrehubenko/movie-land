@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JdbcReviewDaoITest extends CommonContainer {
+public class ReviewDaoITest extends CommonContainer {
 
     @Autowired
     ReviewDao reviewDao;

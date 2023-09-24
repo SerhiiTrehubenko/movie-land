@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JdbcPosterDaoTest extends CommonContainer {
+class PosterDaoTest extends CommonContainer {
 
     @Autowired
     PosterDao posterDao;

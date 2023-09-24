@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class JdbcGenreDaoITest extends CommonContainer {
+public class GenreDaoITest extends CommonContainer {
     @Autowired
     private GenreDao genreDao;
 
