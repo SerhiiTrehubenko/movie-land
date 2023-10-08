@@ -1,12 +1,12 @@
 package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
-import com.tsa.movieland.dto.AddReviewRequest;
-import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.dto.UserDto;
+import com.tsa.movieland.entity.Review;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +18,7 @@ public class ReviewDaoITest extends CommonContainer {
 
     @Test
     void shouldReturnReviewsByMovieId() {
-        List<ReviewDto> reviews = (List<ReviewDto>) reviewDao.findByMovieId(1121);
+        List<Review> reviews = reviewDao.findByMovieId(1121);
         assertEquals(1, reviews.size());
         assertEquals("Для воскресного вечернего просмотра подходит по всем критериям.",
                 reviews.get(0).getText());
@@ -36,11 +36,14 @@ public class ReviewDaoITest extends CommonContainer {
         String textTest = "review TEST";
         String existedText = "Для воскресного вечернего просмотра подходит по всем критериям.";
 
-        AddReviewRequest reviewTest = AddReviewRequest.builder().movieId(movieId).text(textTest).build();
+        Review reviewTest = Review.builder()
+                .reviewId(Review.ReviewId.builder().movieId(movieId).userId(userId).build())
+                .text(textTest)
+                .recordTime(new Timestamp(System.currentTimeMillis()))
+                .build();
+        reviewDao.save(reviewTest);
 
-        reviewDao.save(userId, reviewTest);
-
-        final List<ReviewDto> reviews = (List<ReviewDto>) reviewDao.findByMovieId(movieId);
+        List<Review> reviews = reviewDao.findByMovieId(movieId);
         assertEquals(2, reviews.size());
 
         assertEquals(existedText, reviews.get(0).getText());

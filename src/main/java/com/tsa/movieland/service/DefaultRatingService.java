@@ -50,7 +50,7 @@ public class DefaultRatingService implements RatingService {
         AvgRating newRating = AvgRating.builder()
                 .movieId(movieId)
                 .currentAvg(ratingRequest.getRating())
-                .userVotes(1)
+                .userVotes(1L)
                 .build();
 
         avgRatingsCache.put(movieId, newRating);

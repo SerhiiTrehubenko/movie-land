@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao;
 
-import com.tsa.movieland.security.entity.User;
+import com.tsa.movieland.entity.UserEntity;
 
 public interface UserDao {
-    User getUserByEmail(String email);
+    UserEntity getUserByEmail(String email);
 }

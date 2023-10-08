@@ -25,6 +25,27 @@ public class MovieGenre {
     @Column(name = "genre_id")
     private int genreId;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
+    private Movie movie;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "genre_id", insertable = false, updatable = false)
+    private Genre genre;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieGenre that = (MovieGenre) o;
+        return movieId == that.movieId && genreId == that.genreId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, genreId);
+    }
+
     public static class PrimaryKey implements Serializable {
         private int movieId;
         private int genreId;

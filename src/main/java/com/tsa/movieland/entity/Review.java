@@ -15,14 +15,11 @@ import java.util.Objects;
 @Table(name = "movie_reviews")
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(Review.PrimaryKey.class)
 public class Review {
-    @Id
-    @Column(name = "movie_id")
-    private int movieId;
-    @Id
-    @Column(name = "user_id")
-    private int userId;
+
+    @EmbeddedId
+    private ReviewId reviewId;
+
     @Column(name = "movie_comment")
     private String text;
     @Column(name = "review_record_time")
@@ -33,20 +30,31 @@ public class Review {
             name = "user_id",
             referencedColumnName = "user_id",
             insertable = false,
-            updatable = false
+            updatable = false,
+            nullable = false
     )
     private UserDto user;
 
-    public static class PrimaryKey implements Serializable {
+    @Embeddable
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReviewId implements Serializable {
+
+        @Column(name = "movie_id")
         private int movieId;
+
+        @Column(name = "user_id")
         private int userId;
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            Review.PrimaryKey that = (Review.PrimaryKey) o;
-            return movieId == that.movieId && userId == that.userId;
+            ReviewId reviewId = (ReviewId) o;
+            return movieId == reviewId.movieId && userId == reviewId.userId;
         }
 
         @Override
@@ -55,3 +63,4 @@ public class Review {
         }
     }
 }
+

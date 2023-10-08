@@ -3,7 +3,7 @@ package com.tsa.movieland.dao.jpa;
 import com.tsa.movieland.context.JpaDao;
 import com.tsa.movieland.dao.GenreDao;
 import com.tsa.movieland.entity.Genre;
-import com.tsa.movieland.repository.GenreRepository;
+import com.tsa.movieland.dao.jpa.repository.GenreRepository;
 import lombok.RequiredArgsConstructor;
 
 @JpaDao

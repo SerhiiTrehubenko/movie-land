@@ -1,11 +1,12 @@
 package com.tsa.movieland.dao;
 
-import com.tsa.movieland.dto.AddReviewRequest;
-import com.tsa.movieland.dto.ReviewDto;
+import com.tsa.movieland.entity.Review;
+
+import java.util.List;
 
 public interface ReviewDao {
 
-    Iterable<ReviewDto> findByMovieId(int movieId);
+    List<Review> findByMovieId(int movieId);
 
-    void save(int userId, AddReviewRequest reviewRequest);
+    void save(Review review);
 }

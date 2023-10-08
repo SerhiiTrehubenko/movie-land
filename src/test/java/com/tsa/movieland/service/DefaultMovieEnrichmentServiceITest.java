@@ -9,6 +9,7 @@ import com.tsa.movieland.dto.UserDto;
 import com.tsa.movieland.dto.CountryDto;
 import com.tsa.movieland.dto.ReviewDto;
 import com.tsa.movieland.exception.MovieEnrichmentException;
+import com.tsa.movieland.mapper.MovieMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,16 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
     @Autowired
     private MovieDao movieDao;
 
+    @Autowired
+    private MovieMapper movieMapper;
+
     @SpyBean
     private CountryDao countryDao;
 
     @Test
     void shouldReturnFullyEnrichedMovie() {
 
-        MovieByIdDto movieByIdDto = service.enrich(movieId, () -> movieDao.findById(movieId));
+        MovieByIdDto movieByIdDto = service.enrich(movieId, () -> movieMapper.toMovieByIdDto(movieDao.findById(movieId)));
 
         assertNotNull(movieByIdDto);
         assertEquals(movieId, movieByIdDto.getId());
@@ -65,7 +69,7 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
                 () -> service
                         .enrich(movieId, () -> {
                             sleep(6000);
-                            return movieDao.findById(movieId);
+                            return movieMapper.toMovieByIdDto(movieDao.findById(movieId));
                         }));
     }
 
@@ -73,7 +77,7 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
     void shouldReturnPartiallyFilledMovieWhenTaskOfFetchingContentLongerFiveSecond() {
         when(countryDao.findByMovieId(movieId)).thenAnswer((Answer<Iterable<CountryDto>>) invoke -> getCountriesWithTimeOut());
 
-        MovieByIdDto movieByIdDto = service.enrich(movieId, () -> movieDao.findById(movieId));
+        MovieByIdDto movieByIdDto = service.enrich(movieId, () -> movieMapper.toMovieByIdDto(movieDao.findById(movieId)));
 
         assertNotNull(movieByIdDto);
         assertEquals(movieId, movieByIdDto.getId());
@@ -91,7 +95,8 @@ class DefaultMovieEnrichmentServiceITest extends SecurityContainer {
 
     private Iterable<CountryDto> getCountriesWithTimeOut() {
         sleep(6000);
-        return countryDao.findByMovieId(movieId);
+        countryDao.findByMovieId(movieId);
+        return null;
     }
 
     private void sleep(long sleepTime) {

@@ -34,7 +34,7 @@ class RatingDaoITest extends CommonContainer {
 
         Set<RatingRequest> ratings = new HashSet<>(ratingsOfDennis());
         ratings.addAll(ratingsOfTravis());
-        ratingDao.saveBuffer(ratings.iterator());
+        ratingDao.saveBuffer(ratings);
         List<AvgRating> ratingsAfterInsertion = (List<AvgRating>) ratingDao.fidAllAvgRatingsGroupedMovie();
         assertEquals(25, ratingsAfterInsertion.size());
         assertEquals(6.30, ratingsAfterInsertion.get(movieId1111).getCurrentAvg());

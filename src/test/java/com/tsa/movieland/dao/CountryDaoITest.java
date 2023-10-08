@@ -1,7 +1,7 @@
 package com.tsa.movieland.dao;
 
 import com.tsa.movieland.CommonContainer;
-import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.entity.Country;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +15,7 @@ public class CountryDaoITest extends CommonContainer {
 
     @Test
     void shouldReturnCountriesByMovieId() {
-        List<CountryDto> countries = (List<CountryDto>) countryDao.findByMovieId(1121);
+        List<Country> countries = countryDao.findByMovieId(1121);
         assertEquals(4, countries.size());
         assertEquals(501, countries.get(0).getId());
         assertEquals("США", countries.get(0).getName());

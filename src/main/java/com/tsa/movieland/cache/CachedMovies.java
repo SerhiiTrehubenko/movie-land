@@ -10,10 +10,10 @@ import java.util.function.Supplier;
 
 public class CachedMovies {
 
-    private final Map<Integer, SoftReference<MovieByIdDto>> CACHED_MOVIES = new ConcurrentHashMap<>();
+    private final Map<Integer, SoftReference<MovieByIdDto>> cachedMovies = new ConcurrentHashMap<>();
 
     public MovieByIdDto getMovie(int movieId, Supplier<MovieByIdDto> supplier) {
-        SoftReference<MovieByIdDto> softReferenceMovie = CACHED_MOVIES.compute(movieId, (id, valueOld) -> {
+        SoftReference<MovieByIdDto> softReferenceMovie = cachedMovies.compute(movieId, (id, valueOld) -> {
             if (Objects.nonNull(valueOld) && Objects.nonNull(valueOld.get())) {
                 return valueOld;
             }
@@ -23,6 +23,6 @@ public class CachedMovies {
     }
 
     public void removeFromCache(int movieId) {
-        CACHED_MOVIES.remove(movieId);
+        cachedMovies.remove(movieId);
     }
 }

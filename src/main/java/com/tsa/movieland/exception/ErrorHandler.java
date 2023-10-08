@@ -37,6 +37,15 @@ public class ErrorHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(BadPosterUpdateAttributeException.class)
+    public ResponseEntity<ErrorMessage> movieEnrichmentException(BadPosterUpdateAttributeException e) {
+        return new ResponseEntity<>(ErrorMessage.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .message(e.getMessage())
+                .build(),
+                HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ErrorMessage> movieEnrichmentException(SQLException e) {
         return new ResponseEntity<>(ErrorMessage.builder()

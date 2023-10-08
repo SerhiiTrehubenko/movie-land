@@ -13,27 +13,30 @@ import java.util.Objects;
 @Table(name = "movies_ratings")
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(Rating.PrimaryKey.class)
 public class Rating {
 
-    @Id
-    @Column(name = "movie_id")
-    private Integer movieId;
-    @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @EmbeddedId
+    private RatingId ratingId;
     @Column(name = "movie_raring")
     private Double rating;
 
-    public static class PrimaryKey implements Serializable {
+    @Embeddable
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RatingId implements Serializable {
+        @Column(name = "movie_id")
         private Integer movieId;
+        @Column(name = "user_id")
         private Integer userId;
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            PrimaryKey that = (PrimaryKey) o;
+            RatingId that = (RatingId) o;
             return Objects.equals(movieId, that.movieId) && Objects.equals(userId, that.userId);
         }
 

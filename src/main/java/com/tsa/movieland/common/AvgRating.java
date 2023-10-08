@@ -1,5 +1,6 @@
 package com.tsa.movieland.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,12 @@ import java.math.RoundingMode;
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
 public class AvgRating {
 
-    private int movieId;
-    private double currentAvg;
-    private int userVotes;
+    private Integer movieId;
+    private Double currentAvg;
+    private Long userVotes;
 
     public void updateAvgRating(double rating) {
         synchronized (this) {

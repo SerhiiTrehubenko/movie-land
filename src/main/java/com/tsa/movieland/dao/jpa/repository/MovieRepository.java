@@ -1,13 +1,17 @@
-package com.tsa.movieland.repository;
+package com.tsa.movieland.dao.jpa.repository;
 
 import com.tsa.movieland.entity.Movie;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-@com.tsa.movieland.context.JpaRepository
+@Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Query(value = "SELECT m FROM Movie m LEFT JOIN FETCH m.posters")
     List<Movie> findAllByOrderByIdAsc();
@@ -15,18 +19,15 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     @Query(value = "SELECT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movieId LEFT JOIN FETCH m.posters WHERE mg.genreId = :genreId")
     List<Movie> findByGenreId(int genreId);
 
+    @Query(value = "SELECT m FROM Movie m LEFT JOIN FETCH m.posters ORDER BY FUNCTION('RANDOM')")
+    List<Movie> findRandom(Pageable pageable);
+
     @Override
-    @Query(value = "SELECT m FROM Movie m LEFT JOIN FETCH m.posters WHERE m IN :integers")
+    @EntityGraph(value = "Movie.byId")
     @NonNull
-    List<Movie> findAllById(@NonNull Iterable<Integer> integers);
-
-    @Query(value = "SELECT min(movie_id) minId, max(movie_id) maxId FROM movies", nativeQuery = true)
-    Ids findMinMaxId();
-
-    interface Ids {
-        Integer getMinId();
-        Integer getMaxId();
-    }
+    Optional<Movie> findById(@NonNull Integer integer);
+    @EntityGraph(value = "Movie.byId.Poster")
+    Optional<Movie> findByIdOrderById(Integer id);
 }
 
 

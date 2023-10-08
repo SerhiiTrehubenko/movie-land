@@ -1,9 +1,11 @@
 package com.tsa.movieland.dao;
 
-import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.entity.Country;
+
+import java.util.List;
 
 public interface CountryDao {
-    Iterable<CountryDto> findByMovieId(int movieId);
+    List<Country> findByMovieId(int movieId);
 
-    Iterable<CountryDto> findAll();
+    List<Country> findAll();
 }

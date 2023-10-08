@@ -1,9 +1,10 @@
-package com.tsa.movieland.repository;
+package com.tsa.movieland.dao.jpa.repository;
 
 import com.tsa.movieland.entity.MovieCountry;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@com.tsa.movieland.context.JpaRepository
+@Repository
 public interface MovieCountryRepository extends JpaRepository<MovieCountry, MovieCountry.PrimaryKey> {
     void deleteAllByMovieId(int movieId);
 }

@@ -8,55 +8,55 @@ import com.tsa.movieland.common.*;
 import com.tsa.movieland.dto.AddUpdateMovieDto;
 import com.tsa.movieland.dto.MovieByIdDto;
 import com.tsa.movieland.dto.MovieFindAllDto;
+import com.tsa.movieland.entity.Movie;
+import com.tsa.movieland.mapper.MovieMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.stream.StreamSupport;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultMovieService implements MovieService {
-    private final Map<Boolean, BiConsumer<CurrencyType, MovieByIdDto>> calculateCurrency = Map.of(
-            Boolean.TRUE, this::calculatePrice,
-            Boolean.FALSE, (currency, movie) -> {
-//                "do nothing"
-            }
-    );
     private final static CachedMovies CACHED_MOVIES = new CachedMovies();
     private final static MovieSorter MOVIE_SORTER = new MovieSorter();
 
     private final MovieDao movieDao;
-    private final PosterService posterService;
     private final RatingService ratingService;
     private final MovieEnrichmentService movieEnrichmentService;
     private final CurrencyExchangeService exchangeHolder;
 
+    private final MovieMapper movieMapper;
+
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
-        List<MovieFindAllDto> movies = (List<MovieFindAllDto>) refreshAvgRating(movieDao.findAll());
-        MOVIE_SORTER.sort(movies, movieRequest);
-        return movies;
+        List<Movie> foundMovies = movieDao.findAll();
+        List<MovieFindAllDto> moviesDto = foundMovies.stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
+        List<MovieFindAllDto> refreshedDto = refreshAvgRating(moviesDto);
+        MOVIE_SORTER.sort(refreshedDto, movieRequest);
+        return refreshedDto;
     }
 
-    private Iterable<MovieFindAllDto> refreshAvgRating(Iterable<MovieFindAllDto> movies) {
-        StreamSupport.stream(movies.spliterator(), false).forEach(movie -> movie.setRating(ratingService.getAvgRate(movie.getId())));
+    private List<MovieFindAllDto> refreshAvgRating(List<MovieFindAllDto> movies) {
+        movies.forEach(movie -> movie.setRating(ratingService.getAvgRate(movie.getId())));
         return movies;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findRandom() {
-        return refreshAvgRating(movieDao.findRandom());
+        List<Movie> randomMovies = movieDao.findRandom();
+        ArrayList<MovieFindAllDto> dtos = randomMovies.stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
+        return refreshAvgRating(dtos);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest) {
-        List<MovieFindAllDto> movies = (List<MovieFindAllDto>) movieDao.findByGenreId(genreId);
+        List<MovieFindAllDto> movies = movieDao.findByGenreId(genreId).stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
         refreshAvgRating(movies);
 
         MOVIE_SORTER.sort(movies, movieRequest);
@@ -72,31 +72,17 @@ public class DefaultMovieService implements MovieService {
     }
 
     private MovieByIdDto getEnrichedMovie(int movieId) {
-        return movieEnrichmentService.enrich(movieId, () -> movieDao.findById(movieId));
+        return movieEnrichmentService.enrich(movieId, () -> movieMapper.toMovieByIdDto(movieDao.findById(movieId)));
     }
 
     private MovieByIdDto createResponse(CurrencyType currency, MovieByIdDto movie) {
         movie.setRating(ratingService.getAvgRate(movie.getId()));
-        MovieByIdDto movieCopy = copy(movie);
+        MovieByIdDto movieCopy = movieMapper.copy(movie);
 
-        calculateCurrency.get(Objects.nonNull(currency)).accept(currency, movieCopy);
+        if (Objects.nonNull(currency)) {
+            calculatePrice(currency, movieCopy);
+        }
         return movieCopy;
-    }
-
-    private MovieByIdDto copy(MovieByIdDto movie) {
-        return MovieByIdDto.builder()
-                .id(movie.getId())
-                .nameRussian(movie.getNameRussian())
-                .nameNative(movie.getNameNative())
-                .yearOfRelease(movie.getYearOfRelease())
-                .description(movie.getDescription())
-                .rating(movie.getRating())
-                .price(movie.getPrice())
-                .picturePath(movie.getPicturePath())
-                .countries(movie.getCountries())
-                .genres(movie.getGenres())
-                .reviews(movie.getReviews())
-                .build();
     }
 
     private void calculatePrice(CurrencyType currency, MovieByIdDto movie) {
@@ -108,16 +94,24 @@ public class DefaultMovieService implements MovieService {
     @Override
     @Transactional
     public int save(AddUpdateMovieDto movie) {
-        int movieId = movieDao.save(movie);
-        posterService.add(movieId, movie.getPicturePath());
-        return movieId;
+        Movie movieToSave = movieMapper.toMovie(movie);
+        Movie savedMovie = movieDao.save(movieToSave);
+
+        savedMovie.setCountries(movie.getCountries());
+        savedMovie.setGenres(movie.getGenres());
+
+        return savedMovie.getId();
     }
 
     @Override
     @Transactional
     public void update(int movieId, AddUpdateMovieDto movie) {
-        movieDao.update(movieId, movie);
-        posterService.update(movieId, movie.getPicturePath());
+        Movie movieForUpdate = movieDao.findByIdForUpdate(movieId);
+        movieMapper.updateMovie(movieForUpdate, movie);
+        movieForUpdate.setCountries(movie.getCountries());
+        movieForUpdate.setGenres(movie.getGenres());
+        movieForUpdate.setPoster(movie.getPicturePath());
+
         CACHED_MOVIES.removeFromCache(movieId);
     }
 

@@ -3,7 +3,7 @@ package com.tsa.movieland.dao.jpa;
 import com.tsa.movieland.context.JpaDao;
 import com.tsa.movieland.dao.UserCredentialsDao;
 import com.tsa.movieland.entity.Credentials;
-import com.tsa.movieland.repository.CredentialRepository;
+import com.tsa.movieland.dao.jpa.repository.CredentialRepository;
 import lombok.RequiredArgsConstructor;
 
 @JpaDao

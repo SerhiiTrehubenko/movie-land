@@ -35,7 +35,7 @@ public class Poster {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Poster.PrimaryKey that = (Poster.PrimaryKey) o;
-            return movieId == that.movieId && link == that.link;
+            return movieId == that.movieId && Objects.equals(link,that.link);
         }
 
         @Override
