@@ -15,13 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultMovieService implements MovieService {
     private final static CachedMovies CACHED_MOVIES = new CachedMovies();
-    private final static MovieSorter MOVIE_SORTER = new MovieSorter();
+    private final static MovieSortCriteria MOVIE_SORTER = new MovieSortCriteria();
 
     private final MovieDao movieDao;
     private final RatingService ratingService;
@@ -33,34 +34,37 @@ public class DefaultMovieService implements MovieService {
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findAll(MovieRequest movieRequest) {
-        List<Movie> foundMovies = movieDao.findAll();
-        List<MovieFindAllDto> moviesDto = foundMovies.stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
-        List<MovieFindAllDto> refreshedDto = refreshAvgRating(moviesDto);
-        MOVIE_SORTER.sort(refreshedDto, movieRequest);
-        return refreshedDto;
+        return getDtos(movieDao::findAll, movieRequest);
     }
 
-    private List<MovieFindAllDto> refreshAvgRating(List<MovieFindAllDto> movies) {
-        movies.forEach(movie -> movie.setRating(ratingService.getAvgRate(movie.getId())));
-        return movies;
+    private List<MovieFindAllDto> getDtos(Supplier<List<Movie>> supplier, MovieRequest movieRequest) {
+        Comparator<MovieFindAllDto> sortCriteria = MOVIE_SORTER.getSortCriteria(movieRequest);
+        return supplier.get()
+                .stream()
+                .map(movieMapper::toMovieFindAllDto)
+                .peek(this::updateRating)
+                .sorted(sortCriteria)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private void updateRating(MovieFindAllDto dto) {
+        dto.setRating(ratingService.getAvgRate(dto.getId()));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findRandom() {
-        List<Movie> randomMovies = movieDao.findRandom();
-        ArrayList<MovieFindAllDto> dtos = randomMovies.stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
-        return refreshAvgRating(dtos);
+        return movieDao.findRandom()
+                .stream()
+                .map(movieMapper::toMovieFindAllDto)
+                .peek(this::updateRating)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<MovieFindAllDto> findByGenre(int genreId, MovieRequest movieRequest) {
-        List<MovieFindAllDto> movies = movieDao.findByGenreId(genreId).stream().map(movieMapper::toMovieFindAllDto).collect(Collectors.toCollection(ArrayList::new));
-        refreshAvgRating(movies);
-
-        MOVIE_SORTER.sort(movies, movieRequest);
-        return movies;
+        return getDtos(() -> movieDao.findByGenreId(genreId), movieRequest);
     }
 
     @Override
