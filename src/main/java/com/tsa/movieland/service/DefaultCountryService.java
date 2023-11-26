@@ -2,10 +2,13 @@ package com.tsa.movieland.service;
 
 import com.tsa.movieland.dao.CountryDao;
 import com.tsa.movieland.dto.CountryDto;
+import com.tsa.movieland.entity.Country;
 import com.tsa.movieland.mapper.CountryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +20,18 @@ public class DefaultCountryService implements CountryService {
 
     @Override
     public Iterable<CountryDto> findByMovieId(int movieId) {
-        return countryDao.findByMovieId(movieId).stream()
-                .map(countryMapper::toCountryDto).toList();
+        return getCountriesDto(countryDao.findByMovieId(movieId));
     }
 
     @Override
     public Iterable<CountryDto> findAll() {
-        return countryDao.findAll().stream()
-                .map(countryMapper::toCountryDto).toList();
+        return getCountriesDto(countryDao.findAll());
+    }
+
+    private Iterable<CountryDto> getCountriesDto(List<Country> countries) {
+        return
+                countries.stream()
+                        .map(countryMapper::toCountryDto)
+                        .toList();
     }
 }

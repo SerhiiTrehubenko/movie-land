@@ -22,9 +22,11 @@ public class DefaultReviewService implements ReviewService {
     @Override
     @Transactional(readOnly = true)
     public Iterable<ReviewDto> findByMovieId(int movieId) {
-        return reviewDao.findByMovieId(movieId).stream()
+        return reviewDao.findByMovieId(movieId)
+                .stream()
                 .sorted(Comparator.comparing(Review::getRecordTime))
-                .map(reviewMapper::toReviewDto).toList();
+                .map(reviewMapper::toReviewDto)
+                .toList();
     }
 
     @Override

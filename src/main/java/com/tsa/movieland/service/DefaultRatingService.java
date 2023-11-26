@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,8 +19,9 @@ import java.util.stream.Collectors;
 public class DefaultRatingService implements RatingService {
 
     private final RatingDao ratingDao;
-    private volatile Map<Integer, AvgRating> avgRatingsCache;
-    private final static Set<RatingRequest> ratingsAggregatorBuffer = Collections.synchronizedSet(new HashSet<>());
+    private final Map<Integer, AvgRating> avgRatingsCache = new ConcurrentHashMap<>();
+    private final static Set<RatingRequest> RATINGS_AGGREGATOR_BUFFER = Collections.synchronizedSet(new HashSet<>());
+
     @Override
     public double getAvgRate(int movieID) {
         if (avgRatingsCache.containsKey(movieID)) {
@@ -30,7 +32,7 @@ public class DefaultRatingService implements RatingService {
 
     @Override
     public void addRating(RatingRequest ratingRequest) {
-        ratingsAggregatorBuffer.add(ratingRequest);
+        RATINGS_AGGREGATOR_BUFFER.add(ratingRequest);
         updateOrAddRatingInCache(ratingRequest);
     }
 
@@ -58,8 +60,8 @@ public class DefaultRatingService implements RatingService {
 
     @Scheduled(cron = "${ratings.flush-buffer}")
     private void flushToDb() {
-        if (!ratingsAggregatorBuffer.isEmpty()) {
-            ratingDao.saveBuffer(ratingsAggregatorBuffer);
+        if (!RATINGS_AGGREGATOR_BUFFER.isEmpty()) {
+            ratingDao.saveBuffer(RATINGS_AGGREGATOR_BUFFER);
             log.info("Rating buffer has been flushed");
         }
     }
@@ -67,15 +69,12 @@ public class DefaultRatingService implements RatingService {
     @PostConstruct
     @Scheduled(cron = "${ratings.refresh-avg-rating}")
     private void fillAvgRatingsCache() {
-
         List<AvgRating> ratingDtos = (List<AvgRating>) ratingDao.fidAllAvgRatingsGroupedMovie();
         Objects.requireNonNull(ratingDtos);
+
+        Map<Integer, AvgRating> refreshedAvgRatings = ratingDtos.stream().collect(Collectors.toConcurrentMap(AvgRating::getMovieId, avgRatingDto -> avgRatingDto));
+        avgRatingsCache.putAll(refreshedAvgRatings);
+
         log.info("Average Rating Cache was filled");
-        if (Objects.isNull(avgRatingsCache)) {
-            avgRatingsCache = ratingDtos.stream().collect(Collectors.toConcurrentMap(AvgRating::getMovieId, avgRatingDto -> avgRatingDto));
-        } else {
-            Map<Integer, AvgRating> refreshedAvgRatings = ratingDtos.stream().collect(Collectors.toConcurrentMap(AvgRating::getMovieId, avgRatingDto -> avgRatingDto));
-            avgRatingsCache.putAll(refreshedAvgRatings);
-        }
     }
 }
