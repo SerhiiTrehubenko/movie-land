@@ -28,8 +28,8 @@ public class DefaultMovieService implements MovieService {
     private final RatingService ratingService;
     private final MovieEnrichmentService movieEnrichmentService;
     private final CurrencyExchangeService exchangeHolder;
-
     private final MovieMapper movieMapper;
+    private final SearchService searchService;
 
     @Override
     @Transactional(readOnly = true)
@@ -122,5 +122,14 @@ public class DefaultMovieService implements MovieService {
     @Override
     public void addRating(RatingRequest ratingRequest) {
         ratingService.addRating(ratingRequest);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<MovieFindAllDto> search(String title) {
+        List<Integer> foundIds = searchService.search(title);
+
+        return movieDao.findAllById(foundIds).stream()
+                .map(movieMapper::toMovieFindAllDto).toList();
     }
 }

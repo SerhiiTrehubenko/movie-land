@@ -62,4 +62,9 @@ public class MovieController {
         movieService.addRating(ratingRequest);
         log.info("rating was added for movie: [{}]", ratingRequest.getMovieId());
     }
+
+    @GetMapping("/search/{title}")
+    public Iterable<MovieFindAllDto> search(@PathVariable String title) {
+        return movieService.search(title);
+    }
 }

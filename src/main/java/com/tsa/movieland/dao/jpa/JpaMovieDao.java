@@ -5,10 +5,10 @@ import com.tsa.movieland.dao.MovieDao;
 import com.tsa.movieland.dao.jpa.repository.MovieRepository;
 import com.tsa.movieland.entity.Movie;
 import com.tsa.movieland.exception.MovieNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -56,5 +56,11 @@ public class JpaMovieDao implements MovieDao {
     @Transactional
     public Movie save(Movie movie) {
         return movieRepository.save(movie);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Movie> findAllById(List<Integer> foundIds) {
+        return movieRepository.findAllById(foundIds);
     }
 }

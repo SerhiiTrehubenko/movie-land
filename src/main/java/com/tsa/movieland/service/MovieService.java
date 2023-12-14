@@ -20,4 +20,6 @@ public interface MovieService {
     void update(int movieId, AddUpdateMovieDto movie);
 
     void addRating(RatingRequest ratingRequest);
+
+    Iterable<MovieFindAllDto> search(String title);
 }
